@@ -7,11 +7,10 @@ export default function LoginPage() {
 			<div className='absolute bg-cover bg-no-repeat bg-[top_left_400px] bg-left-top bg-[url("/jet.jpg")] bg-[linear-gradient(120deg,rgba(0,138,209,1)_0%,rgba(0,138,209,0.7)_100%)] -right-[100px] w-screen h-screen -right-[450px] z-0'></div>
 			{/* Фото фона */}
 			<div className='grid min-h-screen grid-cols-1 lg:grid-cols-[600px_1fr] '>
-				<div className='fixed w-[2000] h-[5000] z-20 -rotate-[22deg] bg-[#0060a1] -translate-y-[100px] -translate-x-[600px]'></div>{' '}
+				<div className='fixed w-[2000px] h-[5000px] z-20 -rotate-[22deg] bg-[#0060a1] -translate-y-[100px] -translate-x-[600px]'></div>{' '}
 				{/* Синий блок */}
 				<div className='absolute inset-0 bg-[linear-gradient(120deg,rgba(0,138,209,1)_0%,rgba(0,138,209,0.7)_100%)] z-1'></div>{' '}
 				{/* Градиент */}
-				{/* Синий блок слева */}
 				<div className='flex flex-col justify-center px-16 z-30'>
 					<div className='w-full space-y-8'>
 						<h1 className='text-5xl font-bold text-white'>
