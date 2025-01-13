@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -8,7 +8,7 @@ import { authenticate } from '@/lib/api/auth';
 export default function LoginPage() {
 	const [errorMessage, formAction, isPending] = useActionState(
 		authenticate,
-		undefined,
+		undefined
 	);
 
 	return (
@@ -16,7 +16,7 @@ export default function LoginPage() {
 			action={formAction}
 			className='min-h-screen relative overflow-hidden'
 		>
-			<div className='absolute bg-cover bg-no-repeat bg-[top_left_400px] bg-left-top bg-[url("/jet.jpg")] bg-[linear-gradient(120deg,rgba(0,138,209,1)_0%,rgba(0,138,209,0.7)_100%)] -right-[100px] w-screen h-screen -right-[450px] z-0'></div>
+			<div className='absolute bg-cover bg-no-repeat bg-[top_left_400px] bg-left-top bg-[url("/jet.png")] bg-[linear-gradient(120deg,rgba(0,138,209,1)_0%,rgba(0,138,209,0.7)_100%)] -right-[100px] w-screen h-screen -right-[450px] z-0'></div>
 			{/* Фото фона */}
 			<div className='grid min-h-screen grid-cols-1 lg:grid-cols-[600px_1fr] '>
 				<div

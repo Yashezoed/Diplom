@@ -20,19 +20,11 @@ export const Login = async (name: string, password: string) => {
 			options
 		);
 		if (response.ok) {
-			console.log('respone.json()', response);
-			return await response.json(); //должен по идее возвращаться .json()
-			// console.log('respone', response);
-			/* const TOKEN = await response.json();
-			const DECODED_TOKEN =  atob(TOKEN.split('.')[1]);
-
-			console.log('!!!!!!!!!!!!!!!!!!!',JSON.parse(DECODED_TOKEN));
-			return JSON.parse(DECODED_TOKEN); */
+			return await response.json(); 
 		} else {
 			return { error: 'Authentication failed' };
 		}
 	} catch (error) {
-		console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
 		console.log('Error', error);
 	}
 	return null;

@@ -4,7 +4,6 @@ import { Login } from './lib/api/auth';
 import NextAuth, { User } from 'next-auth';
 import { AdapterUser } from 'next-auth/adapters';
 
-
 export const { handlers, auth, signIn, signOut } = NextAuth({
 	pages: {
 		signIn: '/login'
@@ -16,14 +15,13 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 				password: {}
 			},
 			async authorize(credentials) {
-				console.log('Credentials ', credentials);
+				// console.log('Credentials ', credentials);
 				const parseCredentials = z
 					.object({
 						login: z.string(),
 						password: z.string() /* .min(6) */
 					})
 					.safeParse(credentials);
-				console.log('parseCredentials.data', parseCredentials.data);
 
 				if (!parseCredentials.success) {
 					return null;
@@ -32,18 +30,23 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 					parseCredentials.data.login,
 					parseCredentials.data.password
 				);
-				console.log('RESPONSE AFTER LOGIN', response);
-				/* if (response.error) {
-					return null;
-				} */
-				// return response;
-				return {
+				const TOKEN = response;
+				const DECODED_TOKEN = JSON.parse(atob(TOKEN.split('.')[1]));
+				const user_id = DECODED_TOKEN.id; 
+				const role =
+					DECODED_TOKEN[
+						'http://schemas.microsoft.com/ws/2008/06/identity/claims/role'
+					];
+
+				const user: User = {
 					user: {
-						id: 1,
-						login: "asdas"
+						id: user_id,
+						role: role
 					},
 					token: response
 				};
+
+				return user;
 			}
 		})
 	],
@@ -53,45 +56,44 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 				token.user = user;
 				token.token = user.token;
 			}
-
 			return token;
 		},
-		session({session, token}) {
-			console.log('Session', session);
-			console.log('TOKEN', token);
+		session({ session, token }) {
 			session.token = token.token as string;
 			session.user = token.user as AdapterUser & User;
 			return session;
 		},
 		authorized({ auth, request: { nextUrl } }) {
+			type credentials = 'student' | 'teacher' | 'admin';
 			const isLoggedIn = !!auth?.user;
-			const isOnAdmin = nextUrl.pathname.startsWith('/admin');
+			const credentials = auth?.user.user.role
 
-			if (isOnAdmin) {
-				if (isLoggedIn) return true;
-				return false;
-			} else if (isLoggedIn) {
-				return Response.redirect(new URL('/admin', nextUrl));
+			if (isLoggedIn && credentials) {
+				if ( nextUrl.pathname.startsWith(`/${credentials}`) ) return true;
+				return Response.redirect(new URL(`/${credentials}`, nextUrl));
 			}
-			return true;
+			else if (nextUrl.pathname != '/login') {
+				return Response.redirect(new URL('/login', nextUrl))
+			}
+			return true
 		}
 	}
 });
 
-declare module "next-auth" {
+declare module 'next-auth' {
 	interface Session {
-		token: string
-		user: User
+		token: string;
+		user: User;
 	}
 	interface User {
 		user: {
-			id: number
-			login: string
-		}
-		token: string
+			id: number;
+			role: string;
+		};
+		token: string;
 	}
 	interface JWT {
-		user: User
-		token: string 
+		user: User;
+		token: string;
 	}
 }

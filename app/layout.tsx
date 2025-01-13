@@ -1,12 +1,10 @@
 import { Metadata } from 'next';
 import '@/app/global.css';
 import { montserrat } from '@/components/ui/fonts';
-import { SessionProvider } from 'next-auth/react';
+// import { SessionProvider } from 'next-auth/react';
 export const metadata: Metadata = {
 	title: 'Приложение тестирования'
 };
-
-
 
 export default function RootLayout({
 	children
@@ -16,7 +14,7 @@ export default function RootLayout({
 	return (
 		
 		<html lang='ru'>
-			<body className={`${montserrat.className} antialized`}><SessionProvider>{children}</SessionProvider></body>
+			<body className={`${montserrat.className} antialized`}>{/* <SessionProvider> */}{children}{/* </SessionProvider> */}</body>
 		</html>
 	);
 }
