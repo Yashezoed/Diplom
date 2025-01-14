@@ -38,6 +38,7 @@ export async function authenticate(
 		return await signIn('credentials', formData);
 	} catch (error) {
 		if (error instanceof AuthError) {
+			console.log(error)
 			switch (error.type) {
 				case 'CredentialsSignin':
 					return 'Не правильная почта или пароль.';

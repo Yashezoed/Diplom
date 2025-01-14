@@ -14,7 +14,7 @@ export default function RootLayout({
 	return (
 		
 		<html lang='ru'>
-			<body className={`${montserrat.className} antialized`}>{/* <SessionProvider> */}{children}{/* </SessionProvider> */}</body>
+			<body className={`${montserrat.className} antialized overflow-y-hidden`}>{/* <SessionProvider> */}{children}{/* </SessionProvider> */}</body>
 		</html>
 	);
 }

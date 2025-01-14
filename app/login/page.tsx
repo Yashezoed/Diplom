@@ -59,7 +59,7 @@ export default function LoginPage() {
 								aria-atomic='true'
 							>
 								{errorMessage && (
-									<p className='text-sm text-red-500'>
+									<p className='text-white text-3xl font-semibold'>
 										{errorMessage}
 									</p>
 								)}
@@ -67,7 +67,7 @@ export default function LoginPage() {
 						</div>
 					</div>
 				</div>
-				<div className='hidden lg:block relative absolute t-0	z-10'></div>
+				<div className='hidden lg:block relative absolute t-0 z-10'></div>
 			</div>
 		</form>
 	);

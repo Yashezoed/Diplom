@@ -4,6 +4,7 @@ import { Login } from './lib/api/auth';
 import NextAuth, { User } from 'next-auth';
 import { AdapterUser } from 'next-auth/adapters';
 
+
 export const { handlers, auth, signIn, signOut } = NextAuth({
 	pages: {
 		signIn: '/login'
@@ -64,7 +65,6 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 			return session;
 		},
 		authorized({ auth, request: { nextUrl } }) {
-			type credentials = 'student' | 'teacher' | 'admin';
 			const isLoggedIn = !!auth?.user;
 			const credentials = auth?.user.user.role
 
@@ -72,10 +72,21 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 				if ( nextUrl.pathname.startsWith(`/${credentials}`) ) return true;
 				return Response.redirect(new URL(`/${credentials}`, nextUrl));
 			}
-			else if (nextUrl.pathname != '/login') {
+			else if (nextUrl.pathname !== '/login') {
 				return Response.redirect(new URL('/login', nextUrl))
 			}
 			return true
+			/* const credentials = auth?.user.user.role;
+
+			const isLoggedIn = !!auth?.user;
+			const isOnRolePage = nextUrl.pathname.startsWith(`/${credentials}`);
+			if (isOnRolePage) {
+				if (isLoggedIn) return true;
+				return false; // Redirect unauthenticated users to login page
+			} else if (isLoggedIn) {
+				return Response.redirect(new URL(`/${credentials}`, nextUrl));
+			}
+			return true; */
 		}
 	}
 });
