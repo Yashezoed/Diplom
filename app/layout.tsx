@@ -12,9 +12,9 @@ export default function RootLayout({
 	children: React.ReactNode;
 }>) {
 	return (
-		
+
 		<html lang='ru'>
-			<body className={`${montserrat.className} antialized overflow-y-hidden`}>{/* <SessionProvider> */}{children}{/* </SessionProvider> */}</body>
+			<body className={`${montserrat.className} antialized overflow-y-hidden overflow-x-hidden sticky overflow-hidden`}>{/* <SessionProvider> */}{children}{/* </SessionProvider> */}</body>
 		</html>
 	);
 }

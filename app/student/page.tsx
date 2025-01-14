@@ -19,7 +19,7 @@ export default async function Page() {
 						<ExitButton />
 					</div>
 				</header>
-				<div className='grid grid-cols-3 gap-5 max-w-7xl bg-[#008AD1] p-5 rounded-3xl overflow-y-scroll '>
+				<div className='grid grid-cols-3 gap-5 max-w-7xl bg-[#008AD1] p-5 rounded-3xl overflow-x-hidden overflow-y-scroll '>
 					{data.map((card) => (
 						<Button
 							asChild
