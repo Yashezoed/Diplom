@@ -3,6 +3,8 @@ import { z } from 'zod';
 import { Login } from './lib/api/auth';
 import NextAuth, { User } from 'next-auth';
 import { AdapterUser } from 'next-auth/adapters';
+import { log } from 'console';
+import { NextResponse } from 'next/server';
 
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
@@ -33,7 +35,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 				);
 				const TOKEN = response;
 				const DECODED_TOKEN = JSON.parse(atob(TOKEN.split('.')[1]));
-				const user_id = DECODED_TOKEN.id; 
+				const user_id = DECODED_TOKEN.id;
 				const role =
 					DECODED_TOKEN[
 						'http://schemas.microsoft.com/ws/2008/06/identity/claims/role'
@@ -65,28 +67,40 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 			return session;
 		},
 		authorized({ auth, request: { nextUrl } }) {
-			const isLoggedIn = !!auth?.user;
-			const credentials = auth?.user.user.role
+			// const isLoggedIn = !!auth?.user;
+			// const credentials = auth?.user.user.role
 
-			if (isLoggedIn && credentials) {
-				if ( nextUrl.pathname.startsWith(`/${credentials}`) ) return true;
-				return Response.redirect(new URL(`/${credentials}`, nextUrl));
-			}
-			else if (nextUrl.pathname !== '/login') {
-				return Response.redirect(new URL('/login', nextUrl))
-			}
-			return true
-			/* const credentials = auth?.user.user.role;
+			// if (isLoggedIn && credentials) {
+			// 	if ( nextUrl.pathname.startsWith(`/${credentials}`) ) return true;
+			// 	return Response.redirect(new URL(`/${credentials}`, nextUrl));
+			// }
+			// else if (nextUrl.pathname !== '/login') {
+			// 	return Response.redirect(new URL('/login', nextUrl))
+			// }
+			// return true
+			const credentials = auth?.user.user.role;
+
+			console.log("credetials => ", credentials)
+
 
 			const isLoggedIn = !!auth?.user;
 			const isOnRolePage = nextUrl.pathname.startsWith(`/${credentials}`);
+			console.log("isOnRolePage =>", isOnRolePage);
+			console.log("isLoggedIn =>", isLoggedIn);
+			console.log("nextUrl =>", nextUrl);
+
+
+
 			if (isOnRolePage) {
 				if (isLoggedIn) return true;
 				return false; // Redirect unauthenticated users to login page
 			} else if (isLoggedIn) {
-				return Response.redirect(new URL(`/${credentials}`, nextUrl));
+				return NextResponse.redirect(new URL(`/${credentials}`, nextUrl));
 			}
-			return true; */
+			else {
+				if (nextUrl.pathname === '/login') return false;
+				return NextResponse.redirect(new URL('/login', nextUrl))
+			}
 		}
 	}
 });
