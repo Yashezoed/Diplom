@@ -20,7 +20,7 @@ export const Login = async (name: string, password: string) => {
 			options
 		);
 		if (response.ok) {
-			return await response.json(); 
+			return await response.json();
 		} else {
 			return { error: 'Authentication failed' };
 		}
@@ -30,15 +30,15 @@ export const Login = async (name: string, password: string) => {
 	return null;
 };
 
-export async function authenticate(
+export const authenticate = async (
 	prevState: string | undefined,
 	formData: FormData
-) {
+) => {
+	console.log(formData);
 	try {
-		return await signIn('credentials', formData);
+		await signIn('credentials', formData);
 	} catch (error) {
 		if (error instanceof AuthError) {
-			console.log(error)
 			switch (error.type) {
 				case 'CredentialsSignin':
 					return 'Не правильная почта или пароль.';
@@ -47,5 +47,7 @@ export async function authenticate(
 			}
 		}
 		throw error;
+	} finally {
+		// redirect('/student');
 	}
-}
+};

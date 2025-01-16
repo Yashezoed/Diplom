@@ -3,7 +3,6 @@ import { z } from 'zod';
 import { Login } from './lib/api/auth';
 import NextAuth, { User } from 'next-auth';
 import { AdapterUser } from 'next-auth/adapters';
-import { log } from 'console';
 import { NextResponse } from 'next/server';
 
 
@@ -48,18 +47,18 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 					},
 					token: response
 				};
-
 				return user;
 			}
 		})
 	],
 	callbacks: {
-		async jwt({ token, user }) {
+
+		jwt({ token, user }) {
 			if (user) {
 				token.user = user;
 				token.token = user.token;
 			}
-			return token;
+			return  token;
 		},
 		session({ session, token }) {
 			session.token = token.token as string;
@@ -67,40 +66,31 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 			return session;
 		},
 		authorized({ auth, request: { nextUrl } }) {
-			// const isLoggedIn = !!auth?.user;
-			// const credentials = auth?.user.user.role
-
-			// if (isLoggedIn && credentials) {
-			// 	if ( nextUrl.pathname.startsWith(`/${credentials}`) ) return true;
-			// 	return Response.redirect(new URL(`/${credentials}`, nextUrl));
-			// }
-			// else if (nextUrl.pathname !== '/login') {
-			// 	return Response.redirect(new URL('/login', nextUrl))
-			// }
-			// return true
 			const credentials = auth?.user.user.role;
 
-			console.log("credetials => ", credentials)
+			// console.log("credetials => ", credentials)
 
 
 			const isLoggedIn = !!auth?.user;
 			const isOnRolePage = nextUrl.pathname.startsWith(`/${credentials}`);
-			console.log("isOnRolePage =>", isOnRolePage);
-			console.log("isLoggedIn =>", isLoggedIn);
-			console.log("nextUrl =>", nextUrl);
-
-
-
+			// console.log("isOnRolePage =>", isOnRolePage);
+			// console.log("isLoggedIn =>", isLoggedIn);
+			// console.log("nextUrl =>", nextUrl);
 			if (isOnRolePage) {
-				if (isLoggedIn) return true;
+				console.log('onRolePage')
+				if (isLoggedIn) { console.log('Залогинен'); return true};
+				console.log('false работает')
 				return false; // Redirect unauthenticated users to login page
 			} else if (isLoggedIn) {
+				console.log('Else if работает');
 				return NextResponse.redirect(new URL(`/${credentials}`, nextUrl));
 			}
 			else {
-				if (nextUrl.pathname === '/login') return false;
-				return NextResponse.redirect(new URL('/login', nextUrl))
+				if (nextUrl.pathname === '/login') {console.log('В элсе иф работает');return true};
+				console.log('ЭЛСе работает');
+				return NextResponse.redirect(new URL('/login', nextUrl));
 			}
+
 		}
 	}
 });

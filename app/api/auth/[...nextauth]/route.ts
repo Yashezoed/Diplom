@@ -25,29 +25,3 @@ export default async function fetchDiscipline() {
 	const data: Course[] = await req.json();
 	return data;
 }
-
-
-/* type Data = {
-	id: string;
-	CourseName: string;
-};
-
-export const getServerSideProps = (async () => {
-	console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-	const session = await auth();
-	console.log('Session =>',session)
-
-	const options = {
-		method: 'GET',
-		headers: {
-			'Content-Type': 'application/json',
-			"Authorization": `Bearer ${session?.token}`,
-		}
-	};
-
-	const res = await fetch('http://185.221.152.124:80/Discipline/student', options);
-	const data: Data = await res.json();
-	console.log('res', res);
-
-	return { props: { data } };
-}) satisfies GetServerSideProps<{ data: Data }> ; */
