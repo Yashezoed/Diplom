@@ -1,3 +1,7 @@
+import Tests from "@/components/pages/student/tests";
+
 export default function Page() {
-	return <div className='flex h-screen bg-slate-50'>Типо тесты</div>;
+	return (
+		<Tests/>
+	);
 }

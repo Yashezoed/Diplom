@@ -3,8 +3,6 @@ import { z } from 'zod';
 import { Login } from './lib/api/auth';
 import NextAuth, { User } from 'next-auth';
 import { AdapterUser } from 'next-auth/adapters';
-import { NextResponse } from 'next/server';
-
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
 	pages: {
@@ -52,13 +50,12 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 		})
 	],
 	callbacks: {
-
-		jwt({ token, user }) {
+		async jwt({ token, user }) {
 			if (user) {
 				token.user = user;
 				token.token = user.token;
 			}
-			return  token;
+			return token;
 		},
 		session({ session, token }) {
 			session.token = token.token as string;
@@ -66,31 +63,21 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 			return session;
 		},
 		authorized({ auth, request: { nextUrl } }) {
-			const credentials = auth?.user.user.role;
-
-			// console.log("credetials => ", credentials)
-
-
+			const pathname = nextUrl.pathname;
+			const isOnDashboard =
+				pathname.startsWith('/admin') ||
+				pathname.startsWith('/student') ||
+				pathname.startsWith('/teacher');
 			const isLoggedIn = !!auth?.user;
-			const isOnRolePage = nextUrl.pathname.startsWith(`/${credentials}`);
-			// console.log("isOnRolePage =>", isOnRolePage);
-			// console.log("isLoggedIn =>", isLoggedIn);
-			// console.log("nextUrl =>", nextUrl);
-			if (isOnRolePage) {
-				console.log('onRolePage')
-				if (isLoggedIn) { console.log('Залогинен'); return true};
-				console.log('false работает')
-				return false; // Redirect unauthenticated users to login page
+
+			if (isOnDashboard || pathname === '/') {
+				return isLoggedIn;
 			} else if (isLoggedIn) {
-				console.log('Else if работает');
-				return NextResponse.redirect(new URL(`/${credentials}`, nextUrl));
-			}
-			else {
-				if (nextUrl.pathname === '/login') {console.log('В элсе иф работает');return true};
-				console.log('ЭЛСе работает');
-				return NextResponse.redirect(new URL('/login', nextUrl));
+				const credentials = auth?.user.user.role;
+				return Response.redirect(new URL(`/${credentials}`, nextUrl));
 			}
 
+			return true;
 		}
 	}
 });

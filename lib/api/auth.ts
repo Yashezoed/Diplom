@@ -1,6 +1,6 @@
 'use server';
 import { AuthError } from 'next-auth';
-import { signIn } from '../../auth.config';
+import { signIn } from '@/auth';
 
 export const Login = async (name: string, password: string) => {
 	const options = {
@@ -16,7 +16,7 @@ export const Login = async (name: string, password: string) => {
 
 	try {
 		const response = await fetch(
-			'http://185.221.152.124:80/User/login',
+			`${process.env.NEXT_PUBLIC_BACKEND_API_URL}User/login`,
 			options
 		);
 		if (response.ok) {
@@ -47,7 +47,5 @@ export const authenticate = async (
 			}
 		}
 		throw error;
-	} finally {
-		// redirect('/student');
 	}
 };

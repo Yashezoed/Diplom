@@ -1,4 +1,4 @@
-import { signOut } from '@/auth.config';
+import { signOut } from '@/auth';
 import { LogOut } from 'lucide-react';
 
 export const ExitButton = () => {
