@@ -8,10 +8,11 @@ import isError from '@/lib/api/isError';
 import LessonDescription from '../ui/lessonDescription';
 import Lessons from '../ui/lessons';
 
-
-
-export default async function tests(props: { id: number; title: string }) {
+export default async function tests(
+	props: { id: number; title: string }
+) {
 	const data = await fetchTests(props.id);
+	
 	return (
 		<Suspense fallback={<div>Загрузка...</div>}>
 			{isError(data) ? (
