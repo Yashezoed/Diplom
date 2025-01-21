@@ -1,15 +1,15 @@
 import { ITest } from '@/interfaces/test';
-// import tests from '../pages/tests';
+// import { selectLesson } from '../pages/tests';
 
-export default function Lessons(props: { data: ITest[] }) {
+export default function Lessons(props: { data: ITest[]}) {
+
 	const data = props.data;
-	// console.log(data);
 
 	return (
 		<form>
 			{data.map((lesson) => (
 				<button
-										
+					
 					className='min-w-full min-h-[74] bg-white rounded-2xl flex items-center mb-2 hover:bg-slate-200 hover:text-[#007ed9] '
 					key={lesson.id}
 				>

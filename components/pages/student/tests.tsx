@@ -1,18 +1,27 @@
+'use server'
 import { ChevronLeft, UserCircle2 } from 'lucide-react';
 import Link from 'next/link';
 import { ExitButton } from '@/components/ui/exit';
-import { ScrollArea } from '@/components/ui/scroll-area';
 import fetchTests from '@/lib/api/fetchTests';
 import { Suspense } from 'react';
 import isError from '@/lib/api/isError';
-import LessonDescription from '../ui/lessonDescription';
-import Lessons from '../ui/lessons';
+import MainTests from '@/components/ui/mainTests';
+
+// export async function selectLesson(data: ITest[], lessonId: number) {
+// 	console.log(lessonId);
+	
+// 	console.log(data[lessonId]);
+// 	data[lessonId].isSelected = true;
+// 	console.log(data[lessonId])
+
+	
+// }
 
 export default async function tests(
 	props: { id: number; title: string }
 ) {
 	const data = await fetchTests(props.id);
-	
+	// console.log(data)
 	return (
 		<Suspense fallback={<div>Загрузка...</div>}>
 			{isError(data) ? (
@@ -42,14 +51,8 @@ export default async function tests(
 							<ExitButton />
 						</div>
 					</header>
-					<div className='flex justify-between'>
-						<ScrollArea
-							className='h-[90vh] w-[460px] mt-10 ' /* onClick={} */
-						>
-							<Lessons data={data} />
-						</ScrollArea>
-						<LessonDescription id={1} />
-					</div>
+					<MainTests data={data}/>
+					
 
 					{/* Нужно:
 			1. название дисциплины брать из дисциплины, на которую нажал студент !DONE!

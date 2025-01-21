@@ -1,4 +1,4 @@
-import Tests from '@/components/pages/tests';
+import Tests from '@/components/pages/student/tests';
 
 export default async  function Page({
 	searchParams
