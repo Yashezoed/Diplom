@@ -2,9 +2,9 @@ import { auth } from "@/auth";
 import { IError } from "@/interfaces/common";
 import { ILessonDescription } from "@/interfaces/lessonDescription";
 
-export default async function fetchLesson(props: { id: number}): Promise<ILessonDescription | IError> {
+export default async function fetchLesson(id: number): Promise<ILessonDescription | IError> {
 	const session = await auth();
-			const url = `${process.env.NEXT_PUBLIC_BACKEND_API_URL}Test/${props.id}`;
+			const url = `${process.env.NEXT_PUBLIC_BACKEND_API_URL}Test/${id}`;
 			const options = {
 				method: 'GET',
 				headers: {
