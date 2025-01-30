@@ -18,6 +18,7 @@ export default async function fetchDisciplines(): Promise<ICourse[] | IError> {
     try {
         const response = await fetch(url, options);
 
+
         if (response.ok) {
             return await response.json();
         }

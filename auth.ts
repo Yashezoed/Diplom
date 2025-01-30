@@ -3,6 +3,7 @@ import { z } from 'zod';
 import { Login } from './lib/api/auth';
 import NextAuth, { User } from 'next-auth';
 import { AdapterUser } from 'next-auth/adapters';
+import { IauthResponse } from './interfaces/authResponse';
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
 	pages: {
@@ -26,24 +27,27 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 				if (!parseCredentials.success) {
 					return null;
 				}
-				const response = await Login(
+				console.log(parseCredentials)
+				const response: IauthResponse = await Login(
 					parseCredentials.data.login,
 					parseCredentials.data.password
 				);
-				const TOKEN = response;
-				const DECODED_TOKEN = JSON.parse(atob(TOKEN.split('.')[1]));
-				const user_id = DECODED_TOKEN.id;
-				const role =
-					DECODED_TOKEN[
-						'http://schemas.microsoft.com/ws/2008/06/identity/claims/role'
-					];
+				console.log(response)
+				// const TOKEN = response;
+				// const DECODED_TOKEN = JSON.parse(atob(TOKEN.split('.')[1]));
+				// const user_id = DECODED_TOKEN.id;
+				// const role =
+				// 	DECODED_TOKEN[
+				// 		'http://schemas.microsoft.com/ws/2008/06/identity/claims/role'
+				// 	];
 
 				const user: User = {
 					user: {
-						id: user_id,
-						role: role
+						id: response.idUser,
+						role: response.roleDto.name,
+						name: response.username
 					},
-					token: response
+					token: response.jwt
 				};
 				return user;
 			}
@@ -91,6 +95,7 @@ declare module 'next-auth' {
 		user: {
 			id: number;
 			role: string;
+			name: string;
 		};
 		token: string;
 	}

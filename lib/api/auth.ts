@@ -34,7 +34,7 @@ export const authenticate = async (
 	prevState: string | undefined,
 	formData: FormData
 ) => {
-	console.log(formData);
+	// console.log(formData);
 	try {
 		await signIn('credentials', formData);
 	} catch (error) {

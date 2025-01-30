@@ -29,7 +29,7 @@ export default async function Discipline() {
 								>
 									<Link
 										href={{
-											pathname: `/student/${card.id}/tests`
+											pathname: `/student/${card.id}`
 										}}
 									>
 										{card.name}

@@ -1,12 +1,12 @@
 import { ITest } from '@/interfaces/test';
-import fetchLesson from '@/lib/api/fetchLessonDescription';
+import fetchLesson from '@/lib/api/fetchLesson';
 import fetchTests from '@/lib/api/fetchTests';
 import { Suspense } from 'react';
 import isError from '@/lib/api/isError';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import TestDescription from '@/components/ui/TestDescription';
-import Tests from '@/components/pages/student/Tests';
 import StudentLayout from '@/components/layuout/studentLayout';
+import Tests from '@/components/pages/student/tests';
 
 export default async function Page({
 	params,
@@ -19,12 +19,11 @@ export default async function Page({
 		testId?: number;
 	};
 }) {
-	const { testId } = await searchParams; // id в url
-	const disciplineId = (await params).disciplineId;
+	const { testId } = await searchParams; // id выбранного теста в url
+	const disciplineId = (await params).disciplineId; // id дисциплины
 	const dataTests = await fetchTests(disciplineId); //список тестов
-	// TODO обработка ошибки
-
 	const testInfo = await fetchLesson(testId || (dataTests as ITest[])[0].id); //информация о тесте
+
 	return (
 		<>
 			{!isError(testInfo) && <StudentLayout title={testInfo.discipline.name}>

@@ -4,8 +4,10 @@ import Link from 'next/link';
 import { Suspense } from 'react';
 
 export default async function TestDescription(props: {data: ILessonDescription}) {
-	const { infoTest, name } = props.data;
-	
+	const { infoTest, name, id, discipline } = props.data;
+	console.log('props.data =>',props.data);
+
+
 	return (
 		<Suspense fallback={<div>Загрузка...</div>}>
 			{isError(props.data) ? (
@@ -22,7 +24,7 @@ export default async function TestDescription(props: {data: ILessonDescription})
 							</p>
 						</div>
 						<div className=' flex justify-end'>
-							<Link href={'#'}>
+							<Link href={`/student/${discipline.id}/testId/${id}`}>
 								<button className='rounded-lg bg-white px-6 py-3 text-[#008AD1] text-[20px] font-semibold hover:bg-slate-200 hover:text-[#007ed9] mt-3'>
 									Пройти тест
 								</button>

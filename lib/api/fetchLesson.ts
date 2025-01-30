@@ -14,7 +14,7 @@ export default async function fetchLesson(id: number): Promise<ILessonDescriptio
 			};
 		try {
 			const response = await fetch(url, options);
-	
+
 			if (response.ok) {
 				return await response.json();
 			} else {
@@ -25,5 +25,5 @@ export default async function fetchLesson(id: number): Promise<ILessonDescriptio
 				status: 500,
 				message: (error as Error).message
 			};
-		}	
+		}
 }

@@ -6,9 +6,9 @@ import { ITest } from "@/interfaces/test";
 
 
 export default async function fetchTests(id: number): Promise<ITest[] | IError> {
-	
+
 	const session = await auth();
-		const url = `${process.env.NEXT_PUBLIC_BACKEND_API_URL}Test/testListDiscipline/${id}`;
+		const url = `${process.env.NEXT_PUBLIC_BACKEND_API_URL}Test/GetListTestDiscipline/${id}`;
 		const options = {
 			method: 'GET',
 			headers: {
