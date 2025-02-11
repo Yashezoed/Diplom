@@ -1,5 +1,5 @@
 import StudentLayout from '@/components/layuout/studentLayout';
-import Test from '@/components/pages/student/question';
+import Test from '@/components/pages/student/test';
 import { ITest } from '@/interfaces/test';
 import fetchLesson from '@/lib/api/fetchLesson';
 import fetchListQuestions from '@/lib/api/fetchListQuestions';
@@ -20,9 +20,10 @@ export default async function page({
 	const testInfo = await fetchLesson(id); //информация о тесте
 	const currentTest = (dataTests as ITest[]).find((test) => test.id == id);
 	const questions = await fetchListQuestions(id); // список вопросов
-	// console.log(dataTests);
-	// console.log(currentTest);
-	// console.log(questions[2].answers);
+
+
+	// console.log(questions);
+
 	return (
 		<StudentLayout
 			title={

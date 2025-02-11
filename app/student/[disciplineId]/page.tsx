@@ -24,12 +24,6 @@ export default async function Page({
 	const dataTests = await fetchTests(disciplineId); //список тестов
 	const testInfo = await fetchLesson(testId || (dataTests as ITest[])[0].id); //информация о тесте
 
-	console.log('disciplineId =>', disciplineId);
-	console.log('testInfo =>', testInfo);
-
-	console.log(dataTests);
-	console.log((dataTests as ITest[])[0].id);
-
 	return (
 		<>
 			{!isError(testInfo) ? (
