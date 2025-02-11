@@ -24,34 +24,35 @@ export default async function Page({
 	const dataTests = await fetchTests(disciplineId); //список тестов
 	const testInfo = await fetchLesson(testId || (dataTests as ITest[])[0].id); //информация о тесте
 
+	console.log('disciplineId =>', disciplineId);
+	console.log('testInfo =>', testInfo);
+
+	console.log(dataTests);
+	console.log((dataTests as ITest[])[0].id);
+
 	return (
 		<>
-			{!isError(testInfo) && <StudentLayout title={testInfo.discipline.name}>
-				<Suspense fallback={<div>Загрузка...</div>}>
-					{isError(dataTests) ? (
-						<div>
-							Status {dataTests.status} error messgae{' '}
-							{dataTests.message}
-						</div>
-					) : (
-						<>
-							<div className='flex justify-between'>
-								<ScrollArea className='h-[90vh] w-[460px] mt-10 '>
-									<Tests data={dataTests} />
-								</ScrollArea>
-								{isError(testInfo) ? (
-									<div>
-										Status {testInfo.status} error messgae{' '}
-										{testInfo.message}
-									</div>
-								) : (
-									<TestDescription data={testInfo} />
-								)}
+			{!isError(testInfo) ? (
+				<StudentLayout title={testInfo.discipline.name}>
+					<Suspense fallback={<div>Загрузка...</div>}>
+						{isError(dataTests) ? (
+							<div>
+								Status {dataTests.status} error messgae{' '}
+								{dataTests.message}
 							</div>
-						</>
-					)}
-				</Suspense>
-			</StudentLayout>}
+						) : (
+							<>
+								<div className='flex justify-between'>
+									<ScrollArea className='h-[90vh] w-[460px] mt-10 '>
+										<Tests data={dataTests} />
+									</ScrollArea>
+									<TestDescription data={testInfo} />
+								</div>
+							</>
+						)}
+					</Suspense>
+				</StudentLayout>
+			) : <div>Status {testInfo.status} error messgae {testInfo.message}</div>}
 		</>
 	);
 }

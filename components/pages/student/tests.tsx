@@ -8,6 +8,7 @@ export default function Tests(props: { data: ITest[] }) {
 	const { replace } = useRouter();
 	const data = props.data;
 
+
 	const clickHandler = (testId: number) => {
 		const params = new URLSearchParams(searchParams);
 		params.set('testId', `${testId}`);

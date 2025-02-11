@@ -9,6 +9,7 @@ import StudentLayout from '@/components/layuout/studentLayout';
 export default async function Discipline() {
 	const data = await fetchDisciplines();
 
+
 	return (
 		<StudentLayout>
 			<Suspense fallback={<div>Загрузка...</div>}>
