@@ -5,5 +5,5 @@ export interface IuserAnswers {
 
 export interface UserResponesTest {
 	questId: number;
-	userRespones: string[];
+	userRespones: [string | null];
 }

@@ -15,14 +15,13 @@ export default async function page({
 		id: number;
 	};
 }) {
+
 	const { disciplineId, id } = await params;
 	const dataTests = await fetchTests(disciplineId); //список тестов
-	const testInfo = await fetchLesson(id); //информация о тесте
+	const testInfo  = await fetchLesson(id); //информация о тесте
 	const currentTest = (dataTests as ITest[]).find((test) => test.id == id);
 	const questions = await fetchListQuestions(id); // список вопросов
 
-
-	// console.log(questions);
 
 	return (
 		<StudentLayout
@@ -38,6 +37,8 @@ export default async function page({
 						Status {questions.status} error messgae{' '}
 						{questions.message}
 					</div>
+				) : !isError(testInfo) ? (
+					<Test data={questions} time={testInfo.time} />
 				) : (
 					<Test data={questions} />
 				)}

@@ -1,7 +1,7 @@
 'use client';
 import { ChevronLeft } from 'lucide-react';
-import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
 export default function LeftSideHeader({
 	title
@@ -9,6 +9,8 @@ export default function LeftSideHeader({
 	title?: string
 }) {
 	const pathname = usePathname();
+	const router = useRouter();
+
 
 	return (
 		<>
@@ -18,9 +20,9 @@ export default function LeftSideHeader({
 				</h1>
 			) : (
 				<>
-					<Link href={'/student'}>
+					<button onClick={() => router.back()}>
 						<ChevronLeft color='white' height={60} width={60} />
-					</Link>
+					</button>
 					<h1 className='text-4xl font-bold text-white ml-5'>
 						{title}
 					</h1>

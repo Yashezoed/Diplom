@@ -5,7 +5,6 @@ import { Suspense } from 'react';
 
 export default async function TestDescription(props: {data: ILessonDescription}) {
 	const { infoTest, name, id, discipline } = props.data;
-	console.log('props.data =>',props.data);
 
 
 	return (

@@ -4,58 +4,21 @@ import ListQuestions from '@/components/ui/listQuestions';
 import Questiontitle from '@/components/ui/questionTitle';
 import Timer from '@/components/ui/timer';
 import { IListQuestions } from '@/interfaces/listQuestions';
+import { IuserAnswers } from '@/interfaces/userAnswers';
+import sendResultTest from '@/lib/api/sendResultTest';
+import { redirect, usePathname } from 'next/navigation';
 import { useEffect, useMemo } from 'react';
-import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
-import { immer } from 'zustand/middleware/immer';
+import isError from '@/lib/api/isError';
+import useQuestionStore from '@/stores/useQuestionStore';
 
-interface IQuestionStore {
-	currentQuestion: number;
-	currentQuestionId: string;
-	selectedAnswers: { [questionIndex: string]: string | null }; // Объект для хранения выбранных ответов
-	nextQuestion: () => void;
-	changeCurrentQuestion: (to: number) => void;
-	selectAnswer: (answerId: number) => void;
-	setCurrentQuestionId: (id: string) => void;
-	//modal
-	isModalOpen: boolean;
-	openModal: () => void;
-	closeModal: () => void;
-}
-
-const useQuestionStore = create<IQuestionStore>()(
-	persist(
-		immer((set, get) => ({
-			currentQuestion: 0,
-			currentQuestionId: '',
-			selectedAnswers: {}, // Изначально нет выбранных ответов
-			nextQuestion: () =>
-				set((state) => {
-					state.currentQuestion += 1;
-				}),
-			changeCurrentQuestion: (to: number) =>
-				set((state) => {
-					state.currentQuestion = to;
-				}),
-			selectAnswer: (answerId: number) =>
-				set((state) => {
-					const questionId = get().currentQuestionId;
-					state.selectedAnswers[questionId] = answerId.toString(); // Сохраняем answerId для текущего вопроса
-				}),
-			setCurrentQuestionId: (id: string) =>
-				set({ currentQuestionId: id }),
-			//modal
-			isModalOpen: false,
-			openModal: () => set({ isModalOpen: true }),
-			closeModal: () => set({ isModalOpen: false })
-		})),
-		{
-			name: 'test-storage'
-		}
-	)
-);
-
-export default function Test({ data }: { data: IListQuestions[] }) {
+export default function Test({
+	data,
+	time
+}: {
+	data: IListQuestions[];
+	time?: number;
+}) {
+	const pathname = usePathname();
 	const currentQuestion = useQuestionStore((state) => state.currentQuestion);
 	const selectedAnswers = useQuestionStore((state) => state.selectedAnswers);
 	const currentQuestionId = useQuestionStore(
@@ -66,10 +29,11 @@ export default function Test({ data }: { data: IListQuestions[] }) {
 		(state) => state.setCurrentQuestionId
 	);
 	const setNextQuestion = useQuestionStore((state) => state.nextQuestion);
-	const changeCurrentQuestion = useQuestionStore(
-		(state) => state.changeCurrentQuestion
-	);
+
 	const selectAnswer = useQuestionStore((state) => state.selectAnswer);
+	const initializeSelectedAnswers = useQuestionStore(
+		(state) => state.initializeSelectedAnswers
+	);
 
 	//modal
 	const isModalOpen = useQuestionStore((state) => state.isModalOpen);
@@ -84,6 +48,36 @@ export default function Test({ data }: { data: IListQuestions[] }) {
 	const questionIds = useMemo(() => {
 		return data.map((question) => question.id.toString());
 	}, [data]);
+
+	useEffect(() => {
+		// Инициализируем selectedAnswers при загрузке компонента
+		initializeSelectedAnswers(questionIds);
+	}, [questionIds, initializeSelectedAnswers]);
+
+	const sendAnswers = async () => {
+		const dataForRequest: IuserAnswers = {
+			testId: Number(pathname.split('/').pop()),
+			userResponesTest: Object.entries(selectedAnswers).map(
+				([questionId, answerId]) => ({
+					questId: Number(questionId),
+					userRespones: [answerId]
+				})
+			)
+		};
+		console.log(dataForRequest);
+		const res = await sendResultTest(dataForRequest);
+		if (!isError(res)) {
+			localStorage.setItem('result-test', JSON.stringify(res));
+		} else {
+			console.log(res);
+		}
+
+		closeModal();
+		redirect(`${pathname}/resultTest`);
+	};
+
+	console.log(data[0].answers);
+
 
 	return (
 		<div className='mx-4 mt-[50px]'>
@@ -103,16 +97,21 @@ export default function Test({ data }: { data: IListQuestions[] }) {
 								text={answer.answerText}
 								index={index + 1}
 								isSelected={isSelected}
-								onSelect={() => selectAnswer(answer.id)}
+								onSelect={() =>
+									selectAnswer(answer.id.toString())
+								}
 							/>
 						);
 					})}
 				</div>
 				<div className='w-[315px] h-[375px] ml-[48px]'>
-					<Timer />
+					{typeof time === 'number' ? (
+						<Timer time={time} onTimerEnd={sendAnswers} />
+					) : (
+						''
+					)}
 					<ListQuestions
 						length={data.length}
-						onChangeQuestion={changeCurrentQuestion}
 						currentQuestion={currentQuestion}
 						selectedAnswers={selectedAnswers}
 						questionIds={questionIds}
@@ -142,17 +141,14 @@ export default function Test({ data }: { data: IListQuestions[] }) {
 							</p>
 							<div className='flex gap-[56px] mt-[40px]'>
 								<button
-									className='w-[300px] h-[50px] items-center border-4 border-[#008AD1] bg-[#008AD1] hover:bg-[#0096e0] hover:border-[#0096e0] text-white text-[24px] font-500 py-2 px-4 rounded-2xl'
-									onClick={closeModal}
+									className='w-[300px] h-[50px] flex items-center justify-center border-4 border-[#008AD1] bg-[#008AD1] hover:bg-[#0096e0] hover:border-[#0096e0] text-white text-[24px] font-500 py-2 px-4 rounded-2xl'
+									onClick={sendAnswers}
 								>
 									<span>Да</span>
 								</button>
 								<button
-									className='w-[300px] h-[51px] bg-white hover:bg-slate-100 text-[#008AD1] text-[24px] font-500 border-4 border-[#008AD1] py-2 px-4 rounded-2xl'
-									onClick={() => {
-										// Действия по завершению теста
-										closeModal();
-									}}
+									className='w-[300px] h-[51px] flex items-center justify-center bg-white hover:bg-slate-100 text-[#008AD1] text-[24px] font-500 border-4 border-[#008AD1] py-2 px-4 rounded-2xl'
+									onClick={closeModal}
 								>
 									Нет
 								</button>

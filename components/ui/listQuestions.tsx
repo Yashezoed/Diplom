@@ -1,18 +1,23 @@
+'use client'
+import useQuestionStore from '@/stores/useQuestionStore';
 import { Check } from 'lucide-react';
 
 export default function ListQuestions({
 	length,
-	onChangeQuestion,
 	currentQuestion,
 	selectedAnswers,
 	questionIds
 }: {
 	length: number;
-	onChangeQuestion: (to: number) => void;
 	currentQuestion: number;
 	selectedAnswers: { [questionIndex: string]: string | null };
 	questionIds: string[];
 }) {
+
+
+	const changeCurrentQuestion = useQuestionStore(
+		(state) => state.changeCurrentQuestion
+	);
 	return (
 		<div className='bg-white/20 rounded-xl mt-[16px] w-[280px]'>
 			<div className='p-[20px] flex flex-wrap'>
@@ -29,11 +34,11 @@ export default function ListQuestions({
 							<button
 								key={i}
 								onClick={() => {
-									onChangeQuestion(i);
+									changeCurrentQuestion(i);
 								}}
 								className={`text-[#008AD1]/50 bg-white/60  m-[5px] size-[30px] rounded-sm flex justify-center items-center
 									${currentQuestion === i ? 'outline outline-[3px] outline-white' : ''}
-									${isAnswered ? 'bg-white/100 text-white' : ''}`}
+									${isAnswered ? '!bg-white/100 text-white' : ''}`}
 							>
 								{isAnswered ? (
 									<Check
