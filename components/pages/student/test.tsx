@@ -30,11 +30,9 @@ export default function Test({
 	);
 	const setNextQuestion = useQuestionStore((state) => state.nextQuestion);
 
-	const selectAnswer = useQuestionStore((state) => state.selectAnswer);
 	const initializeSelectedAnswers = useQuestionStore(
 		(state) => state.initializeSelectedAnswers
 	);
-
 	//modal
 	const isModalOpen = useQuestionStore((state) => state.isModalOpen);
 	const openModal = useQuestionStore((state) => state.openModal);
@@ -50,9 +48,17 @@ export default function Test({
 	}, [data]);
 
 	useEffect(() => {
-		// Инициализируем selectedAnswers при загрузке компонента
-		initializeSelectedAnswers(questionIds);
-	}, [questionIds, initializeSelectedAnswers]);
+		const storage = localStorage.getItem('test-storage');
+
+		if (storage !== null) {
+			const selectedAnswers = JSON.parse(storage).state.selectedAnswers;
+			console.log(selectedAnswers);
+
+			if (Object.keys(selectedAnswers).length === 0) {
+				initializeSelectedAnswers(questionIds);
+			}
+		}
+	}, [initializeSelectedAnswers, questionIds, selectedAnswers]);
 
 	const sendAnswers = async () => {
 		const dataForRequest: IuserAnswers = {
@@ -76,8 +82,7 @@ export default function Test({
 		redirect(`${pathname}/resultTest`);
 	};
 
-	console.log(data[0].answers);
-
+	// console.log(data[0].answers);
 
 	return (
 		<div className='mx-4 mt-[50px]'>
@@ -97,24 +102,21 @@ export default function Test({
 								text={answer.answerText}
 								index={index + 1}
 								isSelected={isSelected}
-								onSelect={() =>
-									selectAnswer(answer.id.toString())
-								}
+								answerId={answer.id.toString()}
 							/>
 						);
 					})}
 				</div>
 				<div className='w-[315px] h-[375px] ml-[48px]'>
 					{typeof time === 'number' ? (
-						<Timer time={time} onTimerEnd={sendAnswers} />
+						<Timer time={time} action={sendAnswers} />
 					) : (
 						''
 					)}
 					<ListQuestions
-						length={data.length}
 						currentQuestion={currentQuestion}
 						selectedAnswers={selectedAnswers}
-						questionIds={questionIds}
+						data={data}
 					/>
 				</div>
 			</div>
