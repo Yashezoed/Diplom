@@ -136,6 +136,7 @@ export default function Test({
 					Завершить тест
 				</button>
 				{isModalOpen && (
+				// TODO использовать модальное окно из shadcnui
 					<div className='fixed top-0 left-0 w-full h-full bg-black/50 flex justify-center items-center'>
 						<div className='bg-white p-4 rounded-3xl w-[800px] h-[300px] flex flex-col items-center'>
 							<p className='mt-[75px] text-[48px] text-[#008AD1]'>
