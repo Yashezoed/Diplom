@@ -2,10 +2,11 @@
 
 import { auth } from "@/auth";
 import { IError } from "@/interfaces/common";
+import { IResultTest } from "@/interfaces/IResultTest";
 import { IuserAnswers } from "@/interfaces/userAnswers";
 
 
-export default async function sendResultTest(body: IuserAnswers): Promise<IuserAnswers | IError> {
+export default async function sendResultTest(body: IuserAnswers): Promise<IResultTest | IError> {
 	const session = await auth();
 
 	const url = `${process.env.NEXT_PUBLIC_BACKEND_API_URL}ResultTest/studentPassedTest`;
