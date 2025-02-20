@@ -6,10 +6,10 @@ import Timer from '@/components/ui/timer';
 import { IListQuestions } from '@/interfaces/listQuestions';
 import { IuserAnswers } from '@/interfaces/userAnswers';
 import sendResultTest from '@/lib/api/sendResultTest';
-import { redirect, usePathname } from 'next/navigation';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useMemo } from 'react';
-import isError from '@/lib/api/isError';
 import useQuestionStore from '@/stores/useQuestionStore';
+import isError from '@/lib/api/isError';
 
 export default function Test({
 	data,
@@ -19,6 +19,9 @@ export default function Test({
 	time?: number;
 }) {
 	const pathname = usePathname();
+	const searchParams = useSearchParams();
+	const { replace } = useRouter();
+
 	const currentQuestion = useQuestionStore((state) => state.currentQuestion);
 	const selectedAnswers = useQuestionStore((state) => state.selectedAnswers);
 	const currentQuestionId = useQuestionStore(
@@ -73,16 +76,15 @@ export default function Test({
 		console.log(dataForRequest);
 		const res = await sendResultTest(dataForRequest);
 		if (!isError(res)) {
-			localStorage.setItem('result-test', JSON.stringify(res));
-		} else {
-			console.log(res);
+			const params = new URLSearchParams(searchParams);
+			params.set('resultId', `${res.idAttempts}`);
+			params.set('result', `${res.result}`);
+			params.set('evaluationName', `${res.evaluationName}`);
+			replace(`${pathname}/resultTest?${params.toString()}`);
+			closeModal();
 		}
 
-		closeModal();
-		redirect(`${pathname}/resultTest`);
 	};
-
-	// console.log(data[0].answers);
 
 	return (
 		<div className='mx-4 mt-[50px]'>
@@ -136,7 +138,7 @@ export default function Test({
 					Завершить тест
 				</button>
 				{isModalOpen && (
-				// TODO использовать модальное окно из shadcnui
+					// TODO использовать модальное окно из shadcnui
 					<div className='fixed top-0 left-0 w-full h-full bg-black/50 flex justify-center items-center'>
 						<div className='bg-white p-4 rounded-3xl w-[800px] h-[300px] flex flex-col items-center'>
 							<p className='mt-[75px] text-[48px] text-[#008AD1]'>

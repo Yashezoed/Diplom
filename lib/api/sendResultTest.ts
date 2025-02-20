@@ -2,7 +2,7 @@
 
 import { auth } from "@/auth";
 import { IError } from "@/interfaces/common";
-import { IResultTest } from "@/interfaces/IResultTest";
+import { IResultTest } from "@/interfaces/ResultTest";
 import { IuserAnswers } from "@/interfaces/userAnswers";
 
 

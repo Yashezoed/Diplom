@@ -17,6 +17,7 @@ export default async function page({
 }) {
 
 	const { disciplineId, id } = await params;
+
 	const dataTests = await fetchTests(disciplineId); //список тестов
 	const testInfo  = await fetchLesson(id); //информация о тесте
 	const currentTest = (dataTests as ITest[]).find((test) => test.id == id);
