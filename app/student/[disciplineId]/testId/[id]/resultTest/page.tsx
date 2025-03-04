@@ -1,5 +1,5 @@
 import ResultTest from '@/components/pages/student/resultTest';
-import fetchResultTests from '@/lib/api/fetchResultTest';
+import { fetchResultTests } from '@/lib/api/test';
 
 export default async function Page({
 	searchParams

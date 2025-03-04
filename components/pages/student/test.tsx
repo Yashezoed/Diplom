@@ -5,11 +5,11 @@ import Questiontitle from '@/components/ui/questionTitle';
 import Timer from '@/components/ui/timer';
 import { IListQuestions } from '@/interfaces/listQuestions';
 import { IuserAnswers } from '@/interfaces/userAnswers';
-import sendResultTest from '@/lib/api/sendResultTest';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useMemo } from 'react';
 import useQuestionStore from '@/stores/useQuestionStore';
 import isError from '@/lib/api/isError';
+import { sendResultTest } from '@/lib/api/test';
 
 export default function Test({
 	data,
@@ -55,8 +55,6 @@ export default function Test({
 
 		if (storage !== null) {
 			const selectedAnswers = JSON.parse(storage).state.selectedAnswers;
-			console.log(selectedAnswers);
-
 			if (Object.keys(selectedAnswers).length === 0) {
 				initializeSelectedAnswers(questionIds);
 			}
@@ -73,8 +71,10 @@ export default function Test({
 				})
 			)
 		};
-		console.log(dataForRequest);
+		console.log('dataForRequest =>',dataForRequest);
 		const res = await sendResultTest(dataForRequest);
+		console.log('res',res);
+
 		if (!isError(res)) {
 			const params = new URLSearchParams(searchParams);
 			params.set('resultId', `${res.idAttempts}`);
