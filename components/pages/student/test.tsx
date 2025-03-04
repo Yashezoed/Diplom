@@ -74,7 +74,7 @@ export default function Test({
 		console.log('dataForRequest =>',dataForRequest);
 		const res = await sendResultTest(dataForRequest);
 		console.log('res',res);
-
+		// TODO из-за смены ответа sendResultTest надо поменять тут
 		if (!isError(res)) {
 			const params = new URLSearchParams(searchParams);
 			params.set('resultId', `${res.idAttempts}`);
