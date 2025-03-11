@@ -25,6 +25,7 @@ export default async function fetchListQuestions(id: number): Promise<IListQuest
 			return {
 				status: 500,
 				message: (error as Error).message
+
 			};
 		}
 }

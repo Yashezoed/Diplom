@@ -33,13 +33,6 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 					parseCredentials.data.password
 				);
 				console.log(response)
-				// const TOKEN = response;
-				// const DECODED_TOKEN = JSON.parse(atob(TOKEN.split('.')[1]));
-				// const user_id = DECODED_TOKEN.id;
-				// const role =
-				// 	DECODED_TOKEN[
-				// 		'http://schemas.microsoft.com/ws/2008/06/identity/claims/role'
-				// 	];
 
 				const user: User = {
 					user: {

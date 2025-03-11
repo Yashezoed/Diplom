@@ -1,8 +1,8 @@
 'use server';
 
 import { auth } from "@/auth";
+import { IattemptStarted, IcompletedAttempt, InoAttemptStarted } from "@/interfaces/checkingAttempt";
 import { IError } from "@/interfaces/common";
-import { IResultTest } from "@/interfaces/ResultTest";
 import { IresultTestData } from '@/interfaces/resultTestData';
 import { IuserAnswers } from "@/interfaces/userAnswers";
 
@@ -71,9 +71,38 @@ export async function fetchResultTests(
 }
 
 //TODO дописать метод
-export const CheckingAttempt = async (id: number): Promise<IResultTest | IError> => {
+// Проверить наличие начатой попытки
+export const checkingAttempt = async (id: number): Promise<InoAttemptStarted | IattemptStarted | IcompletedAttempt | IError> => {
 	const session = await auth();
 	const url = `${process.env.NEXT_PUBLIC_BACKEND_API_URL}ResultTest/checkingAttempt/${id}`;
+	const options = {
+		method: 'GET',
+		headers: {
+			'Content-Type': 'application/json',
+			Authorization: `Bearer ${session?.token}`
+		}
+	};
+	try {
+		const response = await fetch(url, options);
+		console.log('test response =>',  response);
+
+		if (response.ok) {
+			return await response.json();
+		} else {
+			throw new Error(`${response.status} ${response.statusText}`);
+		}
+	} catch (error: unknown) {
+		return {
+			status: 500,
+			message: (error as Error).message
+		};
+	}
+};
+
+
+export const createAttempt = async (id: number): Promise<number | IError> => {
+	const session = await auth();
+	const url = `${process.env.NEXT_PUBLIC_BACKEND_API_URL}ResultTest/createAttempt/${id}`;
 	const options = {
 		method: 'GET',
 		headers: {
@@ -95,5 +124,4 @@ export const CheckingAttempt = async (id: number): Promise<IResultTest | IError>
 			message: (error as Error).message
 		};
 	}
-};
-
+}

@@ -5,6 +5,7 @@ import fetchLesson from '@/lib/api/fetchLesson';
 import fetchListQuestions from '@/lib/api/fetchListQuestions';
 import fetchTests from '@/lib/api/fetchTests';
 import isError from '@/lib/api/isError';
+import { checkingAttempt, createAttempt } from '@/lib/api/test';
 import { Suspense } from 'react';
 
 export default async function page({
@@ -15,17 +16,36 @@ export default async function page({
 		id: number;
 	};
 }) {
-
 	const { disciplineId, id } = await params;
 
 	const dataTests = await fetchTests(disciplineId); //список тестов
-	const testInfo  = await fetchLesson(id); //информация о тесте
+	const testInfo = await fetchLesson(id); //информация о тесте
 	const currentTest = (dataTests as ITest[]).find((test) => test.id == id);
 	const questions = await fetchListQuestions(id); // список вопросов
 
+	console.log("id test =>", id);
 
-	return (
-		<StudentLayout
+	const attempt = await checkingAttempt(id);
+
+	// console.log("checkingAttempt =>",checkingAttempt);
+
+	if ('noAttemptStarted' in attempt) {
+		console.log('нет начатой попытки', attempt);
+		const atttemptId = await createAttempt(id);
+		if (!isError(atttemptId))
+			console.log('айди начатой новой попытки', atttemptId);
+	}
+	if ('userResponesTest' in attempt) {
+		console.log('IattemptStarted',attempt);
+
+	}
+
+
+
+
+		return (
+			<>
+				{/* <StudentLayout
 			title={
 				!isError(testInfo) && currentTest
 					? `${testInfo.discipline.name} | ${currentTest.name}`
@@ -44,6 +64,7 @@ export default async function page({
 					<Test data={questions} />
 				)}
 			</Suspense>
-		</StudentLayout>
-	);
+		</StudentLayout> */}
+			</>
+		);
 }
