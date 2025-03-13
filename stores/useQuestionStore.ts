@@ -5,7 +5,7 @@ import { immer } from 'zustand/middleware/immer';
 interface IQuestionStore {
 	currentQuestion: number;
 	currentQuestionId: string;
-	selectedAnswers: { [questionIndex: string]: string | null }; // Объект для хранения выбранных ответов
+	selectedAnswers: { [questionIndex: string]: string | null };
 	nextQuestion: () => void;
 	changeCurrentQuestion: (to: number) => void;
 	selectAnswer: (answerId: string) => void;
@@ -14,7 +14,10 @@ interface IQuestionStore {
 	isModalOpen: boolean;
 	openModal: () => void;
 	closeModal: () => void;
-	initializeSelectedAnswers: (questionIds: string[]) => void; // Добавляем функцию для инициализации
+	initializeSelectedAnswers: (questionIds: string[]) => void;
+	updateSelectedAnswers: (newAnswers: {
+		[key: string]: string | null;
+	}) => void;
 }
 
 const useQuestionStore = create<IQuestionStore>()(
@@ -22,9 +25,8 @@ const useQuestionStore = create<IQuestionStore>()(
 		immer((set, get) => ({
 			currentQuestion: 0,
 			currentQuestionId: '',
-			selectedAnswers: {}, // Изначально нет выбранных ответов
+			selectedAnswers: {},
 			nextQuestion: () => {
-
 				set((state) => {
 					state.currentQuestion += 1;
 				});
@@ -36,7 +38,7 @@ const useQuestionStore = create<IQuestionStore>()(
 			selectAnswer: (answerId: string) =>
 				set((state) => {
 					const questionId = get().currentQuestionId;
-					state.selectedAnswers[questionId] = answerId; // Сохраняем answerId для текущего вопроса
+					state.selectedAnswers[questionId] = answerId;
 				}),
 			setCurrentQuestionId: (id: string) =>
 				set({ currentQuestionId: id }),
@@ -46,7 +48,6 @@ const useQuestionStore = create<IQuestionStore>()(
 			closeModal: () => set({ isModalOpen: false }),
 			initializeSelectedAnswers: (questionIds: string[]) => {
 				set((state) => {
-					// Создаем объект, где ключи - это questionIds, а значения - null
 					const initialAnswers: {
 						[questionIndex: string]: string | null;
 					} = {};
@@ -55,7 +56,14 @@ const useQuestionStore = create<IQuestionStore>()(
 					});
 					state.selectedAnswers = initialAnswers;
 				});
-			}
+			},
+			//один бог знает как их использовать
+			updateSelectedAnswers: (newAnswers: {
+				[key: string]: string | null;
+			}) =>
+				set((state) => {
+					state.selectedAnswers = newAnswers;
+				})
 		})),
 		{
 			name: 'test-storage'

@@ -1,4 +1,4 @@
-'use client';
+'use client'
 import Answers from '@/components/ui/answers';
 import ListQuestions from '@/components/ui/listQuestions';
 import Questiontitle from '@/components/ui/questionTitle';
@@ -6,26 +6,28 @@ import Timer from '@/components/ui/timer';
 import { IListQuestions } from '@/interfaces/listQuestions';
 import { IuserAnswers } from '@/interfaces/userAnswers';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useMemo } from 'react';
 import useQuestionStore from '@/stores/useQuestionStore';
 import isError from '@/lib/api/isError';
 import { sendResultTest, updateTestAnswers } from '@/lib/api/test';
+import { IattemptStarted } from '@/interfaces/checkingAttempt';
+import { useEffect, useMemo } from 'react';
 
 export default function Test({
 	data,
 	minutes,
 	seconds,
-	attemptId
+	attemptId,
+	attempt
 }: {
 	data: IListQuestions[];
 	minutes?: number;
 	seconds?: number;
-	attemptId: number
+	attemptId: number;
+	attempt?: IattemptStarted;
 }) {
 	const pathname = usePathname();
 	const searchParams = useSearchParams();
 	const { replace } = useRouter();
-
 
 	const currentQuestion = useQuestionStore((state) => state.currentQuestion);
 	const selectedAnswers = useQuestionStore((state) => state.selectedAnswers);
@@ -41,6 +43,9 @@ export default function Test({
 	const initializeSelectedAnswers = useQuestionStore(
 		(state) => state.initializeSelectedAnswers
 	);
+	const updateSelectedAnswers = useQuestionStore(
+		(state) => state.updateSelectedAnswers
+	);
 	//modal
 	const isModalOpen = useQuestionStore((state) => state.isModalOpen);
 	const openModal = useQuestionStore((state) => state.openModal);
@@ -50,7 +55,6 @@ export default function Test({
 		setCurrentQuestionId(data[currentQuestion].id.toString());
 	}, [currentQuestion, data, setCurrentQuestionId]);
 
-	// Создаем массив questionIds с использованием useMemo, чтобы он не пересоздавался при каждом рендере
 	const questionIds = useMemo(() => {
 		return data.map((question) => question.id.toString());
 	}, [data]);
@@ -59,14 +63,34 @@ export default function Test({
 		const storage = localStorage.getItem('test-storage');
 
 		if (storage !== null) {
-			const selectedAnswers = JSON.parse(storage).state.selectedAnswers;
-			if (Object.keys(selectedAnswers).length === 0) {
+			const storedState = JSON.parse(storage).state;
+			const storedSelectedAnswers = storedState.selectedAnswers;
+
+			if (attempt && attempt.userResponesTest.length > 0) {
+				const newSelectedAnswers: {
+					[questionIndex: string]: string | null;
+				} = {};
+
+				attempt.userResponesTest.forEach((item) => {
+					newSelectedAnswers[item.questId.toString()] =
+						item.userRespones[0];
+				});
+
+				updateSelectedAnswers(newSelectedAnswers);
+			} else if (Object.keys(storedSelectedAnswers).length === 0) {
 				initializeSelectedAnswers(questionIds);
 			}
+		} else {
+			initializeSelectedAnswers(questionIds);
 		}
-	}, [initializeSelectedAnswers, questionIds, selectedAnswers]);
+	}, [
+		attempt,
+		initializeSelectedAnswers,
+		questionIds,
+		updateSelectedAnswers
+	]);
 
-	useEffect (() => {
+	useEffect(() => {
 		const updateAnswers = async () => {
 			const dataForRequest: IuserAnswers = {
 				testId: Number(pathname.split('/').pop()),
@@ -83,13 +107,10 @@ export default function Test({
 
 			await updateTestAnswers(dataForRequest);
 		};
-		updateAnswers()
-
-	}, [attemptId, currentQuestion, pathname, selectedAnswers])
-
+		updateAnswers();
+	}, [attemptId, currentQuestion, pathname, selectedAnswers]);
 
 	const sendAnswers = async () => {
-
 		const dataForRequest: IuserAnswers = {
 			testId: Number(pathname.split('/').pop()),
 			userResponesTest: Object.entries(selectedAnswers).map(
@@ -101,14 +122,14 @@ export default function Test({
 			idResult: attemptId
 		};
 		const res = await sendResultTest(dataForRequest);
-		console.log("res=======>",res);
+		console.log('res=======>', res);
 
 		if (!isError(res)) {
 			const params = new URLSearchParams(searchParams);
 			params.set('idUserRespones', `${res.idUserRespones}`);
 			params.set('result', `${res.result}`);
 			params.set('evaluationName', `${res.evaluationName}`);
-			params.set('attempts', `${res.attempts}`)
+			params.set('attempts', `${res.attempts}`);
 			replace(`${pathname}/resultTest?${params.toString()}`);
 			closeModal();
 		}

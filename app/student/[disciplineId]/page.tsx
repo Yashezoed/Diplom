@@ -19,6 +19,7 @@ export default async function Page({
 		testId?: number;
 	};
 }) {
+
 	const { testId } = await searchParams; // id выбранного теста в url
 	const disciplineId = (await params).disciplineId; // id дисциплины
 	const dataTests = await fetchTests(disciplineId); //список тестов

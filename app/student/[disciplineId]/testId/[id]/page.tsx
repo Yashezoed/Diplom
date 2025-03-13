@@ -31,11 +31,14 @@ export default async function page({
 	const attempt = await checkingAttempt(id);
 
 	if (isIcompletedAttempt(attempt)) {
+		console.log("попытка была завершена attempt", attempt);
+
 		// Попытка была завершена
 		// console.log('Попытка завершена');
 		//TODO добавить модальное окно что попытка уже завершена и пользователь может начать новую попытку или посмотреть результаты пройденной попытки
 	} else if (isIattemptStarted(attempt)) {
 		// Попытка уже была начата и еще не завершена
+		//TODO добавить модальное окно что попытка уже завершена и пользователь может начать новую попытку или посмотреть результаты пройденной попытки
 		console.log('Данные ответов на сервере =>', attempt.userResponesTest);
 
 		return (
@@ -58,9 +61,14 @@ export default async function page({
 							data={questions}
 							minutes={attempt.minutes}
 							seconds={attempt.second}
+							attempt={attempt}
 						/>
 					) : (
-						<Test attemptId={attempt.idResult} data={questions} />
+						<Test
+							attemptId={attempt.idResult}
+							data={questions}
+							attempt={attempt}
+						/>
 					)}
 				</Suspense>
 			</StudentLayout>

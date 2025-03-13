@@ -3,6 +3,10 @@ import { ITest } from '@/interfaces/test';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 export default function Tests(props: { data: ITest[] }) {
+	if (typeof window !== 'undefined') {
+		localStorage.removeItem('test-storage');
+	}
+
 	const searchParams = useSearchParams();
 	const pathname = usePathname();
 	const { replace } = useRouter();
