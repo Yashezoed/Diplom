@@ -5,14 +5,23 @@ export default async function Page({
 	searchParams
 }: {
 	searchParams: {
-		resultId: number;
+		idUserRespones: number;
 		result: number;
 		evaluationName: string;
+		attempts: number;
 	};
 }) {
-	const { evaluationName, result, resultId } = await searchParams;
-	const data = await fetchResultTests(resultId);
-	console.log("DATA in result page",data);
+	const { evaluationName, result, idUserRespones, attempts } =
+		await searchParams;
+
+	console.log(idUserRespones);
+	console.log(result);
+	console.log(evaluationName);
+	console.log(attempts);
+
+
+	const data = await fetchResultTests(idUserRespones);
+	console.log(data);
 
 	return <ResultTest />;
 }

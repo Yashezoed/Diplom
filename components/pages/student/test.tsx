@@ -79,12 +79,13 @@ export default function Test({
 				idResult: attemptId
 			};
 
+			console.log(dataForRequest);
 
 			await updateTestAnswers(dataForRequest);
 		};
 		updateAnswers()
 
-	}, [currentQuestion])
+	}, [attemptId, currentQuestion, pathname, selectedAnswers])
 
 
 	const sendAnswers = async () => {
