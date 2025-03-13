@@ -11,13 +11,8 @@ export default async function Page({
 	};
 }) {
 	const { evaluationName, result, resultId } = await searchParams;
-
-	console.log(evaluationName);
-	console.log(result);
-	console.log(resultId);
-
 	const data = await fetchResultTests(resultId);
-	console.log(data);
+	console.log("DATA in result page",data);
 
 	return <ResultTest />;
 }

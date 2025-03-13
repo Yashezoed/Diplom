@@ -16,6 +16,7 @@ export default function ListQuestions({
 		(state) => state.changeCurrentQuestion
 	);
 
+
 	return (
 		<div className='bg-white/20 rounded-xl mt-[16px] w-[280px]'>
 			<div className='p-[20px] flex flex-wrap'>

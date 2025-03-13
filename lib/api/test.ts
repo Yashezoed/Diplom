@@ -3,13 +3,15 @@
 import { auth } from "@/auth";
 import { IattemptStarted, IcompletedAttempt, InoAttemptStarted } from "@/interfaces/checkingAttempt";
 import { IError } from "@/interfaces/common";
+import { IResultTest } from "@/interfaces/ResultTest";
 import { IresultTestData } from '@/interfaces/resultTestData';
 import { IuserAnswers } from "@/interfaces/userAnswers";
 
-// Отправить результат теста
+// Отправить итоговый результат теста
 
-// TODO понять почему не работает метод
-export const sendResultTest = async (body: IuserAnswers): Promise<null | IError> => {
+export const sendResultTest = async (
+	body: IuserAnswers
+): Promise<IResultTest | IError> => {
 	const session = await auth();
 
 	const url = `${process.env.NEXT_PUBLIC_BACKEND_API_URL}ResultTest/studentPassedTest`;
@@ -23,11 +25,8 @@ export const sendResultTest = async (body: IuserAnswers): Promise<null | IError>
 	};
 	try {
 		const response = await fetch(url, options);
-		console.log('body =>', JSON.stringify(body));
-
-		console.log('response =>',await response);
-
 		if (response.ok) {
+			console.log("!OK!");
 			return await response.json();
 		} else {
 			throw new Error(`${response.status} ${response.statusText}`);
@@ -39,6 +38,41 @@ export const sendResultTest = async (body: IuserAnswers): Promise<null | IError>
 		};
 	}
 };
+
+// Отправить промежуточный результат теста
+
+export const updateTestAnswers = async (
+	body: IuserAnswers
+): Promise<{message: string} | IError> => {
+	const session = await auth();
+	body.studentId = session?.user.user.id;
+
+	const url = `${process.env.NEXT_PUBLIC_BACKEND_API_URL}ResultTest/Attempt/update`;
+	const options = {
+		method: 'PATCH',
+		headers: {
+			'Content-Type': 'application/json',
+			Authorization: `Bearer ${session?.token}`
+		},
+		body: JSON.stringify(body)
+	};
+
+	try {
+		const response = await fetch(url, options);
+		if (response.ok) {
+
+			return await response.json();
+		} else {
+			throw new Error(`${response.status} ${response.statusText}`);
+		}
+	} catch (error: unknown) {
+		return {
+			status: 500,
+			message: (error as Error).message
+		};
+	}
+};
+
 
 // Получить результат теста
 
@@ -70,7 +104,6 @@ export async function fetchResultTests(
 	}
 }
 
-//TODO дописать метод
 // Проверить наличие начатой попытки
 export const checkingAttempt = async (id: number): Promise<InoAttemptStarted | IattemptStarted | IcompletedAttempt | IError> => {
 	const session = await auth();
@@ -84,7 +117,6 @@ export const checkingAttempt = async (id: number): Promise<InoAttemptStarted | I
 	};
 	try {
 		const response = await fetch(url, options);
-		console.log('test response =>',  response);
 
 		if (response.ok) {
 			return await response.json();
@@ -100,7 +132,7 @@ export const checkingAttempt = async (id: number): Promise<InoAttemptStarted | I
 };
 
 
-export const createAttempt = async (id: number): Promise<number | IError> => {
+export const createAttempt = async (id: number): Promise<{id: number} | IError> => {
 	const session = await auth();
 	const url = `${process.env.NEXT_PUBLIC_BACKEND_API_URL}ResultTest/createAttempt/${id}`;
 	const options = {

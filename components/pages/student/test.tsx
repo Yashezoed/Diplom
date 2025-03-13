@@ -9,18 +9,23 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useMemo } from 'react';
 import useQuestionStore from '@/stores/useQuestionStore';
 import isError from '@/lib/api/isError';
-import { sendResultTest } from '@/lib/api/test';
+import { sendResultTest, updateTestAnswers } from '@/lib/api/test';
 
 export default function Test({
 	data,
-	time
+	minutes,
+	seconds,
+	attemptId
 }: {
 	data: IListQuestions[];
-	time?: number;
+	minutes?: number;
+	seconds?: number;
+	attemptId: number
 }) {
 	const pathname = usePathname();
 	const searchParams = useSearchParams();
 	const { replace } = useRouter();
+
 
 	const currentQuestion = useQuestionStore((state) => state.currentQuestion);
 	const selectedAnswers = useQuestionStore((state) => state.selectedAnswers);
@@ -61,7 +66,29 @@ export default function Test({
 		}
 	}, [initializeSelectedAnswers, questionIds, selectedAnswers]);
 
+	useEffect (() => {
+		const updateAnswers = async () => {
+			const dataForRequest: IuserAnswers = {
+				testId: Number(pathname.split('/').pop()),
+				userResponesTest: Object.entries(selectedAnswers).map(
+					([questionId, answerId]) => ({
+						questId: Number(questionId),
+						userRespones: [answerId]
+					})
+				),
+				idResult: attemptId
+			};
+
+
+			await updateTestAnswers(dataForRequest);
+		};
+		updateAnswers()
+
+	}, [currentQuestion])
+
+
 	const sendAnswers = async () => {
+
 		const dataForRequest: IuserAnswers = {
 			testId: Number(pathname.split('/').pop()),
 			userResponesTest: Object.entries(selectedAnswers).map(
@@ -69,21 +96,21 @@ export default function Test({
 					questId: Number(questionId),
 					userRespones: [answerId]
 				})
-			)
+			),
+			idResult: attemptId
 		};
-		console.log('dataForRequest =>',dataForRequest);
 		const res = await sendResultTest(dataForRequest);
-		console.log('res',res);
-		// TODO из-за смены ответа sendResultTest надо поменять тут
+		console.log("res=======>",res);
+
 		if (!isError(res)) {
 			const params = new URLSearchParams(searchParams);
-			params.set('resultId', `${res.idAttempts}`);
+			params.set('idUserRespones', `${res.idUserRespones}`);
 			params.set('result', `${res.result}`);
 			params.set('evaluationName', `${res.evaluationName}`);
+			params.set('attempts', `${res.attempts}`)
 			replace(`${pathname}/resultTest?${params.toString()}`);
 			closeModal();
 		}
-
 	};
 
 	return (
@@ -110,8 +137,12 @@ export default function Test({
 					})}
 				</div>
 				<div className='w-[315px] h-[375px] ml-[48px]'>
-					{typeof time === 'number' ? (
-						<Timer time={time} action={sendAnswers} />
+					{typeof minutes === 'number' ? (
+						<Timer
+							minutes={minutes}
+							seconds={seconds}
+							action={sendAnswers}
+						/>
 					) : (
 						''
 					)}

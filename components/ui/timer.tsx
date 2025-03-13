@@ -3,21 +3,23 @@ import { useEffect, useState } from 'react';
 import { TimerIcon } from 'lucide-react';
 
 interface TimerProps {
-	time: number;
+	seconds?: number;
+	minutes: number;
 	action: () => void;
 }
 
-export default function Timer({ time, action }: TimerProps) {
-	const initialTime = time * 60; // Преобразуем минуты в секунды
+export default function Timer({minutes, seconds, action }: TimerProps) {
+
+	const initialTime = seconds ? minutes * 60 + seconds : minutes * 60;
+
+
 	const [remainingTime, setRemainingTime] = useState<number | null>(null);
 
 	useEffect(() => {
 		// Проверяем, выполняется ли код на клиенте
 		if (typeof window !== 'undefined') {
 			const savedTime = localStorage.getItem('remainingTime');
-			setRemainingTime(
-				savedTime ? parseInt(savedTime, 10) : initialTime
-			);
+			setRemainingTime(savedTime ? parseInt(savedTime, 10) : initialTime);
 		}
 	}, [initialTime]);
 
@@ -29,9 +31,6 @@ export default function Timer({ time, action }: TimerProps) {
 			action();
 			return;
 		}
-
-		// Сохраняем оставшееся время в localStorage
-		localStorage.setItem('remainingTime', remainingTime.toString());
 
 		const interval = setInterval(() => {
 			setRemainingTime((prev) => (prev !== null ? prev - 1 : 0));

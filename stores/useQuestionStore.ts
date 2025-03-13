@@ -23,10 +23,12 @@ const useQuestionStore = create<IQuestionStore>()(
 			currentQuestion: 0,
 			currentQuestionId: '',
 			selectedAnswers: {}, // Изначально нет выбранных ответов
-			nextQuestion: () =>
+			nextQuestion: () => {
+
 				set((state) => {
 					state.currentQuestion += 1;
-				}),
+				});
+			},
 			changeCurrentQuestion: (to: number) =>
 				set((state) => {
 					state.currentQuestion = to;

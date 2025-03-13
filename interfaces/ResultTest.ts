@@ -1,6 +1,6 @@
 export interface IResultTest {
-	attempts: number;
-	evaluationName: string;
-	idAttempts: number;
+	idUserRespones: number;
 	result: number
+	evaluationName: string;
+	attempts: number;
 }
