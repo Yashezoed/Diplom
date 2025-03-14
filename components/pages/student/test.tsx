@@ -11,6 +11,7 @@ import isError from '@/lib/api/isError';
 import { sendResultTest, updateTestAnswers } from '@/lib/api/test';
 import { IattemptStarted } from '@/interfaces/checkingAttempt';
 import { useEffect, useMemo } from 'react';
+// import { AlertDialog } from '@radix-ui/react-alert-dialog';
 
 export default function Test({
 	data,
@@ -59,6 +60,8 @@ export default function Test({
 		return data.map((question) => question.id.toString());
 	}, [data]);
 
+	const clearStore = useQuestionStore((state) => state.clearStore);
+
 	useEffect(() => {
 		const storage = localStorage.getItem('test-storage');
 
@@ -80,15 +83,8 @@ export default function Test({
 			} else if (Object.keys(storedSelectedAnswers).length === 0) {
 				initializeSelectedAnswers(questionIds);
 			}
-		} else {
-			initializeSelectedAnswers(questionIds);
 		}
-	}, [
-		attempt,
-		initializeSelectedAnswers,
-		questionIds,
-		updateSelectedAnswers
-	]);
+	}, [attempt, initializeSelectedAnswers, questionIds, updateSelectedAnswers]);
 
 	useEffect(() => {
 		const updateAnswers = async () => {
@@ -104,11 +100,10 @@ export default function Test({
 			};
 
 			console.log(dataForRequest);
-
 			await updateTestAnswers(dataForRequest);
 		};
 		updateAnswers();
-	}, [attemptId, currentQuestion, pathname, selectedAnswers]);
+	}, [attemptId, pathname, selectedAnswers]);
 
 	const sendAnswers = async () => {
 		const dataForRequest: IuserAnswers = {
@@ -130,6 +125,7 @@ export default function Test({
 			params.set('result', `${res.result}`);
 			params.set('evaluationName', `${res.evaluationName}`);
 			params.set('attempts', `${res.attempts}`);
+			clearStore();
 			replace(`${pathname}/resultTest?${params.toString()}`);
 			closeModal();
 		}
@@ -214,6 +210,9 @@ export default function Test({
 						</div>
 					</div>
 				)}
+				{/* <AlertDialog>
+
+				</AlertDialog> */}
 			</div>
 		</div>
 	);

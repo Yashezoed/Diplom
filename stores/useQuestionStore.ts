@@ -18,6 +18,7 @@ interface IQuestionStore {
 	updateSelectedAnswers: (newAnswers: {
 		[key: string]: string | null;
 	}) => void;
+	clearStore: () => void;
 }
 
 const useQuestionStore = create<IQuestionStore>()(
@@ -63,7 +64,16 @@ const useQuestionStore = create<IQuestionStore>()(
 			}) =>
 				set((state) => {
 					state.selectedAnswers = newAnswers;
-				})
+				}),
+			clearStore: () => {
+				set({
+					currentQuestion: 0,
+					currentQuestionId: '',
+					selectedAnswers: {},
+					isModalOpen: false
+				});
+				localStorage.removeItem('test-storage');
+			}
 		})),
 		{
 			name: 'test-storage'
