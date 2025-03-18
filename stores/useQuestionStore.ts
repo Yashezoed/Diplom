@@ -10,10 +10,6 @@ interface IQuestionStore {
 	changeCurrentQuestion: (to: number) => void;
 	selectAnswer: (answerId: string) => void;
 	setCurrentQuestionId: (id: string) => void;
-	//modal
-	isModalOpen: boolean;
-	openModal: () => void;
-	closeModal: () => void;
 	initializeSelectedAnswers: (questionIds: string[]) => void;
 	updateSelectedAnswers: (newAnswers: {
 		[key: string]: string | null;
@@ -43,10 +39,6 @@ const useQuestionStore = create<IQuestionStore>()(
 				}),
 			setCurrentQuestionId: (id: string) =>
 				set({ currentQuestionId: id }),
-			//modal
-			isModalOpen: false,
-			openModal: () => set({ isModalOpen: true }),
-			closeModal: () => set({ isModalOpen: false }),
 			initializeSelectedAnswers: (questionIds: string[]) => {
 				set((state) => {
 					const initialAnswers: {
@@ -70,7 +62,6 @@ const useQuestionStore = create<IQuestionStore>()(
 					currentQuestion: 0,
 					currentQuestionId: '',
 					selectedAnswers: {},
-					isModalOpen: false
 				});
 				localStorage.removeItem('test-storage');
 			}

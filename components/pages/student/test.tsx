@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import Answers from '@/components/ui/answers';
 import ListQuestions from '@/components/ui/listQuestions';
 import Questiontitle from '@/components/ui/questionTitle';
@@ -11,7 +11,16 @@ import isError from '@/lib/api/isError';
 import { sendResultTest, updateTestAnswers } from '@/lib/api/test';
 import { IattemptStarted } from '@/interfaces/checkingAttempt';
 import { useEffect, useMemo } from 'react';
-// import { AlertDialog } from '@radix-ui/react-alert-dialog';
+import {
+	AlertDialog,
+	AlertDialogAction,
+	AlertDialogCancel,
+	AlertDialogContent,
+	AlertDialogFooter,
+	AlertDialogHeader,
+	AlertDialogTitle,
+	AlertDialogTrigger
+} from '@/components/ui/alert-dialog';
 
 export default function Test({
 	data,
@@ -47,10 +56,6 @@ export default function Test({
 	const updateSelectedAnswers = useQuestionStore(
 		(state) => state.updateSelectedAnswers
 	);
-	//modal
-	const isModalOpen = useQuestionStore((state) => state.isModalOpen);
-	const openModal = useQuestionStore((state) => state.openModal);
-	const closeModal = useQuestionStore((state) => state.closeModal);
 
 	useEffect(() => {
 		setCurrentQuestionId(data[currentQuestion].id.toString());
@@ -84,7 +89,12 @@ export default function Test({
 				initializeSelectedAnswers(questionIds);
 			}
 		}
-	}, [attempt, initializeSelectedAnswers, questionIds, updateSelectedAnswers]);
+	}, [
+		attempt,
+		initializeSelectedAnswers,
+		questionIds,
+		updateSelectedAnswers
+	]);
 
 	useEffect(() => {
 		const updateAnswers = async () => {
@@ -127,7 +137,6 @@ export default function Test({
 			params.set('attempts', `${res.attempts}`);
 			clearStore();
 			replace(`${pathname}/resultTest?${params.toString()}`);
-			closeModal();
 		}
 	};
 
@@ -180,7 +189,26 @@ export default function Test({
 						Следующий вопрос
 					</button>
 				)}
-				<button
+				<AlertDialog>
+					<AlertDialogTrigger>Завершить тест</AlertDialogTrigger>
+					<AlertDialogContent>
+						<AlertDialogHeader>
+							<AlertDialogTitle>
+								Завершить тест?
+							</AlertDialogTitle>
+						</AlertDialogHeader>
+						<AlertDialogFooter>
+							<AlertDialogAction onClick={sendAnswers} >Да</AlertDialogAction>
+							<AlertDialogCancel>Нет</AlertDialogCancel>
+						</AlertDialogFooter>
+					</AlertDialogContent>
+				</AlertDialog>
+			</div>
+		</div>
+	);
+}
+
+/* <button
 					className='bg-[#008AD1] text-white rounded-xl p-[16px] text-[20px] font-semibold'
 					onClick={openModal}
 				>
@@ -209,11 +237,4 @@ export default function Test({
 							</div>
 						</div>
 					</div>
-				)}
-				{/* <AlertDialog>
-
-				</AlertDialog> */}
-			</div>
-		</div>
-	);
-}
+				)} */
