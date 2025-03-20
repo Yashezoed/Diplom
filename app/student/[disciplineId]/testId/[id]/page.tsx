@@ -1,5 +1,6 @@
-import StudentLayout from '@/components/layuout/studentLayout';
-import Test from '@/components/pages/student/test';
+import AttemptStarted from '@/components/pages/student/attemptStarted';
+import NoAttemptStarted from '@/components/pages/student/noAttemptStarted';
+import MyAlertDialogClient from '@/components/ui/client-alert-dialog';
 import {
 	isIattemptStarted,
 	isIcompletedAttempt,
@@ -9,9 +10,7 @@ import { ITest } from '@/interfaces/test';
 import fetchLesson from '@/lib/api/fetchLesson';
 import fetchListQuestions from '@/lib/api/fetchListQuestions';
 import fetchTests from '@/lib/api/fetchTests';
-import isError from '@/lib/api/isError';
-import { checkingAttempt, createAttempt } from '@/lib/api/test';
-import { Suspense } from 'react';
+import { checkingAttempt } from '@/lib/api/test';
 
 export default async function page({
 	params
@@ -21,6 +20,9 @@ export default async function page({
 		id: number;
 	};
 }) {
+
+
+
 	const { disciplineId, id } = await params;
 
 	const dataTests = await fetchTests(disciplineId); //список тестов
@@ -31,69 +33,40 @@ export default async function page({
 	const attempt = await checkingAttempt(id);
 
 	if (isIcompletedAttempt(attempt)) {
-		console.log("попытка была завершена attempt", attempt);
-
 		// Попытка была завершена
-		// console.log('Попытка завершена');
-		//TODO добавить модальное окно что попытка уже завершена и пользователь может начать новую попытку или посмотреть результаты пройденной попытки
+		console.log('попытка была завершена attempt', attempt);
+		return (
+			<MyAlertDialogClient
+				titleText='Хотите посмотреть результаты прошлой попытки?'
+				actionText='Да'
+				cancelText='Нет'
+				attempt={attempt}
+				action='redirectToresult'
+				cancel='reload'
+			/>
+		);
 	} else if (isIattemptStarted(attempt)) {
 		// Попытка уже была начата и еще не завершена
 		//TODO добавить модальное окно что попытка уже завершена и пользователь может начать новую попытку или посмотреть результаты пройденной попытки
 		console.log('Данные ответов на сервере =>', attempt.userResponesTest);
-
 		return (
-			<StudentLayout
-				title={
-					!isError(testInfo) && currentTest
-						? `${testInfo.discipline.name} | ${currentTest.name}`
-						: 'Заголовок теста'
-				}
-			>
-				<Suspense fallback={<div>Загрузка...</div>}>
-					{isError(questions) ? (
-						<div>
-							Status {questions.status} error messgae{' '}
-							{questions.message}
-						</div>
-					) : !isError(testInfo) ? (
-						<Test
-							attemptId={attempt.idResult}
-							data={questions}
-							minutes={attempt.minutes}
-							seconds={attempt.second}
-							attempt={attempt}
-						/>
-					) : (
-						<Test
-							attemptId={attempt.idResult}
-							data={questions}
-							attempt={attempt}
-						/>
-					)}
-				</Suspense>
-			</StudentLayout>
+			<AttemptStarted
+				attempt={attempt}
+				currentTest={currentTest}
+				questions={questions}
+				testInfo={testInfo}
+			/>
 		);
 	} else if (isInoAttemptStarted(attempt)) {
 		// Попытка еще не было начата
-		const newAttemptId = await createAttempt(id);
-
-		return !isError(questions) &&
-			!isError(testInfo) &&
-			currentTest &&
-			!isError(newAttemptId) ? (
-			<StudentLayout
-				title={`${testInfo.discipline.name} | ${currentTest.name}`}
-			>
-				<Suspense fallback={<div>Загрузка...</div>}>
-					<Test
-						attemptId={newAttemptId.id}
-						data={questions}
-						minutes={testInfo.time}
-					/>
-				</Suspense>
-			</StudentLayout>
-		) : (
-			<>Ошибка</>
+		console.log('noAttemptStarted');
+		return (
+			<NoAttemptStarted
+				currentTest={currentTest}
+				id={id}
+				questions={questions}
+				testInfo={testInfo}
+			/>
 		);
 	} else {
 		console.log('Ошибка', attempt);

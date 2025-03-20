@@ -11,16 +11,8 @@ import isError from '@/lib/api/isError';
 import { sendResultTest, updateTestAnswers } from '@/lib/api/test';
 import { IattemptStarted } from '@/interfaces/checkingAttempt';
 import { useEffect, useMemo } from 'react';
-import {
-	AlertDialog,
-	AlertDialogAction,
-	AlertDialogCancel,
-	AlertDialogContent,
-	AlertDialogFooter,
-	AlertDialogHeader,
-	AlertDialogTitle,
-	AlertDialogTrigger
-} from '@/components/ui/alert-dialog';
+import MyAlertDialog from '@/components/ui/my-alert-dialog';
+
 
 export default function Test({
 	data,
@@ -189,52 +181,14 @@ export default function Test({
 						Следующий вопрос
 					</button>
 				)}
-				<AlertDialog>
-					<AlertDialogTrigger>Завершить тест</AlertDialogTrigger>
-					<AlertDialogContent>
-						<AlertDialogHeader>
-							<AlertDialogTitle>
-								Завершить тест?
-							</AlertDialogTitle>
-						</AlertDialogHeader>
-						<AlertDialogFooter>
-							<AlertDialogAction onClick={sendAnswers} >Да</AlertDialogAction>
-							<AlertDialogCancel>Нет</AlertDialogCancel>
-						</AlertDialogFooter>
-					</AlertDialogContent>
-				</AlertDialog>
+				<MyAlertDialog
+					triggerText='Завершить тест'
+					action={sendAnswers}
+					actionText='Да'
+					cancelText='Нет'
+					titleText='Завершить тест?'
+				/>
 			</div>
 		</div>
 	);
 }
-
-/* <button
-					className='bg-[#008AD1] text-white rounded-xl p-[16px] text-[20px] font-semibold'
-					onClick={openModal}
-				>
-					Завершить тест
-				</button>
-				{isModalOpen && (
-					// TODO использовать модальное окно из shadcnui
-					<div className='fixed top-0 left-0 w-full h-full bg-black/50 flex justify-center items-center'>
-						<div className='bg-white p-4 rounded-3xl w-[800px] h-[300px] flex flex-col items-center'>
-							<p className='mt-[75px] text-[48px] text-[#008AD1]'>
-								Завершить тест?
-							</p>
-							<div className='flex gap-[56px] mt-[40px]'>
-								<button
-									className='w-[300px] h-[50px] flex items-center justify-center border-4 border-[#008AD1] bg-[#008AD1] hover:bg-[#0096e0] hover:border-[#0096e0] text-white text-[24px] font-500 py-2 px-4 rounded-2xl'
-									onClick={sendAnswers}
-								>
-									<span>Да</span>
-								</button>
-								<button
-									className='w-[300px] h-[51px] flex items-center justify-center bg-white hover:bg-slate-100 text-[#008AD1] text-[24px] font-500 border-4 border-[#008AD1] py-2 px-4 rounded-2xl'
-									onClick={closeModal}
-								>
-									Нет
-								</button>
-							</div>
-						</div>
-					</div>
-				)} */

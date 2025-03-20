@@ -2,7 +2,7 @@
 import { UserResponesTest } from './userAnswers';
 
 export interface IcompletedAttempt {
-	idUserResponses: number;
+	idUserRespones: number;
 	result: number;
 	evaluationName: string;
 	attempts: number;
