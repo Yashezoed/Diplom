@@ -1,6 +1,6 @@
-import AttemptStarted from '@/components/pages/student/attemptStarted';
+import ifAttemptStarted from '@/components/ui/ifAttemptStarted';
 import NoAttemptStarted from '@/components/pages/student/noAttemptStarted';
-import MyAlertDialogClient from '@/components/ui/client-alert-dialog';
+import Modal from '@/components/ui/modal';
 import {
 	isIattemptStarted,
 	isIcompletedAttempt,
@@ -13,17 +13,14 @@ import fetchTests from '@/lib/api/fetchTests';
 import { checkingAttempt } from '@/lib/api/test';
 
 export default async function page({
-	params
+	params,
 }: {
 	params: {
 		disciplineId: number;
 		id: number;
 	};
 }) {
-
-
-
-	const { disciplineId, id } = await params;
+	const { disciplineId, id } = params;
 
 	const dataTests = await fetchTests(disciplineId); //список тестов
 	const testInfo = await fetchLesson(id); //информация о тесте
@@ -36,27 +33,21 @@ export default async function page({
 		// Попытка была завершена
 		console.log('попытка была завершена attempt', attempt);
 		return (
-			<MyAlertDialogClient
+			<Modal
 				titleText='Хотите посмотреть результаты прошлой попытки?'
 				actionText='Да'
 				cancelText='Нет'
 				attempt={attempt}
-				action='redirectToresult'
+				action='redirectToResult'
 				cancel='reload'
 			/>
 		);
 	} else if (isIattemptStarted(attempt)) {
 		// Попытка уже была начата и еще не завершена
 		//TODO добавить модальное окно что попытка уже завершена и пользователь может начать новую попытку или посмотреть результаты пройденной попытки
-		console.log('Данные ответов на сервере =>', attempt.userResponesTest);
 		return (
-			<AttemptStarted
-				attempt={attempt}
-				currentTest={currentTest}
-				questions={questions}
-				testInfo={testInfo}
-			/>
-		);
+			<ifAttemptStarted/>
+		)
 	} else if (isInoAttemptStarted(attempt)) {
 		// Попытка еще не было начата
 		console.log('noAttemptStarted');
