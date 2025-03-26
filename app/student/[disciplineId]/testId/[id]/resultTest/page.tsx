@@ -11,14 +11,11 @@ export default async function Page({
 		attempts: number;
 	};
 }) {
-	const { evaluationName, result, idUserRespones, attempts } =
-		await searchParams;
+	const { evaluationName, result, idUserRespones, attempts } = await searchParams;
 
-	console.log(idUserRespones);
 	console.log(result);
 	console.log(evaluationName);
 	console.log(attempts);
-
 
 	const data = await fetchResultTests(idUserRespones);
 	console.log(data);

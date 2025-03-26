@@ -3,14 +3,14 @@ import { ExitButton } from '@/components/ui/exit';
 import Link from 'next/link';
 import LeftSideHeader from '../ui/leftSideHeader';
 
-export default async function StudentLayout({
+export default function StudentLayout({
 	children,
 	title
 }: {
 	children: React.ReactNode;
 	title?: string;
 }) {
-	
+
 	return (
 		<>
 			<header className='flex justify-between items-center min-h-[75px] mt-10'>

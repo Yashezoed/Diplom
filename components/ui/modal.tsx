@@ -15,14 +15,15 @@ import {
 } from '@/interfaces/checkingAttempt';
 import useQuestionStore from '@/stores/useQuestionStore';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { useState } from 'react';
 
 export default function Modal({
 	titleText,
 	actionText,
 	cancelText,
-	attempt,
 	action,
-	cancel
+	cancel,
+	attempt,
 }: {
 	triggerText?: string;
 	titleText: string;
@@ -30,32 +31,43 @@ export default function Modal({
 	cancelText: string;
 	attempt: IcompletedAttempt | IattemptStarted;
 	action: 'redirectToResult' | 'continueTest';
-	cancel: 'reload'| 'newAttempt';
+	cancel: 'newAttempt';
 }) {
 	const pathname = usePathname();
 	const searchParams = useSearchParams();
-	const { replace } = useRouter();
+	const { replace, refresh } = useRouter();
+
+	const [isOpen, setIsOpen] = useState(true);
+
 	const clearStore = useQuestionStore((state) => state.clearStore);
+
+	const continueTest = () => {};
+
+	const newAttempt = () => {
+		// clearStore();
+		refresh();
+
+	};
+
 	const redirectToResult = () => {
-		console.log(attempt);
-		const params = new URLSearchParams(searchParams);
-		if (isIcompletedAttempt(attempt)) {
-			params.set('idUserRespones', `${attempt.idUserRespones}`);
-			params.set('result', `${attempt.result}`);
-			params.set('evaluationName', `${attempt.evaluationName}`);
-			params.set('attempts', `${attempt.attempts}`);
-			replace(`${pathname}/resultTest?${params.toString()}`);
+		try {
+			const params = new URLSearchParams(searchParams);
+			if (isIcompletedAttempt(attempt)) {
+				params.delete('newAttempt');
+				params.set('idUserRespones', `${attempt.idUserRespones}`);
+				params.set('result', `${attempt.result}`);
+				params.set('evaluationName', `${attempt.evaluationName}`);
+				params.set('attempts', `${attempt.attempts}`);
+				replace(`${pathname}/resultTest?${params.toString()}`);
+				clearStore();
+			}
+		} catch (error) {
+			console.error('Error:', error);
 		}
 	};
 
-	const continueTest = () => {
-
-	};
-
-	const newAttempt = () => {}
-	clearStore();
 	return (
-		<AlertDialog defaultOpen={true}>
+		<AlertDialog open={isOpen} onOpenChange={setIsOpen}>
 			<AlertDialogContent className='max-w-[1120px] max-h-[418px] !rounded-[20px]'>
 				<AlertDialogHeader className='items-center'>
 					<AlertDialogTitle className='text-[64px] font-semibold text-center'>
@@ -68,17 +80,16 @@ export default function Modal({
 						onClick={
 							action === 'redirectToResult'
 								? redirectToResult
-								: action === 'continueTest' ? continueTest : () => {}
+								: action === 'continueTest'
+								? continueTest
+								: () => {}
 						}
 					>
 						{actionText}
 					</AlertDialogAction>
 					<AlertDialogCancel
 						onClick={
-							cancel === 'reload'
-								? () => window.location.reload()
-								: cancel === 'newAttempt'
-								?  newAttempt : () => {}
+							cancel === 'newAttempt' ? () => newAttempt() : () => {}
 						}
 						className='bg-white text-black hover:bg-[#3F5FD7] hover:text-white hover:border-none w-[421px] h-[103px] border-[3px] border-black rounded-[15px] text-[40px] font-semibold'
 					>

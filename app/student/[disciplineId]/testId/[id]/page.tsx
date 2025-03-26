@@ -1,26 +1,22 @@
-import ifAttemptStarted from '@/components/ui/ifAttemptStarted';
-import NoAttemptStarted from '@/components/pages/student/noAttemptStarted';
-import Modal from '@/components/ui/modal';
-import {
-	isIattemptStarted,
-	isIcompletedAttempt,
-	isInoAttemptStarted
-} from '@/interfaces/checkingAttempt';
+'use server'
+
 import { ITest } from '@/interfaces/test';
 import fetchLesson from '@/lib/api/fetchLesson';
 import fetchListQuestions from '@/lib/api/fetchListQuestions';
 import fetchTests from '@/lib/api/fetchTests';
 import { checkingAttempt } from '@/lib/api/test';
+import TestController from '@/components/pages/student/testController';
+import isError from '@/lib/api/isError';
 
 export default async function page({
-	params,
+	params
 }: {
 	params: {
 		disciplineId: number;
 		id: number;
 	};
 }) {
-	const { disciplineId, id } = params;
+	const { disciplineId, id } = await params;
 
 	const dataTests = await fetchTests(disciplineId); //список тестов
 	const testInfo = await fetchLesson(id); //информация о тесте
@@ -29,37 +25,78 @@ export default async function page({
 
 	const attempt = await checkingAttempt(id);
 
-	if (isIcompletedAttempt(attempt)) {
-		// Попытка была завершена
-		console.log('попытка была завершена attempt', attempt);
+	console.log(attempt);
+	if (!isError(dataTests) && !isError(testInfo) && !isError(questions) && !isError(attempt) && currentTest) {
 		return (
-			<Modal
-				titleText='Хотите посмотреть результаты прошлой попытки?'
-				actionText='Да'
-				cancelText='Нет'
-				attempt={attempt}
-				action='redirectToResult'
-				cancel='reload'
-			/>
-		);
-	} else if (isIattemptStarted(attempt)) {
-		// Попытка уже была начата и еще не завершена
-		//TODO добавить модальное окно что попытка уже завершена и пользователь может начать новую попытку или посмотреть результаты пройденной попытки
-		return (
-			<ifAttemptStarted/>
-		)
-	} else if (isInoAttemptStarted(attempt)) {
-		// Попытка еще не было начата
-		console.log('noAttemptStarted');
-		return (
-			<NoAttemptStarted
-				currentTest={currentTest}
-				id={id}
-				questions={questions}
+			<TestController
 				testInfo={testInfo}
+				currentTest={currentTest}
+				questions={questions}
+				attempt={attempt}
+				id={id}
 			/>
-		);
-	} else {
-		console.log('Ошибка', attempt);
+		)
 	}
+	return (
+		<>Ошибка</>
+	)
+
+
+	// if (isIcompletedAttempt(attempt)) {
+	// 	// Попытка была завершена
+	// 	console.log('попытка была завершена attempt', attempt);
+
+	// 	return (
+	// 		<>
+	// 			<Modal
+	// 				titleText='Хотите посмотреть результаты прошлой попытки?'
+	// 				actionText='Да'
+	// 				cancelText='Нет'
+	// 				attempt={attempt}
+	// 				action='redirectToResult'
+	// 				cancel='newAttempt'
+	// 			/>
+	// 			{/* <NoAttemptStarted
+	// 				currentTest={currentTest}
+	// 				id={id}
+	// 				questions={questions}
+	// 				testInfo={testInfo}
+	// 			/> */}
+	// 		</>
+	// 	);
+	// } else if (isIattemptStarted(attempt)) {
+	// 	// Попытка уже была начата и еще не завершена
+
+	// 	return (
+	// 		<>
+	// 			<Modal
+	// 				titleText='Хотите посмотреть результаты прошлой попытки?'
+	// 				actionText='Да'
+	// 				cancelText='Нет'
+	// 				attempt={attempt}
+	// 				action='redirectToResult'
+	// 				cancel='newAttempt'
+	// 			/>
+	// 			{/* <AttemptStarted
+	// 				attempt={attempt}
+	// 				currentTest={currentTest}
+	// 				questions={questions}
+	// 				testInfo={testInfo}
+	// 			/> */}
+	// 		</>
+	// 	);
+	// } else if (isInoAttemptStarted(attempt)) {
+	// 	// Попытка еще не было начата
+	// 	console.log('noAttemptStarted');
+	// 	return (
+	// 		<NoAttemptStarted
+	// 			currentTest={currentTest}
+	// 			id={id}
+	// 			questions={questions}
+	// 			testInfo={testInfo}
+	// 		/>
+	// 	);
+	// } else {
+	// 	console.log('Ошибка', attempt);
+	// }
 }

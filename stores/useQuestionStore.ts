@@ -61,9 +61,12 @@ const useQuestionStore = create<IQuestionStore>()(
 				set({
 					currentQuestion: 0,
 					currentQuestionId: '',
-					selectedAnswers: {},
+					selectedAnswers: {}
 				});
 				localStorage.removeItem('test-storage');
+				// if (typeof window !== 'undefined') {
+				// 	localStorage.removeItem('test-storage');
+				// }
 			}
 		})),
 		{
