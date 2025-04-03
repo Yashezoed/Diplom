@@ -1,6 +1,6 @@
 'use client';
 import { IListQuestions } from '@/interfaces/listQuestions';
-import useQuestionStore from '@/stores/useQuestionStore';
+import useQuestionStore, { IAnswer } from '@/stores/useQuestionStore';
 import { Check } from 'lucide-react';
 
 export default function ListQuestions({
@@ -9,7 +9,7 @@ export default function ListQuestions({
 	data
 }: {
 	currentQuestion: number;
-	selectedAnswers: { [questionIndex: string]: string | null };
+	selectedAnswers: IAnswer[];
 	data: IListQuestions[];
 }) {
 	const changeCurrentQuestion = useQuestionStore(
@@ -17,15 +17,21 @@ export default function ListQuestions({
 	);
 
 
+
+
 	return (
 		<div className='bg-white/20 rounded-xl mt-[16px] w-[280px]'>
 			<div className='p-[20px] flex flex-wrap'>
 				{data.map((answers, index) => {
+					console.log('DATA +>>',data);
+					console.log('currentQuestion +>>', currentQuestion);
+					console.log('selectedAnswers +>>', selectedAnswers);
+
 					return (
 						<button
 							key={answers.id}
 							onClick={() => {
-								changeCurrentQuestion(index);
+								changeCurrentQuestion(index, data[index].id.toString());
 							}}
 							className={`text-[#008AD1]/50 bg-white/60  m-[5px] size-[30px] rounded-sm flex justify-center items-center
 									${currentQuestion === index ? 'outline outline-[3px] outline-white' : ''}

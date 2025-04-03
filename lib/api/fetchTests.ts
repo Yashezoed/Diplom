@@ -18,7 +18,6 @@ export default async function fetchTests(id: number): Promise<ITest[] | IError> 
 		};
 	try {
 		const response = await fetch(url, options);
-
 		if (response.ok) {
 			return await response.json();
 		} else {

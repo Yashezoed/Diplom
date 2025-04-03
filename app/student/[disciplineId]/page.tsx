@@ -19,11 +19,16 @@ export default async function Page({
 		testId?: number;
 	};
 }) {
-
 	const { testId } = await searchParams; // id выбранного теста в url
 	const disciplineId = (await params).disciplineId; // id дисциплины
 	const dataTests = await fetchTests(disciplineId); //список тестов
-	const testInfo = await fetchLesson(testId || (dataTests as ITest[])[0].id); //информация о тесте
+	const testInfo = await fetchLesson(testId || (dataTests as ITest[])[0].id); //информация о тесте'
+
+	console.log('dataTest',(dataTests as ITest[])[0].id);
+	console.log('testId =>', testId);
+
+
+	console.log('testInfo =>', testInfo);
 
 	return (
 		<>
@@ -32,7 +37,7 @@ export default async function Page({
 					<Suspense fallback={<div>Загрузка...</div>}>
 						{isError(dataTests) ? (
 							<div>
-								Status {dataTests.status} error messgae{' '}
+								Status {dataTests.status} error message{' '}
 								{dataTests.message}
 							</div>
 						) : (
@@ -47,7 +52,11 @@ export default async function Page({
 						)}
 					</Suspense>
 				</StudentLayout>
-			) : <div>Status {testInfo.status} error messgae {testInfo.message}</div>}
+			) : (
+				<div>
+					Status {testInfo.status} error message {testInfo.message}
+				</div>
+			)}
 		</>
 	);
 }

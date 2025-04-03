@@ -25,6 +25,8 @@ export const sendResultTest = async (
 	};
 	try {
 		const response = await fetch(url, options);
+		console.log(response);
+
 		if (response.ok) {
 			console.log("!OK!");
 			return await response.json();

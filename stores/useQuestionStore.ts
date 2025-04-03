@@ -1,16 +1,23 @@
+'use client';
+import { IListQuestions } from '@/interfaces/listQuestions';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { immer } from 'zustand/middleware/immer';
 
+export interface IAnswer {
+	questId: number;
+	userRespones: [string] | null;
+}
+
 interface IQuestionStore {
 	currentQuestion: number;
 	currentQuestionId: string;
-	selectedAnswers: { [questionIndex: string]: string | null };
+	selectedAnswers: IAnswer[];
+	initializeStore: (data: IListQuestions[]) => void;
 	nextQuestion: () => void;
-	changeCurrentQuestion: (to: number) => void;
+	changeCurrentQuestion: (index: number, id: string) => void;
 	selectAnswer: (answerId: string) => void;
 	setCurrentQuestionId: (id: string) => void;
-	initializeSelectedAnswers: (questionIds: string[]) => void;
 	updateSelectedAnswers: (newAnswers: {
 		[key: string]: string | null;
 	}) => void;
@@ -22,46 +29,53 @@ const useQuestionStore = create<IQuestionStore>()(
 		immer((set, get) => ({
 			currentQuestion: 0,
 			currentQuestionId: '',
-			selectedAnswers: {},
+			selectedAnswers: [],
+			initializeStore: (data: IListQuestions[]) => {
+				set((state) => {
+					state.currentQuestion = 0;
+					state.currentQuestionId = data[0].id.toString();
+					const initialAnswers = data.map((answer) => {
+						return {
+							questId: Number(answer.id),
+							userRespones: null
+						};
+					});
+					state.selectedAnswers = initialAnswers;
+				});
+			},
 			nextQuestion: () => {
 				set((state) => {
 					state.currentQuestion += 1;
 				});
 			},
-			changeCurrentQuestion: (to: number) =>
+			changeCurrentQuestion: (index: number, id: string) =>
 				set((state) => {
-					state.currentQuestion = to;
+					state.currentQuestion = index;
+					state.currentQuestionId = id;
 				}),
 			selectAnswer: (answerId: string) =>
 				set((state) => {
 					const questionId = get().currentQuestionId;
-					state.selectedAnswers[questionId] = answerId;
+					const currentQuestion = get().currentQuestion;
+					state.selectedAnswers[currentQuestion] = {
+						questId: Number(questionId),
+						userRespones: [answerId]
+					};
 				}),
 			setCurrentQuestionId: (id: string) =>
 				set({ currentQuestionId: id }),
-			initializeSelectedAnswers: (questionIds: string[]) => {
-				set((state) => {
-					const initialAnswers: {
-						[questionIndex: string]: string | null;
-					} = {};
-					questionIds.forEach((id) => {
-						initialAnswers[id] = null;
-					});
-					state.selectedAnswers = initialAnswers;
-				});
-			},
-			//один бог знает как их использовать
+
 			updateSelectedAnswers: (newAnswers: {
 				[key: string]: string | null;
 			}) =>
 				set((state) => {
-					state.selectedAnswers = newAnswers;
+					// state.selectedAnswers = newAnswers;
 				}),
 			clearStore: () => {
 				set({
 					currentQuestion: 0,
 					currentQuestionId: '',
-					selectedAnswers: {}
+					selectedAnswers: []
 				});
 				localStorage.removeItem('test-storage');
 				// if (typeof window !== 'undefined') {

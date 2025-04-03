@@ -8,11 +8,10 @@ import { IuserAnswers } from '@/interfaces/userAnswers';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import useQuestionStore from '@/stores/useQuestionStore';
 import isError from '@/lib/api/isError';
-import { sendResultTest, updateTestAnswers } from '@/lib/api/test';
+import { sendResultTest } from '@/lib/api/test';
 import { IattemptStarted } from '@/interfaces/checkingAttempt';
-import { useEffect, useMemo } from 'react';
+import { useEffect } from 'react';
 import MyAlertDialog from '@/components/ui/my-alert-dialog';
-
 
 export default function Test({
 	data,
@@ -37,89 +36,105 @@ export default function Test({
 		(state) => state.currentQuestionId
 	);
 
+	const initializeStore = useQuestionStore((state) => state.initializeStore);
+
 	const setCurrentQuestionId = useQuestionStore(
 		(state) => state.setCurrentQuestionId
 	);
 	const setNextQuestion = useQuestionStore((state) => state.nextQuestion);
 
-	const initializeSelectedAnswers = useQuestionStore(
-		(state) => state.initializeSelectedAnswers
-	);
 	const updateSelectedAnswers = useQuestionStore(
 		(state) => state.updateSelectedAnswers
 	);
-
-	useEffect(() => {
-		setCurrentQuestionId(data[currentQuestion].id.toString());
-	}, [currentQuestion, data, setCurrentQuestionId]);
-
-	const questionIds = useMemo(() => {
-		return data.map((question) => question.id.toString());
-	}, [data]);
-
 	const clearStore = useQuestionStore((state) => state.clearStore);
 
+	console.log(data);
+
+	const questionIds = data.map((question) => question.id.toString());
+
+	console.log(questionIds);
+
+	console.log('selectedAnswers =>', selectedAnswers);
+
+	console.log('attempt =>', attempt);
+
 	useEffect(() => {
-		const storage = localStorage.getItem('test-storage');
-
-		if (storage !== null) {
-			const storedState = JSON.parse(storage).state;
-			const storedSelectedAnswers = storedState.selectedAnswers;
-
-			if (attempt && attempt.userResponesTest.length > 0) {
-				const newSelectedAnswers: {
-					[questionIndex: string]: string | null;
-				} = {};
-
-				attempt.userResponesTest.forEach((item) => {
-					newSelectedAnswers[item.questId.toString()] =
-						item.userRespones[0];
-				});
-
-				updateSelectedAnswers(newSelectedAnswers);
-			} else if (Object.keys(storedSelectedAnswers).length === 0) {
-				initializeSelectedAnswers(questionIds);
-			}
+		if (attempt && attempt?.userResponesTest.length > 0) {
+			return;
 		}
-	}, [
-		attempt,
-		initializeSelectedAnswers,
-		questionIds,
-		updateSelectedAnswers
-	]);
+		initializeStore(data);
+	}, [attempt, data, initializeStore]);
 
-	useEffect(() => {
-		const updateAnswers = async () => {
-			const dataForRequest: IuserAnswers = {
-				testId: Number(pathname.split('/').pop()),
-				userResponesTest: Object.entries(selectedAnswers).map(
-					([questionId, answerId]) => ({
-						questId: Number(questionId),
-						userRespones: [answerId]
-					})
-				),
-				idResult: attemptId
-			};
+	// const questionIds = useMemo(() => {
+	// 	return data.map((question) => question.id.toString());
+	// }, [data]);
 
-			console.log(dataForRequest);
-			await updateTestAnswers(dataForRequest);
-		};
-		updateAnswers();
-	}, [attemptId, pathname, selectedAnswers]);
+	// useEffect(() => {
+	// 	setCurrentQuestionId(data[currentQuestion].id.toString());
+	// }, [currentQuestion, data, setCurrentQuestionId]);
+
+	// useEffect(() => {
+	// 	const storage = localStorage.getItem('test-storage');
+
+	// 	if (storage !== null) {
+	// 		const storedState = JSON.parse(storage).state;
+	// 		const storedSelectedAnswers = storedState.selectedAnswers;
+
+	// 		if (attempt && attempt.userResponesTest.length > 0) {
+	// 			const newSelectedAnswers: {
+	// 				[questionIndex: string]: string | null;
+	// 			} = {};
+
+	// 			attempt.userResponesTest.forEach((item) => {
+	// 				newSelectedAnswers[item.questId.toString()] =
+	// 					item.userRespones[0];
+	// 			});
+
+	// 			updateSelectedAnswers(newSelectedAnswers);
+	// 		} else if (Object.keys(storedSelectedAnswers).length === 0) {
+	// 			initializeSelectedAnswers(questionIds);
+	// 		}
+	// 	}
+	// }, [
+	// 	attempt,
+	// 	initializeSelectedAnswers,
+	// 	questionIds,
+	// 	updateSelectedAnswers
+	// ]);
+
+	// useEffect(() => {
+	// 	const updateAnswers = async () => {
+	// 		const dataForRequest: IuserAnswers = {
+	// 			testId: Number(pathname.split('/').pop()),
+	// 			userResponesTest: Object.entries(selectedAnswers).map(
+	// 				([questionId, answerId]) => ({
+	// 					questId: Number(questionId),
+	// 					userRespones: [answerId]
+	// 				})
+	// 			),
+	// 			idResult: attemptId
+	// 		};
+
+	// 		console.log(dataForRequest);
+	// 		await updateTestAnswers(dataForRequest);
+	// 	};
+	// 	updateAnswers();
+	// }, [attemptId, pathname, selectedAnswers]);
 
 	const sendAnswers = async () => {
 		const dataForRequest: IuserAnswers = {
 			testId: Number(pathname.split('/').pop()),
-			userResponesTest: Object.entries(selectedAnswers).map(
-				([questionId, answerId]) => ({
-					questId: Number(questionId),
-					userRespones: [answerId]
-				})
-			),
-			idResult: attemptId
+			// userResponesTest: Object.entries(selectedAnswers).map(
+			// 	([questionId, answerId]) => ({
+			// 		questId: Number(questionId),
+			// 		userRespones: [answerId]
+			// 	})
+			// ),
+			// idResult: attemptId
 		};
 		const res = await sendResultTest(dataForRequest);
 		console.log('res=======>', res);
+		clearStore();
 
 		if (!isError(res)) {
 			const params = new URLSearchParams(searchParams);
@@ -132,6 +147,7 @@ export default function Test({
 		}
 	};
 
+
 	return (
 		<div className='mx-4 mt-[50px]'>
 			<Questiontitle
@@ -141,9 +157,15 @@ export default function Test({
 			<div className='flex justify-between mt-[46px]'>
 				<div className='flex flex-col  gap-[16px] w-[90%] '>
 					{data[currentQuestion].answers.map((answer, index) => {
-						const isSelected =
-							selectedAnswers[currentQuestionId] ===
-							answer.id.toString();
+						// TODO понять почему выдает ошибку
+
+						console.log(
+							Number(
+								selectedAnswers[currentQuestion].userRespones
+							)
+						);
+
+						const isSelected = Number(selectedAnswers[currentQuestion].userRespones) === answer.id;
 						return (
 							<Answers
 								key={answer.id}

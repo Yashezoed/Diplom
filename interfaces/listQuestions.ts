@@ -11,4 +11,5 @@ export interface IListQuestions {
 	id: number;
 	name: string;
 	info: string;
+	pathImg: string;
 }
