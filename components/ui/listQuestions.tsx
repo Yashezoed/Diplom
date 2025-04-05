@@ -6,11 +6,13 @@ import { Check } from 'lucide-react';
 export default function ListQuestions({
 	currentQuestion,
 	selectedAnswers,
-	data
+	data,
+	updateAnswers
 }: {
 	currentQuestion: number;
 	selectedAnswers: IAnswer[];
 	data: IListQuestions[];
+	updateAnswers: () => Promise<void>
 }) {
 	const changeCurrentQuestion = useQuestionStore(
 		(state) => state.changeCurrentQuestion
@@ -28,6 +30,7 @@ export default function ListQuestions({
 									index,
 									data[index].id.toString()
 								);
+								updateAnswers();
 							}}
 							className={`text-[#008AD1]/50 bg-white/60  m-[5px] size-[30px] rounded-sm flex justify-center items-center
 									${currentQuestion === index ? 'outline outline-[3px] outline-white' : ''}

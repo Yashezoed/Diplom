@@ -61,6 +61,8 @@ export const updateTestAnswers = async (
 
 	try {
 		const response = await fetch(url, options);
+		console.log('response =>>>>',response);
+
 		if (response.ok) {
 
 			return await response.json();

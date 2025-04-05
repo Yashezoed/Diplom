@@ -4,11 +4,11 @@ import ListQuestions from '@/components/ui/listQuestions';
 import Questiontitle from '@/components/ui/questionTitle';
 import Timer from '@/components/ui/timer';
 import { IListQuestions } from '@/interfaces/listQuestions';
-import { IuserAnswers } from '@/interfaces/userAnswers';
+import { IuserAnswers, UserResponesTest } from '@/interfaces/userAnswers';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import useQuestionStore from '@/stores/useQuestionStore';
 import isError from '@/lib/api/isError';
-import { sendResultTest } from '@/lib/api/test';
+import { sendResultTest, updateTestAnswers } from '@/lib/api/test';
 import { IattemptStarted } from '@/interfaces/checkingAttempt';
 import { useEffect } from 'react';
 import MyAlertDialog from '@/components/ui/my-alert-dialog';
@@ -33,25 +33,11 @@ export default function Test({
 	const currentQuestion = useQuestionStore((state) => state.currentQuestion);
 	const selectedAnswers = useQuestionStore((state) => state.selectedAnswers);
 
-
 	const initializeStore = useQuestionStore((state) => state.initializeStore);
 
 	const setNextQuestion = useQuestionStore((state) => state.nextQuestion);
 
-	const updateSelectedAnswers = useQuestionStore(
-		(state) => state.updateSelectedAnswers
-	);
 	const clearStore = useQuestionStore((state) => state.clearStore);
-
-	console.log(data);
-
-	const questionIds = data.map((question) => question.id.toString());
-
-	console.log(questionIds);
-
-	console.log('selectedAnswers =>', selectedAnswers);
-
-	console.log('attempt =>', attempt);
 
 	useEffect(() => {
 		if (attempt && attempt?.userResponesTest.length > 0) {
@@ -59,75 +45,21 @@ export default function Test({
 		}
 		initializeStore(data);
 	}, [attempt, data, initializeStore]);
-	// useEffect(() => {
-	// 	const updateAnswers = async () => {
-	// 		const dataForRequest: IuserAnswers = {
-	// 			testId: Number(pathname.split('/').pop()),
-	// 			userResponesTest: Object.entries(selectedAnswers).map(
-	// 				([questionId, answerId]) => ({
-	// 					questId: Number(questionId),
-	// 					userRespones: [answerId]
-	// 				})
-	// 			),
-	// 			idResult: attemptId
-	// 		};
 
-	// 		console.log(dataForRequest);
-	// 		await updateTestAnswers(dataForRequest);
-	// 	};
-	// 	updateAnswers();
-	// }, [attemptId, pathname, selectedAnswers]);
-
-
-	// const questionIds = useMemo(() => {
-	// 	return data.map((question) => question.id.toString());
-	// }, [data]);
-
-	// useEffect(() => {
-	// 	setCurrentQuestionId(data[currentQuestion].id.toString());
-	// }, [currentQuestion, data, setCurrentQuestionId]);
-
-	// useEffect(() => {
-	// 	const storage = localStorage.getItem('test-storage');
-
-	// 	if (storage !== null) {
-	// 		const storedState = JSON.parse(storage).state;
-	// 		const storedSelectedAnswers = storedState.selectedAnswers;
-
-	// 		if (attempt && attempt.userResponesTest.length > 0) {
-	// 			const newSelectedAnswers: {
-	// 				[questionIndex: string]: string | null;
-	// 			} = {};
-
-	// 			attempt.userResponesTest.forEach((item) => {
-	// 				newSelectedAnswers[item.questId.toString()] =
-	// 					item.userRespones[0];
-	// 			});
-
-	// 			updateSelectedAnswers(newSelectedAnswers);
-	// 		} else if (Object.keys(storedSelectedAnswers).length === 0) {
-	// 			initializeSelectedAnswers(questionIds);
-	// 		}
-	// 	}
-	// }, [
-	// 	attempt,
-	// 	initializeSelectedAnswers,
-	// 	questionIds,
-	// 	updateSelectedAnswers
-	// ]);
-
-
+	const updateAnswers = async () => {
+		const dataForRequest: IuserAnswers = {
+			testId: Number(pathname.match(/\d+/g)?.pop()),
+			userResponesTest: selectedAnswers as UserResponesTest[],
+			idResult: attemptId
+		};
+		await updateTestAnswers(dataForRequest);
+	};
 
 	const sendAnswers = async () => {
 		const dataForRequest: IuserAnswers = {
-			testId: Number(pathname.split('/').pop())
-			// userResponesTest: Object.entries(selectedAnswers).map(
-			// 	([questionId, answerId]) => ({
-			// 		questId: Number(questionId),
-			// 		userRespones: [answerId]
-			// 	})
-			// ),
-			// idResult: attemptId
+			testId: Number(pathname.match(/\d+/g)?.pop()),
+			userResponesTest: selectedAnswers as UserResponesTest[],
+			idResult: attemptId
 		};
 		const res = await sendResultTest(dataForRequest);
 		console.log('res=======>', res);
@@ -185,6 +117,7 @@ export default function Test({
 						currentQuestion={currentQuestion}
 						selectedAnswers={selectedAnswers}
 						data={data}
+						updateAnswers={updateAnswers}
 					/>
 				</div>
 			</div>
@@ -192,7 +125,7 @@ export default function Test({
 				{currentQuestion + 1 < data.length && (
 					<button
 						className='bg-white/80 text-[#008AD1] rounded-xl p-[16px] text-[20px] font-semibold'
-						onClick={() => {setNextQuestion()}}
+						onClick={() => {setNextQuestion(); updateAnswers()}}
 					>
 						Следующий вопрос
 					</button>
