@@ -17,7 +17,6 @@ interface IQuestionStore {
 	nextQuestion: () => void;
 	changeCurrentQuestion: (index: number, id: string) => void;
 	selectAnswer: (answerId: string) => void;
-	setCurrentQuestionId: (id: string) => void;
 	updateSelectedAnswers: (newAnswers: {
 		[key: string]: string | null;
 	}) => void;
@@ -46,6 +45,7 @@ const useQuestionStore = create<IQuestionStore>()(
 			nextQuestion: () => {
 				set((state) => {
 					state.currentQuestion += 1;
+					state.currentQuestionId = (+state.currentQuestionId + 1).toString();
 				});
 			},
 			changeCurrentQuestion: (index: number, id: string) =>
@@ -62,9 +62,6 @@ const useQuestionStore = create<IQuestionStore>()(
 						userRespones: [answerId]
 					};
 				}),
-			setCurrentQuestionId: (id: string) =>
-				set({ currentQuestionId: id }),
-
 			updateSelectedAnswers: (newAnswers: {
 				[key: string]: string | null;
 			}) =>

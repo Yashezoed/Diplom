@@ -32,15 +32,10 @@ export default function Test({
 
 	const currentQuestion = useQuestionStore((state) => state.currentQuestion);
 	const selectedAnswers = useQuestionStore((state) => state.selectedAnswers);
-	const currentQuestionId = useQuestionStore(
-		(state) => state.currentQuestionId
-	);
+
 
 	const initializeStore = useQuestionStore((state) => state.initializeStore);
 
-	const setCurrentQuestionId = useQuestionStore(
-		(state) => state.setCurrentQuestionId
-	);
 	const setNextQuestion = useQuestionStore((state) => state.nextQuestion);
 
 	const updateSelectedAnswers = useQuestionStore(
@@ -64,6 +59,25 @@ export default function Test({
 		}
 		initializeStore(data);
 	}, [attempt, data, initializeStore]);
+	// useEffect(() => {
+	// 	const updateAnswers = async () => {
+	// 		const dataForRequest: IuserAnswers = {
+	// 			testId: Number(pathname.split('/').pop()),
+	// 			userResponesTest: Object.entries(selectedAnswers).map(
+	// 				([questionId, answerId]) => ({
+	// 					questId: Number(questionId),
+	// 					userRespones: [answerId]
+	// 				})
+	// 			),
+	// 			idResult: attemptId
+	// 		};
+
+	// 		console.log(dataForRequest);
+	// 		await updateTestAnswers(dataForRequest);
+	// 	};
+	// 	updateAnswers();
+	// }, [attemptId, pathname, selectedAnswers]);
+
 
 	// const questionIds = useMemo(() => {
 	// 	return data.map((question) => question.id.toString());
@@ -102,28 +116,11 @@ export default function Test({
 	// 	updateSelectedAnswers
 	// ]);
 
-	// useEffect(() => {
-	// 	const updateAnswers = async () => {
-	// 		const dataForRequest: IuserAnswers = {
-	// 			testId: Number(pathname.split('/').pop()),
-	// 			userResponesTest: Object.entries(selectedAnswers).map(
-	// 				([questionId, answerId]) => ({
-	// 					questId: Number(questionId),
-	// 					userRespones: [answerId]
-	// 				})
-	// 			),
-	// 			idResult: attemptId
-	// 		};
 
-	// 		console.log(dataForRequest);
-	// 		await updateTestAnswers(dataForRequest);
-	// 	};
-	// 	updateAnswers();
-	// }, [attemptId, pathname, selectedAnswers]);
 
 	const sendAnswers = async () => {
 		const dataForRequest: IuserAnswers = {
-			testId: Number(pathname.split('/').pop()),
+			testId: Number(pathname.split('/').pop())
 			// userResponesTest: Object.entries(selectedAnswers).map(
 			// 	([questionId, answerId]) => ({
 			// 		questId: Number(questionId),
@@ -147,7 +144,6 @@ export default function Test({
 		}
 	};
 
-
 	return (
 		<div className='mx-4 mt-[50px]'>
 			<Questiontitle
@@ -157,21 +153,19 @@ export default function Test({
 			<div className='flex justify-between mt-[46px]'>
 				<div className='flex flex-col  gap-[16px] w-[90%] '>
 					{data[currentQuestion].answers.map((answer, index) => {
-						// TODO понять почему выдает ошибку
-
-						console.log(
-							Number(
-								selectedAnswers[currentQuestion].userRespones
-							)
-						);
-
-						const isSelected = Number(selectedAnswers[currentQuestion].userRespones) === answer.id;
 						return (
 							<Answers
 								key={answer.id}
 								text={answer.answerText}
 								index={index + 1}
-								isSelected={isSelected}
+								isSelected={
+									selectedAnswers[currentQuestion]
+										? Number(
+												selectedAnswers[currentQuestion]
+													.userRespones
+										  ) === answer.id
+										: false
+								}
 								answerId={answer.id.toString()}
 							/>
 						);
@@ -198,7 +192,7 @@ export default function Test({
 				{currentQuestion + 1 < data.length && (
 					<button
 						className='bg-white/80 text-[#008AD1] rounded-xl p-[16px] text-[20px] font-semibold'
-						onClick={setNextQuestion}
+						onClick={() => {setNextQuestion()}}
 					>
 						Следующий вопрос
 					</button>
