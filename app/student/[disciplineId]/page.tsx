@@ -42,9 +42,11 @@ export default async function Page({
 							</div>
 						) : (
 							<>
-								<div className='flex justify-between'>
-									<ScrollArea className='h-[90vh] w-[460px] mt-10 '>
-										<Tests data={dataTests} />
+								<div className='flex justify-between px-[72px] '>
+									<ScrollArea className='h-[90vh] mt-10 pb-[20px] flex flex-col pr-[20px] mr-[221px]'>
+										<div className='flex flex-col gap-[22px]'>
+											<Tests data={dataTests} />
+										</div>
 									</ScrollArea>
 									<TestDescription data={testInfo} />
 								</div>

@@ -1,11 +1,11 @@
 'use server';
-
 import fetchLesson from '@/lib/api/fetchLesson';
 import { checkingAttempt } from '@/lib/api/test';
 import isError from '@/lib/api/isError';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { isIattemptStarted, isIcompletedAttempt, isInoAttemptStarted } from '@/interfaces/checkingAttempt';
+import Dialog from '@/components/ui/dialog';
 
 export default async function page({
 	params
@@ -25,6 +25,14 @@ export default async function page({
 			if (!isError(testInfo)) {
 				return (
 					<>
+						<Dialog
+							title={`${testInfo.discipline.name} ${testInfo.name} время
+							на прохождение теста ${testInfo.time} минуты`}
+							actionText='Начать тест'
+							cancelText='Вернуться на предыдущю страницу'
+							action={() => {}}
+							cancelAction={}
+						></Dialog>
 						<div className=''>
 							{`${testInfo.discipline.name} ${testInfo.name} время
 							на прохождение теста ${testInfo.time} минуты`}

@@ -21,23 +21,26 @@ export default async function Discipline() {
 				) : (
 					<>
 						<FixAuth />
-						<div className='grid grid-cols-3 gap-5 max-w-7xl bg-[#008AD1] p-5 rounded-3xl overflow-x-hidden overflow-y-scroll mt-10 '>
+						<div className='grid grid-cols-3 gap-[64px] px-[74px] py-10 rounded-3xl overflow-x-hidden overflow-y-scroll  max-h-[100vh] '>
 							{data.map((card) => (
 								<Button
 									asChild
 									variant='default'
-									className='w-[373] h-[126] bg-white text-[#008AD1] text-[32px] font-semibold rounded-3xl hover:bg-slate-200 hover:text-[#007ed9] '
+									size={'lg'}
+									className='text-[36px] '
 									key={card.id}
 								>
 									<Link
 										href={{
 											pathname: `/student/${card.id}`
-		 								}}
+										}}
 									>
 										{card.name}
 									</Link>
 								</Button>
 							))}
+
+
 						</div>
 					</>
 				)}
