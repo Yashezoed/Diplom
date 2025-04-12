@@ -53,8 +53,8 @@ export default function Timer({minutes, seconds, action }: TimerProps) {
 	return (
 		<div className='flex justify-center items-center'>
 			<div className='flex w-[130px]'>
-				<TimerIcon size={36} color='#ffffff' strokeWidth={2.25} />
-				<p className='p-[5px] text-[28px] leading-8 font-semibold text-white max-w-[1040px]'>
+				<TimerIcon size={36} color='#000' strokeWidth={2.25} />
+				<p className='p-[5px] text-[28px] leading-8 font-semibold text-black max-w-[1040px]'>
 					{formatTime(remainingTime)}
 				</p>
 			</div>

@@ -31,17 +31,15 @@ export default async function page({
 	const attempt = await checkingAttempt(id);
 	console.log(attempt);
 
-
-
 	// console.log(dataTests);
 	// console.log(id);
 	// console.log(currentTest);
 
 	if (!isError(testInfo) && !isError(questions) && currentTest) {
 		return (
-			// TODO добавить testLayout и заменить StudentLayout на новый
 			<StudentLayout
 				title={`${testInfo.discipline.name} | ${currentTest.name}`}
+				profileBtn={true}
 			>
 				<Suspense fallback={<div>Загрузка...</div>}>
 					{isInoAttemptStarted(attempt) && (

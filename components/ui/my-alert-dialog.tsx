@@ -27,7 +27,7 @@ export default function MyAlertDialog({
 			<AlertDialogTrigger className='bg-[#3F5FD7] text-white rounded-[35px] p-[16px] px-[30px] text-[25px] font-medium hover:bg-white hover:text-black/90 duration-200 border-[#3F5FD7] border-[3px] hover:border-black'>
 				{triggerText}
 			</AlertDialogTrigger>
-			<AlertDialogContent className='max-w-[1120px] max-h-[418px] !rounded-[20px]'>
+			<AlertDialogContent className='max-w-[1120px] max-h-[418px] !rounded-[20px] bg-white'>
 				<AlertDialogHeader className='items-center'>
 					<AlertDialogTitle className='text-[64px] font-semibold '>
 						{titleText}

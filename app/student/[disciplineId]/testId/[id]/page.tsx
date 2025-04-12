@@ -2,9 +2,12 @@
 import fetchLesson from '@/lib/api/fetchLesson';
 import { checkingAttempt } from '@/lib/api/test';
 import isError from '@/lib/api/isError';
-import { Button } from '@/components/ui/button';
-import Link from 'next/link';
-import { isIattemptStarted, isIcompletedAttempt, isInoAttemptStarted } from '@/interfaces/checkingAttempt';
+import {
+	IcompletedAttempt,
+	isIattemptStarted,
+	isIcompletedAttempt,
+	isInoAttemptStarted
+} from '@/interfaces/checkingAttempt';
 import Dialog from '@/components/ui/dialog';
 
 export default async function page({
@@ -20,65 +23,45 @@ export default async function page({
 	const testInfo = await fetchLesson(id); //информация о тесте
 	const attempt = await checkingAttempt(id);
 
+	console.log('attempt',attempt);
+
 	switch (true) {
 		case isInoAttemptStarted(attempt):
 			if (!isError(testInfo)) {
 				return (
-					<>
-						<Dialog
-							title={`${testInfo.discipline.name} ${testInfo.name} время
-							на прохождение теста ${testInfo.time} минуты`}
-							actionText='Начать тест'
-							cancelText='Вернуться на предыдущю страницу'
-							action={() => {}}
-							cancelAction={}
-						></Dialog>
-						<div className=''>
-							{`${testInfo.discipline.name} ${testInfo.name} время
-							на прохождение теста ${testInfo.time} минуты`}
-						</div>
-						<Link
-							href={`/student/${disciplineId}/testId/${id}/test`}
-						>
-							<Button variant='default' size={'lg'}>
-								Начать тест
-							</Button>
-						</Link>
-					</>
+					<Dialog
+						title={
+							<>
+								{testInfo.name}.<br />
+								Время на прохождение теста {testInfo.time}
+								мин.
+							</>
+						}
+						actionText='Начать тест'
+						ActionHref={`/student/${disciplineId}/testId/${id}/test`}
+					/>
 				);
 			}
 		case isIcompletedAttempt(attempt):
+			const attemptCompleted = attempt as IcompletedAttempt;
+			// ?? Возможно не самое лучшее решение с actionHref
 			return (
-				<>
-					<p className=''>У вас есть завершенная попытка</p>
-					<Link
-						href={`/student/${disciplineId}/testId/${id}/test/resultTest`}
-					>
-						<Button variant='default' size={'lg'}>
-							Посмотреть результат
-						</Button>
-					</Link>
-					<Link href={`/student/${disciplineId}/testId/${id}/test`}>
-						<Button variant='default' size={'lg'}>
-							Начать новую попытку
-						</Button>
-					</Link>
-				</>
+				<Dialog
+					title={'У вас есть завершенная попытка'}
+					actionText='Посмотреть результат'
+					cancelText='Начать новую попытку'
+					cancelHref={`/student/${disciplineId}/testId/${id}/test`}
+					ActionHref={`/student/${disciplineId}/testId/${id}/test/resultTest?idUserRespones=${attemptCompleted.idUserRespones}&result=${attemptCompleted.result}&evaluationName=${attemptCompleted.evaluationName}&attempts=${attemptCompleted.attempts}`}
+					IdResult={attemptCompleted.idUserRespones}
+				/>
 			);
 		case isIattemptStarted(attempt):
 			return (
-				<>
-					<p className=''>У вас есть активная попытка</p>
-					<Link
-						href={`/student/${disciplineId}/testId/${id}/test`}
-					>
-						<Button variant='default' size={'lg'}>
-							Продолжить тест
-						</Button>
-					</Link>
-				</>
+				<Dialog
+					title={'У вас есть активная попытка'}
+					actionText='Продолжить тестирование'
+					ActionHref={`/student/${disciplineId}/testId/${id}/test`}
+				/>
 			);
 	}
-
-
 }

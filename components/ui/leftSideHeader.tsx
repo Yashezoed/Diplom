@@ -12,7 +12,12 @@ export default function LeftSideHeader({ title }: { title?: string }) {
 			{pathname === '/student' ? (
 				<>
 					<button onClick={() => router.back()}>
-						<ChevronLeft color='#000' height={60} width={60} strokeWidth={1.25}/>
+						<ChevronLeft
+							color='#000'
+							height={60}
+							width={60}
+							strokeWidth={1.25}
+						/>
 					</button>
 					<h1 className='text-[64px] font-semibold text-black ml-5'>
 						Ваши дисциплины
@@ -21,7 +26,12 @@ export default function LeftSideHeader({ title }: { title?: string }) {
 			) : (
 				<>
 					<button onClick={() => router.back()}>
-						<ChevronLeft color='#000' height={60} width={60} />
+						<ChevronLeft
+							color='#000'
+							height={60}
+							width={60}
+							strokeWidth={1.25}
+						/>
 					</button>
 					<h1 className='text-4xl font-bold text-black ml-5'>
 						{title}

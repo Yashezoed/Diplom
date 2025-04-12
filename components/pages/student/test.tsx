@@ -12,6 +12,7 @@ import { sendResultTest, updateTestAnswers } from '@/lib/api/test';
 import { IattemptStarted } from '@/interfaces/checkingAttempt';
 import { useEffect } from 'react';
 import MyAlertDialog from '@/components/ui/my-alert-dialog';
+import { Button } from '@/components/ui/button';
 
 export default function Test({
 	data,
@@ -77,13 +78,13 @@ export default function Test({
 	};
 
 	return (
-		<div className='mx-4 mt-[50px]'>
+		<div className='mx-[80px] mt-[40px]'>
 			<Questiontitle
 				name={data[currentQuestion].name}
 				info={data[currentQuestion].info}
 			/>
 			<div className='flex justify-between mt-[46px]'>
-				<div className='flex flex-col  gap-[16px] w-[90%] '>
+				<div className='flex flex-col  gap-[16px] w-[80%] '>
 					{data[currentQuestion].answers.map((answer, index) => {
 						return (
 							<Answers
@@ -121,14 +122,17 @@ export default function Test({
 					/>
 				</div>
 			</div>
-			<div className='flex justify-end gap-[12px] mt-[15px]'>
+			<div className='flex justify-end gap-[12px] mt-[15px] pb-[28px]'>
 				{currentQuestion + 1 < data.length && (
-					<button
-						className='bg-white/80 text-[#008AD1] rounded-xl p-[16px] text-[20px] font-semibold'
-						onClick={() => {setNextQuestion(); updateAnswers()}}
+					<Button
+						className='rounded-[39px] p-[16px] px-[30px] text-[25px] font-medium '
+						onClick={() => {
+							setNextQuestion();
+							updateAnswers();
+						}}
 					>
 						Следующий вопрос
-					</button>
+					</Button>
 				)}
 				<MyAlertDialog
 					triggerText='Завершить тест'

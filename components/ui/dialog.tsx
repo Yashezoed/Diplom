@@ -5,31 +5,43 @@ import {
 	AlertDialogContent,
 	AlertDialogFooter,
 	AlertDialogHeader,
-	AlertDialogTitle,
+	AlertDialogTitle
 } from '@/components/ui/alert-dialog';
+import Link from 'next/link';
 
 export default function Dialog({
 	title,
 	cancelText,
 	actionText,
-	action,
-	cancelAction
+	ActionHref,
+	cancelHref
 }: {
-	title: string;
-	cancelText: string;
+	title: React.ReactNode;
+	cancelText?: string;
 	actionText: string;
-	action: () => Promise<void>;
-	cancelAction: () => Promise<void>;
+	cancelHref?: string;
+	ActionHref: string;
+	IdResult?: number;
 }) {
 	return (
 		<AlertDialog defaultOpen={true}>
-			<AlertDialogContent>
+			<AlertDialogContent className='max-w-[1200px] !rounded-[20px] bg-white'>
 				<AlertDialogHeader>
-					<AlertDialogTitle>{title}</AlertDialogTitle>
+					<AlertDialogTitle className='text-[58px] font-semibold text-center'>
+						{title}
+					</AlertDialogTitle>
 				</AlertDialogHeader>
-				<AlertDialogFooter>
-					<AlertDialogCancel>{cancelText}</AlertDialogCancel>
-					<AlertDialogAction>{actionText}</AlertDialogAction>
+				<AlertDialogFooter className='flex !justify-evenly'>
+					{cancelText && cancelHref && (
+						<Link href={cancelHref}>
+							<AlertDialogCancel className=''>
+								{cancelText}
+							</AlertDialogCancel>
+						</Link>
+					)}
+					<Link href={ActionHref}>
+						<AlertDialogAction>{actionText}</AlertDialogAction>
+					</Link>
 				</AlertDialogFooter>
 			</AlertDialogContent>
 		</AlertDialog>

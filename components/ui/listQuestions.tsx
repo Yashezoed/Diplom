@@ -19,7 +19,7 @@ export default function ListQuestions({
 	);
 
 	return (
-		<div className='bg-white/20 rounded-xl mt-[16px] w-[280px]'>
+		<div className=' mt-[16px] w-[280px]'>
 			<div className='p-[20px] flex flex-wrap'>
 				{data.map((answers, index) => {
 					return (
@@ -32,13 +32,13 @@ export default function ListQuestions({
 								);
 								updateAnswers();
 							}}
-							className={`text-[#008AD1]/50 bg-white/60  m-[5px] size-[30px] rounded-sm flex justify-center items-center
+							className={`text-[#fff] bg-[#5D5D5D]  m-[5px] size-[30px] rounded-sm flex justify-center items-center
 									${currentQuestion === index ? 'outline outline-[3px] outline-white' : ''}
 									${
 										selectedAnswers[index] &&
 										selectedAnswers[index].userRespones !==
 											null
-											? '!bg-white/100 text-white'
+											? '!bg-[#D4D4D4] text-black'
 											: ''
 									}`}
 						>
@@ -46,7 +46,7 @@ export default function ListQuestions({
 							selectedAnswers[index].userRespones !== null ? (
 								<Check
 									size={20}
-									color='#008AD1'
+									color='#000'
 									strokeWidth={3}
 								/>
 							) : (

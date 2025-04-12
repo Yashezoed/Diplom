@@ -8,8 +8,7 @@ export default async function TestDescription(props: {
 	data: ILessonDescription;
 }) {
 	const { infoTest, name, id, discipline, userAttempt } = props.data;
-	console.log('Lesson Description ==>' ,props.data);
-
+	console.log('Lesson Description ==>', props.data);
 
 	return (
 		<Suspense fallback={<div>Загрузка...</div>}>
@@ -20,20 +19,22 @@ export default async function TestDescription(props: {
 				</div>
 			) : (
 				<div className='flex flex-col justify-between max-h-[700px]'>
-					<div className='flex flex-col gap-[50px]  relative overflow-hidden rounded-3xl border-2 border-black p-8 text-black mt-10'>
+					<div className='flex flex-col gap-[50px] relative overflow-hidden rounded-3xl border-2 border-black p-8 text-black mt-10'>
 						<div>
 							<h2 className='text-[32px] font-semibold'>{`${name}`}</h2>
-							<p className='text-[20px] max-w-[586px] break-words'>
+							<p className='text-[20px] w-[586px] break-words'>
 								{infoTest}
 							</p>
 						</div>
-						<div className=''>
-							<p className='text-[32px] font-semibold'>
-								Кол-во попыток: {userAttempt}
-							</p>
-						</div>
+						{userAttempt && (
+							<div className=''>
+								<p className='text-[32px] font-semibold'>
+									Кол-во попыток: {userAttempt}
+								</p>
+							</div>
+						)}
 					</div>
-					<div className='flex justify-end'>
+					<div className='flex justify-end pb-[30px]'>
 						<Link href={`/student/${discipline.id}/testId/${id}`}>
 							<Button variant='default' size={'lg'}>
 								Решать
