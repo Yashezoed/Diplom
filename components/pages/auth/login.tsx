@@ -17,16 +17,17 @@ export default function Login() {
 	return (
 		<form
 			action={formAction}
-			className='min-h-screen relative overflow-hidden bg-background'
+			className='min-h-screen bg-background flex justify-center items-center'
 		>
 			<FixAuth />
-			<div className='bg-white rounded-[65px] my-[30px] mx-[93px] flex'>
+			<div className='bg-white rounded-[65px] w-[1750px] h-[875px]  flex'>
 				<Image
 					src={'/plane.jpg'}
 					alt='Самолет'
 					width={740}
 					height={740}
-					className='rounded-[52px] m-[77px]'
+					className='rounded-[52px] m-[77px] w-auto '
+					priority={true}
 				/>
 				<div className='flex flex-col mt-[114px] mr-[181px] w-full'>
 					<h1 className='text-[64px] font-bold text-black'>

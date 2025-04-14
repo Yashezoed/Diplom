@@ -32,13 +32,12 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 					parseCredentials.data.login,
 					parseCredentials.data.password
 				);
-				console.log(response)
 
 				const user: User = {
 					user: {
 						id: response.idUser,
 						role: response.roleDto.name,
-						name: response.username
+						name: response.userName
 					},
 					token: response.jwt
 				};

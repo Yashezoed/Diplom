@@ -1,0 +1,9 @@
+export interface IInfoStudent {
+	startDateOfTraining: string;
+	endOfTraining: string;
+	users: any;
+	cours: number;
+	direction: string;
+	id: number;
+	name: string;
+}

@@ -20,7 +20,9 @@ const buttonVariants = cva(
 				ghost: 'hover:bg-accent hover:text-accent-foreground',
 				linkBtn:
 					'border-2 border-black bg-white hover:bg-accent rounded-[38px] flex items-center justify-between px-[40px]',
-				answer: 'bg-white text-black border-2 border-black p-[20px]'
+				answer: 'bg-white text-black border-2 border-black p-[20px]',
+				nonActive:
+					'bg-primary text-primary-foreground border-2 border-primary border-[3px]'
 			},
 			size: {
 				default: 'text-[32px] py-[21px] font-semibold rounded-[18px]',
@@ -28,7 +30,8 @@ const buttonVariants = cva(
 				lg: 'h-[148px] w-[485px] rounded-[39px] text-[40px]',
 				xl: 'h-[120px] w-[687px] rounded-[39px] text-[40px]',
 				icon: 'h-9 w-9',
-				linkBtn: 'w-[447px] h-[85px] text-[36px]'
+				linkBtn: 'w-[447px] h-[85px] text-[36px]',
+				profileBtn: 'w-[333px] h-[84px] rounded-[60px] text-[32px]'
 			}
 		},
 		defaultVariants: {
