@@ -17,7 +17,7 @@ export interface IattemptStarted {
 }
 
 export interface InoAttemptStarted {
-	isAttempt: true;
+	isTrue: true;
 }
 
 //typeGuards
@@ -52,6 +52,6 @@ export function isInoAttemptStarted(
 	return (
 		typeof attempt === 'object' &&
 		attempt !== null &&
-		attempt.isAttempt === true
+		attempt.isTrue === true
 	);
 }

@@ -12,7 +12,7 @@ export default function StudentLayout({
 	profileBtn?: boolean;
 }) {
 	return (
-		<div className='bg-white mt-10 rounded-[65px] w-[1750px] h-[875px]'>
+		<div className='bg-white rounded-[65px] w-[1750px] h-[875px]'>
 			<header className='flex justify-between items-center min-h-[75px] pl-[65px] pr-[95px] pt-[80px] '>
 				<div className='flex items-center'>
 					<LeftSideHeader title={title} />

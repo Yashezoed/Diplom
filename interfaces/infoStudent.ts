@@ -1,7 +1,7 @@
 export interface IInfoStudent {
 	startDateOfTraining: string;
 	endOfTraining: string;
-	users: any;
+	users: string; // Хз что за тип
 	cours: number;
 	direction: string;
 	id: number;

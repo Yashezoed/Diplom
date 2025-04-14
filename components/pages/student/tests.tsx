@@ -15,8 +15,6 @@ export default function Tests(props: { data: ITest[] }) {
 
 
 	const clickHandler = (testId: number) => {
-
-
 		const params = new URLSearchParams(searchParams);
 		params.set('testId', `${testId}`);
 		replace(`${pathname}?${params.toString()}`);
