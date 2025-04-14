@@ -1,21 +1,21 @@
 'use server';
 
-import { auth } from "@/auth";
-import { IError } from "@/interfaces/common";
-import { ITest } from "@/interfaces/test";
+import { auth } from '@/auth';
+import { IError } from '@/interfaces/common';
+import { ITest } from '@/interfaces/test';
 
-
-export default async function fetchTests(id: number): Promise<ITest[] | IError> {
-
+export default async function fetchTests(
+	id: number
+): Promise<ITest[] | IError> {
 	const session = await auth();
-		const url = `${process.env.NEXT_PUBLIC_BACKEND_API_URL}Test/GetListTestDiscipline/${id}`;
-		const options = {
-			method: 'GET',
-			headers: {
-				'Content-Type': 'application/json',
-				Authorization: `Bearer ${session?.token}`
-			}
-		};
+	const url = `${process.env.NEXT_PUBLIC_BACKEND_API_URL}Test/GetListTestDiscipline/${id}`;
+	const options = {
+		method: 'GET',
+		headers: {
+			'Content-Type': 'application/json',
+			Authorization: `Bearer ${session?.token}`
+		}
+	};
 	try {
 		const response = await fetch(url, options);
 		if (response.ok) {

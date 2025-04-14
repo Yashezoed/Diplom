@@ -67,8 +67,6 @@ export default function Login() {
 					</div>
 				</div>
 			</div>
-
-			{/* Градиент */}
 		</form>
 	);
 }

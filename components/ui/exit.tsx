@@ -1,8 +1,8 @@
 'use server'
 import { signOut } from '@/auth';
-import { LogOut } from 'lucide-react';
+import { ChevronRight } from 'lucide-react';
+import { Button } from './button';
 
-// TODO не забыть удалить
 export const signOutFn = async () => await signOut();
 
 export const ExitButton = async () => {
@@ -11,9 +11,10 @@ export const ExitButton = async () => {
 			<form
 				action={signOutFn}
 			>
-				<button type='submit'>
-					<LogOut className='w-8 h-8 text-black cursor-pointer' />
-				</button>
+				<Button variant={'linkBtn'} size={'linkBtn'} type='submit' className='flex justify-between'>
+					<p className="text-[36px] ">Выйти</p>
+					<ChevronRight size={48} strokeWidth={1.5} color='#000000' />
+				</Button>
 			</form>
 		</>
 	);

@@ -12,15 +12,15 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 	providers: [
 		Credentials({
 			credentials: {
-				email: {},
+				login: {},
 				password: {}
 			},
 			async authorize(credentials) {
-				// console.log('Credentials ', credentials);
+				console.log('Credentials ', credentials);
 				const parseCredentials = z
 					.object({
 						login: z.string(),
-						password: z.string() /* .min(6) */
+						password: z.string().min(6)
 					})
 					.safeParse(credentials);
 
@@ -57,6 +57,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 		session({ session, token }) {
 			session.token = token.token as string;
 			session.user = token.user as AdapterUser & User;
+
 			return session;
 		},
 		authorized({ auth, request: { nextUrl } }) {
