@@ -15,7 +15,7 @@ export default function Answers({
 		<Button
 			variant={'answer'}
 			size={'default'}
-			className={`flex justify-start
+			className={`flex justify-start w-full mb-[20px]
                 ${isSelected ? 'bg-accent' : 'bg-transparent'}
             `}
 			onClick={() => selectAnswer(answerId)}

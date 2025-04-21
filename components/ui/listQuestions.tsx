@@ -33,7 +33,7 @@ export default function ListQuestions({
 								updateAnswers();
 							}}
 							className={`text-[#fff] bg-[#5D5D5D]  m-[5px] size-[30px] rounded-sm flex justify-center items-center
-									${currentQuestion === index ? 'outline outline-[3px] outline-white' : ''}
+									${currentQuestion === index ? 'outline outline-[3px] outline-primary outline-offset-[2px]' : ''}
 									${
 										selectedAnswers[index] &&
 										selectedAnswers[index].userRespones !==

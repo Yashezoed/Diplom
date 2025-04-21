@@ -16,7 +16,6 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 				password: {}
 			},
 			async authorize(credentials) {
-				console.log('Credentials ', credentials);
 				const parseCredentials = z
 					.object({
 						login: z.string(),
@@ -27,7 +26,6 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 				if (!parseCredentials.success) {
 					return null;
 				}
-				console.log(parseCredentials)
 				const response: IauthResponse = await Login(
 					parseCredentials.data.login,
 					parseCredentials.data.password

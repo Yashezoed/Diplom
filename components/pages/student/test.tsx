@@ -13,6 +13,7 @@ import { IattemptStarted } from '@/interfaces/checkingAttempt';
 import { useEffect } from 'react';
 import MyAlertDialog from '@/components/ui/my-alert-dialog';
 import { Button } from '@/components/ui/button';
+import { ScrollArea } from '@/components/ui/scroll-area';
 
 export default function Test({
 	data,
@@ -63,7 +64,6 @@ export default function Test({
 			idResult: attemptId
 		};
 		const res = await sendResultTest(dataForRequest);
-		console.log('res=======>', res);
 		clearStore();
 
 		if (!isError(res)) {
@@ -78,51 +78,54 @@ export default function Test({
 	};
 
 	return (
-		<div className='mx-[80px] mt-[40px]'>
-			<Questiontitle
-				name={data[currentQuestion].name}
-				info={data[currentQuestion].info}
-			/>
-			<div className='flex justify-between mt-[46px]'>
-				<div className='flex flex-col  gap-[16px] w-[80%] '>
-					{data[currentQuestion].answers.map((answer, index) => {
-						return (
-							<Answers
-								key={answer.id}
-								text={answer.answerText}
-								index={index + 1}
-								isSelected={
-									selectedAnswers[currentQuestion]
-										? Number(
-												selectedAnswers[currentQuestion]
-													.userRespones
-										  ) === answer.id
-										: false
-								}
-								answerId={answer.id.toString()}
+		<div className='mx-[80px] flex flex-col justify-between h-full '>
+			<div className='flex flex-col overflow-hidden  '>
+				<Questiontitle
+					name={data[currentQuestion].name}
+					info={data[currentQuestion].info}
+				/>
+				<div className='flex pt-[46px] overflow-hidden justify-between '>
+					<ScrollArea className='flex-1 max-w-[75%] h-full '>
+						{data[currentQuestion].answers.map((answer, index) => {
+							return (
+								<Answers
+									key={answer.id}
+									text={answer.answerText}
+									index={index + 1}
+									isSelected={
+										selectedAnswers[currentQuestion]
+											? Number(
+													selectedAnswers[
+														currentQuestion
+													].userRespones
+											  ) === answer.id
+											: false
+									}
+									answerId={answer.id.toString()}
+								/>
+							);
+						})}
+					</ScrollArea>
+					<div className=''>
+						{typeof minutes === 'number' ? (
+							<Timer
+								minutes={minutes}
+								seconds={seconds}
+								action={sendAnswers}
 							/>
-						);
-					})}
-				</div>
-				<div className='w-[315px] h-[375px] ml-[48px]'>
-					{typeof minutes === 'number' ? (
-						<Timer
-							minutes={minutes}
-							seconds={seconds}
-							action={sendAnswers}
+						) : (
+							''
+						)}
+						<ListQuestions
+							currentQuestion={currentQuestion}
+							selectedAnswers={selectedAnswers}
+							data={data}
+							updateAnswers={updateAnswers}
 						/>
-					) : (
-						''
-					)}
-					<ListQuestions
-						currentQuestion={currentQuestion}
-						selectedAnswers={selectedAnswers}
-						data={data}
-						updateAnswers={updateAnswers}
-					/>
+					</div>
 				</div>
 			</div>
-			<div className='flex justify-end gap-[12px] mt-[15px] pb-[28px]'>
+			<div className='flex justify-end gap-[12px] py-[20px]'>
 				{currentQuestion + 1 < data.length && (
 					<Button
 						className='rounded-[39px] p-[16px] px-[30px] text-[25px] font-medium '
