@@ -46,9 +46,9 @@ export default function Statistics({
 	};
 
 	return (
-		<div className='mt-[30px] flex flex-col'>
-			<div className='flex items-end justify-between'>
-				<div className=''>
+		<div className=' mt-[30px] flex flex-col h-[calc(100%-125px)]'>
+			<div className='flex items-end justify-between pb-[20px]'>
+				<div>
 					<p className='text-[28px] mb-[10px] font-medium'>
 						Статистика по предмету
 					</p>
@@ -67,33 +67,39 @@ export default function Statistics({
 						</SelectContent>
 					</Select>
 				</div>
-				<p className='text-[36px] font-medium'>
+				<p className='text-[36px] font-medium text-wrap'>
 					Средний результат {AVGScore.result.toFixed(0)}%
 				</p>
 			</div>
-			<ScrollArea className='h-[428px] pt-[30px] pr-[10px]'>
-				<div className="flex flex-col gap-[25px]">
-				{results.map((item) =>
-					item.result.map((test) => (
-						<div
-							key={test.idUserRespones}
-							className='flex justify-around items-center border border-2 rounded-[15px] border-black py-[10px] mb-[3px] '
-						>
-							<p className='text-[36px] font-bold '>
-								{test.result.toFixed(0)}%
-							</p>
-							<p className='text-[24px] font-semibold'>
-								01.01.2024
-							</p>
-							<p className='text-[24px] font-semibold'>
-								Тест №{test.idUserRespones}
-							</p>
-							<Link href={'#'}>
-								<Button size={'sm'}>Смотреть результат</Button>
-							</Link>
-						</div>
-					))
-				)}</div>
+			<ScrollArea className=''>
+				<div className='flex flex-col gap-[25px]'>
+					{results.map((item) =>
+						item.result.map((test) => (
+							<div
+								key={test.idUserRespones}
+								className='flex justify-around items-center border border-2 rounded-[15px] border-black py-[10px]'
+							>
+								<p className='text-[36px] font-bold '>
+									{test.result.toFixed(0)}%
+								</p>
+								<p
+									className='text-[24px] font-semibold
+								// TODO переделать данныe'
+								>
+									01.01.2024
+								</p>
+								<p className='text-[24px] font-semibold'>
+									Тест №{test.idUserRespones}
+								</p>
+								<Link href={'#'}>
+									<Button size={'sm'}>
+										Смотреть результат
+									</Button>
+								</Link>
+							</div>
+						))
+					)}
+				</div>
 			</ScrollArea>
 		</div>
 	);

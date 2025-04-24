@@ -14,23 +14,24 @@ export default function Login() {
 		undefined
 	);
 
-
 	return (
 		<form
 			action={formAction}
-			className='min-h-screen bg-background flex justify-center items-center'
+			className='min-h-screen min-w-screen bg-background flex justify-center items-center'
 		>
 			<FixAuth />
-			<div className='bg-white rounded-[65px] w-[1750px] h-[875px]  flex'>
-				<Image
-					src={'/plane.jpg'}
-					alt='Самолет'
-					width={740}
-					height={740}
-					className='rounded-[52px] m-[77px] w-auto '
-					priority={true}
-				/>
-				<div className='flex flex-col mt-[114px] mr-[181px] w-full'>
+			<div className='bg-white rounded-[65px] mx-[70px] w-full flex justify-around'>
+				<div className='flex items-center pl-[20px]'>
+					<Image
+						src={'/plane.jpg'}
+						alt='Самолет'
+						width={740}
+						height={740}
+						className='rounded-[52px]  max-w-full max-h-full object-fill'
+						priority={true}
+					/>
+				</div>
+				<div className='flex flex-col mt-[114px] w-[50%] px-[20px] '>
 					<h1 className='text-[64px] font-bold text-black'>
 						Авторизация
 					</h1>

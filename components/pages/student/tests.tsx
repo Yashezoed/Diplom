@@ -13,7 +13,6 @@ export default function Tests(props: { data: ITest[] }) {
 	const { replace } = useRouter();
 	const data = props.data;
 
-
 	const clickHandler = (testId: number) => {
 		const params = new URLSearchParams(searchParams);
 		params.set('testId', `${testId}`);
@@ -21,13 +20,13 @@ export default function Tests(props: { data: ITest[] }) {
 	};
 
 	return data.map((lesson) => (
-			<Button
-				onClick={() => clickHandler(lesson.id)}
-				variant={'outline'}
-				size={'xl'}
-				key={lesson.id}
-			>
-				{`${lesson.name}`}
-			</Button>
+		<Button
+			onClick={() => clickHandler(lesson.id)}
+			variant={'outline'}
+			size={'xl'}
+			key={lesson.id}
+		>
+			{`${lesson.name}`}
+		</Button>
 	));
 }

@@ -13,7 +13,7 @@ export default function StudentLayout({
 }) {
 	return (
 		<div className='bg-white rounded-[65px] w-full h-full flex flex-col'>
-			<header className='flex justify-between items-center max-h-[165px] pl-[65px] pr-[95px] pt-[80px] '>
+			<header className='flex justify-between items-center max-h-[165px] pl-[65px] pr-[95px] pt-[60px] '>
 				<div className='flex items-center'>
 					<LeftSideHeader title={title} />
 				</div>

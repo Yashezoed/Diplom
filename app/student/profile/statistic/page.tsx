@@ -13,13 +13,14 @@ export default async function page({
 }: {
 	searchParams: { disciplineId?: number };
 }) {
-	const disciplineId = searchParams.disciplineId;
+	const params = await searchParams;
 	const disciplines = (await fetchDisciplines()) as ICourse[];
-	const avgScrore = (await AVGScore(disciplineId || 1)) as IAVGScore;
-	const results = await testResults(disciplineId || 1) as ITestResults[];
+	const avgScrore = (await AVGScore(params.disciplineId || 1)) as IAVGScore;
+	const results = (await testResults(params.disciplineId || 1)) as ITestResults[];
+
 	return (
-		<div>
-			<div className='flex  gap-[35px]'>
+		<div className=''>
+			<div className='flex gap-[35px]'>
 				<Link href={'/student/profile'}>
 					<Button variant={'outline'} size={'profileBtn'}>
 						Личные данные
@@ -41,7 +42,11 @@ export default async function page({
 					</Button>
 				</Link>
 			</div>
-			<Statistics data={disciplines} AVGScore={avgScrore} results={results} />
+			<Statistics
+				data={disciplines}
+				AVGScore={avgScrore}
+				results={results}
+			/>
 		</div>
 	);
 }

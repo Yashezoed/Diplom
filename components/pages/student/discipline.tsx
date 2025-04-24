@@ -21,14 +21,14 @@ export default async function Discipline() {
 				) : (
 					<>
 						<FixAuth />
-						<ScrollArea className='h-full py-10 px-[74px] py-10 rounded-3xl '>
-							<div className='grid grid-cols-3 gap-[64px] '>
+						<ScrollArea className='h-full py-10 rounded-3xl px-[10px]'>
+							<div className='grid grid-cols-3 gap-[64px]'>
 								{data.map((card) => (
 									<Button
 										asChild
 										variant='default'
 										size={'lg'}
-										className='text-[36px] '
+										className='text-[36px] w-full '
 										key={card.id}
 									>
 										<Link

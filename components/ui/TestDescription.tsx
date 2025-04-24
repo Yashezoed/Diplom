@@ -3,12 +3,12 @@ import isError from '@/lib/api/isError';
 import Link from 'next/link';
 import { Suspense } from 'react';
 import { Button } from './button';
+import { ScrollArea } from './scroll-area';
 
 export default async function TestDescription(props: {
 	data: ILessonDescription;
 }) {
 	const { infoTest, name, id, discipline, userAttempt } = props.data;
-	console.log('Lesson Description ==>', props.data);
 
 	return (
 		<Suspense fallback={<div>Загрузка...</div>}>
@@ -18,23 +18,23 @@ export default async function TestDescription(props: {
 					{props.data.message}
 				</div>
 			) : (
-				<div className='flex flex-col justify-between max-h-[700px]'>
-					<div className='flex flex-col gap-[50px] relative overflow-hidden rounded-3xl border-2 border-black p-8 text-black mt-10'>
-						<div>
-							<h2 className='text-[32px] font-semibold'>{`${name}`}</h2>
+				<div className='flex flex-col justify-between'>
+					<div className='flex flex-col overflow-hidden rounded-3xl border-2 border-black p-8 text-black '>
+						<h2 className='text-[32px] font-semibold'>{`${name}`}</h2>
+						<ScrollArea>
 							<p className='text-[20px] w-[586px] break-words'>
 								{infoTest}
 							</p>
-						</div>
+						</ScrollArea>
 						{userAttempt && (
 							<div className=''>
 								<p className='text-[32px] font-semibold'>
-									Кол-во попыток: {userAttempt}
+									Попыток осталось {userAttempt}
 								</p>
 							</div>
 						)}
 					</div>
-					<div className='flex justify-end pb-[30px]'>
+					<div className='flex justify-end '>
 						<Link href={`/student/${discipline.id}/testId/${id}`}>
 							<Button variant='default' size={'lg'}>
 								Решать

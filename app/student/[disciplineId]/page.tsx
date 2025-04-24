@@ -24,11 +24,6 @@ export default async function Page({
 	const dataTests = await fetchTests(disciplineId); //список тестов
 	const testInfo = await fetchLesson(testId || (dataTests as ITest[])[0].id); //информация о тесте'
 
-	console.log('dataTest',(dataTests as ITest[])[0].id);
-	console.log('testId =>', testId);
-
-
-	console.log('testInfo =>', testInfo);
 
 	return (
 		<>
@@ -42,8 +37,8 @@ export default async function Page({
 							</div>
 						) : (
 							<>
-								<div className='flex justify-between px-[72px] '>
-									<ScrollArea className='h-[90vh] mt-10 pb-[20px] flex flex-col pr-[20px] mr-[221px]'>
+								<div className='flex justify-around px-[20px] h-full pb-[30px] pt-6 '>
+									<ScrollArea>
 										<div className='flex flex-col gap-[22px]'>
 											<Tests data={dataTests} />
 										</div>

@@ -4,7 +4,7 @@ import Link from 'next/link';
 
 export default function Page() {
 	return (
-		<>
+		<div className='flex gap-[35px]'>
 			<Button variant={'nonActive'} size={'profileBtn'}>
 				Личные данные
 			</Button>
@@ -20,6 +20,6 @@ export default function Page() {
 					<ChevronRight size={48} strokeWidth={1.5} color='#000000' />
 				</Button>
 			</Link>
-		</>
+		</div>
 	);
 }
