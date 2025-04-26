@@ -54,6 +54,8 @@ export default function Test({
 			userResponesTest: selectedAnswers as UserResponesTest[],
 			idResult: attemptId
 		};
+		console.log(attempt);
+
 		await updateTestAnswers(dataForRequest);
 	};
 
@@ -68,12 +70,11 @@ export default function Test({
 
 		if (!isError(res)) {
 			const params = new URLSearchParams(searchParams);
-			params.set('idUserRespones', `${res.idUserRespones}`);
-			params.set('result', `${res.result}`);
-			params.set('evaluationName', `${res.evaluationName}`);
-			params.set('attempts', `${res.attempts}`);
+			params.set('id', `${res.idUserRespones}`);
+			console.log(res);
+
 			clearStore();
-			replace(`${pathname}/resultTest?${params.toString()}`);
+			replace(`/student/resultTest?${params.toString()}`);
 		}
 	};
 

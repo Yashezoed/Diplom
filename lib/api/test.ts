@@ -25,10 +25,8 @@ export const sendResultTest = async (
 	};
 	try {
 		const response = await fetch(url, options);
-		console.log(response);
 
 		if (response.ok) {
-			console.log("!OK!");
 			return await response.json();
 		} else {
 			throw new Error(`${response.status} ${response.statusText}`);
@@ -61,8 +59,6 @@ export const updateTestAnswers = async (
 
 	try {
 		const response = await fetch(url, options);
-		console.log('response =>>>>',response);
-
 		if (response.ok) {
 
 			return await response.json();

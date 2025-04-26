@@ -1,11 +1,21 @@
 'use client';
-// ! в этот компонент можно попасть из профиля и из результатов теста
-export default function resultTest() {
+
+import StudentLayout from "@/components/layuout/studentLayout";
+import { IresultTestData } from "@/interfaces/resultTestData";
+
+export default function resultTest({data, testName}:{ data : IresultTestData; testName: string }) {
 	if (typeof window !== 'undefined') {
 		localStorage.removeItem('test-storage');
 	}
+	console.log(data);
+	console.log(testName);
 
 
 
-	return <div>Результаты теста</div>;
+
+	return (
+		<StudentLayout title={testName}>
+			<div>Результаты теста</div>
+		</StudentLayout>
+	);
 }

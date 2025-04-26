@@ -91,7 +91,7 @@ export default function Statistics({
 								<p className='text-[24px] font-semibold'>
 									Тест №{test.idUserRespones}
 								</p>
-								<Link href={'#'}>
+								<Link href={'/student/resultTest?id=' + test.idUserRespones + '&testName=' + item.test.name}>
 									<Button size={'sm'}>
 										Смотреть результат
 									</Button>
