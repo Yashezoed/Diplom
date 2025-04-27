@@ -56,8 +56,6 @@ export const updateTestAnswers = async (
 		},
 		body: JSON.stringify(body)
 	};
-	console.log('update attempt ', options);
-
 	try {
 		const response = await fetch(url, options);
 		if (response.ok) {

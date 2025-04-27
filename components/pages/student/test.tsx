@@ -70,12 +70,13 @@ export default function Test({
 		clearStore();
 
 		if (!isError(res)) {
-			console.log(res);
 			const params = new URLSearchParams(searchParams);
 			params.set('id', `${res.idUserRespones}`);
 			params.set('testName', `${res.nameTest}` );
-			console.log('RES =>',res);
-
+			params.set('result', `${res.result.toFixed(0)}`);
+			params.set('isChek', `${res.isChek}`);
+			params.set('evaluationName', `${res.evaluationName}`);
+			params.set('attempts', `${res.attempts}`);
 			clearStore();
 			replace(`/student/resultTest?${params.toString()}`);
 		}
@@ -132,7 +133,7 @@ export default function Test({
 			<div className='flex justify-end gap-[12px] py-[20px]'>
 				{currentQuestion + 1 < data.length && (
 					<Button
-						className='rounded-[39px] p-[16px] px-[30px] text-[25px] font-medium '
+						size={'medium'}
 						onClick={() => {
 							setNextQuestion();
 							updateAnswers();

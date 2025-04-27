@@ -7,5 +7,5 @@ export interface IuserAnswers {
 
 export interface UserResponesTest {
 	questId: number;
-	userRespones: [string | null];
+	userRespones: [string] | null;
 }

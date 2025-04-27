@@ -7,7 +7,7 @@ import { immer } from 'zustand/middleware/immer';
 
 export interface IAnswer {
 	questId: number;
-	userRespones: [string | null];
+	userRespones: [string] | null;
 }
 
 interface IQuestionStore {
@@ -35,7 +35,7 @@ const useQuestionStore = create<IQuestionStore>()(
 					const initialAnswers : IAnswer[] = data.map((answer) => {
 						return {
 							questId: Number(answer.id),
-							userRespones: [null]
+							userRespones: null
 						};
 					});
 					state.selectedAnswers = initialAnswers;

@@ -16,7 +16,7 @@ import { ITestResults } from '@/interfaces/testResults';
 import isError from '@/lib/api/isError';
 import Link from 'next/link';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export default function Statistics({
 	data,
@@ -27,24 +27,38 @@ export default function Statistics({
 	AVGScore: IAVGScore;
 	results: ITestResults[] | IError;
 }) {
-	const [value, setValue] = useState(data[0]?.name);
+	const [selectedDiscipline, setSelectedDiscipline] = useState<string>(
+		data[0]?.name || ''
+	);
+
 	const searchParams = useSearchParams();
 	const pathname = usePathname();
-	const { replace } = useRouter();
+	const router = useRouter();
 
-	const clickHandler = (testId: number) => {
-		const params = new URLSearchParams(searchParams);
-		params.set('disciplineId', `${testId}`);
-		replace(`${pathname}?${params.toString()}`);
+	const updateDisciplineInURL = (disciplineId: number) => {
+		const params = new URLSearchParams(searchParams.toString());
+		params.set('disciplineId', disciplineId.toString());
+		router.replace(`${pathname}?${params.toString()}`);
 	};
 
-	const onValueChange = (selectedValue: string) => {
-		setValue(selectedValue);
-		const selectedItem = data.find((item) => item.name === selectedValue);
-		if (selectedItem) {
-			clickHandler(selectedItem.id);
+	const handleSelectChange = (value: string) => {
+		setSelectedDiscipline(value);
+		const selectedCourse = data.find((course) => course.name === value);
+		if (selectedCourse) {
+			updateDisciplineInURL(selectedCourse.id);
 		}
 	};
+
+	useEffect(() => {
+		if (data.length === 0) return;
+		const selectedCourse = data.find(
+			(course) => course.name === selectedDiscipline
+		);
+		if (selectedCourse) {
+			updateDisciplineInURL(selectedCourse.id);
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
 	return (
 		<div className=' mt-[30px] flex flex-col h-[calc(100%-125px)]'>
@@ -53,9 +67,12 @@ export default function Statistics({
 					<p className='text-[28px] mb-[10px] font-medium'>
 						Статистика по предмету
 					</p>
-					<Select value={value} onValueChange={onValueChange}>
+					<Select
+						value={selectedDiscipline}
+						onValueChange={handleSelectChange}
+					>
 						<SelectTrigger>
-							<SelectValue placeholder={value} />
+							<SelectValue placeholder={selectedDiscipline} />
 						</SelectTrigger>
 						<SelectContent>
 							<SelectGroup>
@@ -74,36 +91,49 @@ export default function Statistics({
 			</div>
 			<ScrollArea className='max-w-[1069px]'>
 				<div className='flex flex-col gap-[25px]'>
-					{!isError(results) && results.map((item) => (
-						<div
-							key={item.idUserRespones}
-							className='grid grid-cols-[70px_140px_minmax(150px,1fr)_280px] gap-4 items-center border border-2 rounded-[15px] border-black p-[10px]'
-						>
-							<span className='text-[24px] font-bold text-center '>
-								{item.result.toFixed(0)}%
-							</span>
-							<p className='text-[24px] font-semibold text-center'>
-								{new Date(item.dateFinish).toLocaleDateString()}
-							</p>
-							<p className='text-[24px] font-semibold text-center'>
-								{item.nameTest}
-							</p>
-
-							<Link
-								href={
-									'/student/resultTest?id=' +
-									item.idUserRespones +
-									'&testName=' +
-									item.nameTest
-								}
-
+					{!isError(results) &&
+						results.map((item) => (
+							<div
+								key={item.idUserRespones}
+								className='grid grid-cols-[70px_140px_minmax(150px,1fr)_280px] gap-4 items-center border border-2 rounded-[15px] border-black p-[10px]'
 							>
-								<Button size={'sm'} className='w-fit px-[10px]'>
-									Смотреть результат
-								</Button>
-							</Link>
-						</div>
-					))}
+								<span className='text-[24px] font-bold text-center '>
+									{item.result.toFixed(0)}%
+								</span>
+								<p className='text-[24px] font-semibold text-center'>
+									{new Date(
+										item.dateFinish
+									).toLocaleDateString()}
+								</p>
+								<p className='text-[24px] font-semibold text-center'>
+									{item.nameTest}
+								</p>
+								{/* //TODO  Я не уверен, что так норм передавать парамы */}
+								<Link
+									href={
+										'/student/resultTest?id=' +
+										item.idUserRespones +
+										'&testName=' +
+										item.nameTest +
+										'&result=' +
+										item.result.toFixed(0) +
+										'&isChek=' +
+										item.isChek +
+										'&evaluationName=' +
+										item.evaluationName +
+										'&attempts=' +
+										item.attempts
+									}
+								>
+									<Button
+										size={'sm'}
+										className='w-fit px-[10px]'
+									>
+										Смотреть результат
+									</Button>
+								</Link>
+							</div>
+						))}
 				</div>
 			</ScrollArea>
 		</div>
