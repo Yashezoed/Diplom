@@ -22,6 +22,9 @@ export default function ListQuestions({
 		<div className=' mt-[16px] w-[280px]'>
 			<div className='p-[20px] flex flex-wrap'>
 				{data.map((answers, index) => {
+					// console.log(selectedAnswers[index].userRespones);
+					// TODO решиться с моментом заполнения изначальных ответов массив налл или просто налл
+
 					return (
 						<button
 							key={answers.id}

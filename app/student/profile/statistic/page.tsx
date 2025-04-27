@@ -2,7 +2,6 @@ import Statistics from '@/components/pages/student/statistics';
 import { Button } from '@/components/ui/button';
 import { IAVGScore } from '@/interfaces/AVGScore';
 import { ICourse } from '@/interfaces/course';
-import { ITestResults } from '@/interfaces/testResults';
 import fetchDisciplines from '@/lib/api/fetchDisciplines';
 import { AVGScore, testResults } from '@/lib/api/studentProfile';
 import { ChevronRight } from 'lucide-react';
@@ -16,7 +15,7 @@ export default async function page({
 	const params = await searchParams;
 	const disciplines = (await fetchDisciplines()) as ICourse[];
 	const avgScrore = (await AVGScore(params.disciplineId || 1)) as IAVGScore;
-	const results = (await testResults(params.disciplineId || 1)) as ITestResults[];
+	const results = (await testResults(params.disciplineId || 1));
 
 	return (
 		<div className=''>

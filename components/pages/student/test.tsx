@@ -37,16 +37,19 @@ export default function Test({
 
 	const initializeStore = useQuestionStore((state) => state.initializeStore);
 
+	const setServerData = useQuestionStore((state) => state.setServerData);
+
 	const setNextQuestion = useQuestionStore((state) => state.nextQuestion);
 
 	const clearStore = useQuestionStore((state) => state.clearStore);
 
 	useEffect(() => {
 		if (attempt && attempt?.userResponesTest.length > 0) {
+			setServerData(attempt.userResponesTest);
 			return;
 		}
 		initializeStore(data);
-	}, [attempt, data, initializeStore]);
+	}, [attempt, data, initializeStore, setServerData]);
 
 	const updateAnswers = async () => {
 		const dataForRequest: IuserAnswers = {
@@ -54,8 +57,6 @@ export default function Test({
 			userResponesTest: selectedAnswers as UserResponesTest[],
 			idResult: attemptId
 		};
-		console.log(attempt);
-
 		await updateTestAnswers(dataForRequest);
 	};
 
@@ -69,9 +70,11 @@ export default function Test({
 		clearStore();
 
 		if (!isError(res)) {
+			console.log(res);
 			const params = new URLSearchParams(searchParams);
 			params.set('id', `${res.idUserRespones}`);
-			console.log(res);
+			params.set('testName', `${res.nameTest}` );
+			console.log('RES =>',res);
 
 			clearStore();
 			replace(`/student/resultTest?${params.toString()}`);

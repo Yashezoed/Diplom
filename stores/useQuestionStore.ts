@@ -1,12 +1,13 @@
 'use client';
 import { IListQuestions } from '@/interfaces/listQuestions';
+import { UserResponesTest } from '@/interfaces/userAnswers';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { immer } from 'zustand/middleware/immer';
 
 export interface IAnswer {
 	questId: number;
-	userRespones: [string] | null;
+	userRespones: [string | null];
 }
 
 interface IQuestionStore {
@@ -14,6 +15,7 @@ interface IQuestionStore {
 	currentQuestionId: string;
 	selectedAnswers: IAnswer[];
 	initializeStore: (data: IListQuestions[]) => void;
+	setServerData: (data: UserResponesTest[]) => void;
 	nextQuestion: () => void;
 	changeCurrentQuestion: (index: number, id: string) => void;
 	selectAnswer: (answerId: string) => void;
@@ -30,14 +32,26 @@ const useQuestionStore = create<IQuestionStore>()(
 				set((state) => {
 					state.currentQuestion = 0;
 					state.currentQuestionId = data[0].id.toString();
-					const initialAnswers = data.map((answer) => {
+					const initialAnswers : IAnswer[] = data.map((answer) => {
 						return {
 							questId: Number(answer.id),
-							userRespones: null
+							userRespones: [null]
 						};
 					});
 					state.selectedAnswers = initialAnswers;
 				});
+			},
+			setServerData: (data: UserResponesTest[]) => {
+				set((state) => {
+					const serverData: IAnswer[]  = data.map((answer) => {
+						return {
+							questId: answer.questId,
+							userRespones: answer.userRespones
+						};
+					})
+					state.selectedAnswers = serverData
+				})
+
 			},
 			nextQuestion: () => {
 				set((state) => {

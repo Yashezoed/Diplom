@@ -3,15 +3,15 @@
 import { auth } from "@/auth";
 import { IattemptStarted, IcompletedAttempt, InoAttemptStarted } from "@/interfaces/checkingAttempt";
 import { IError } from "@/interfaces/common";
-import { IResultTest } from "@/interfaces/ResultTest";
 import { IresultTestData } from '@/interfaces/resultTestData';
+import { ITestResults } from "@/interfaces/testResults";
 import { IuserAnswers } from "@/interfaces/userAnswers";
 
 // Отправить итоговый результат теста
 
 export const sendResultTest = async (
 	body: IuserAnswers
-): Promise<IResultTest | IError> => {
+): Promise<ITestResults | IError> => {
 	const session = await auth();
 
 	const url = `${process.env.NEXT_PUBLIC_BACKEND_API_URL}ResultTest/studentPassedTest`;
@@ -56,6 +56,7 @@ export const updateTestAnswers = async (
 		},
 		body: JSON.stringify(body)
 	};
+	console.log('update attempt ', options);
 
 	try {
 		const response = await fetch(url, options);

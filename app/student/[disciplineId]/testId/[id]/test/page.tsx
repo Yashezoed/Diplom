@@ -29,11 +29,6 @@ export default async function page({
 	const questions = await fetchListQuestions(id); // список вопросов
 	const currentTest = (dataTests as ITest[]).find((test) => test.id == id);
 	const attempt = await checkingAttempt(id);
-	console.log(attempt);
-
-	// console.log(dataTests);
-	// console.log(id);
-	// console.log(currentTest);
 
 	if (!isError(testInfo) && !isError(questions) && currentTest) {
 		return (
