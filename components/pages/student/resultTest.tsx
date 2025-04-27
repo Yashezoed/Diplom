@@ -1,5 +1,6 @@
 'use client';
 
+import { Iparams } from '@/app/student/resultTest/page';
 import StudentLayout from '@/components/layuout/studentLayout';
 import { Button } from '@/components/ui/button';
 import { Diagram } from '@/components/ui/pieСhart';
@@ -9,34 +10,31 @@ import Link from 'next/link';
 
 export default function resultTest({
 	data,
-	testName,
-	result,
-	isChek,
-	evaluationName,
-	attempts
+	params
 }: {
 	data: IresultTestData;
-	testName: string;
-	result: number;
-	isChek: boolean;
-	evaluationName: string;
-	attempts: number;
+	params: Iparams
 }) {
+
+	const { testName, result, isChek, evaluationName, attempts} =  params
 	console.log(data);
+	console.log(testName);
 
 	const numberOfQuestions = data.length;
-	const numberOfRightAnswers = data.filter(
-		(item) => item.isCorrectQuest
-	).length;
+	const numberOfRightAnswers = data.filter((item) => item.isCorrectQuest).length;
 	const numberOfWrongAnswers = numberOfQuestions - numberOfRightAnswers;
 
 	return (
 		<StudentLayout title={testName}>
-			<div className='w-full h-full flex px-[70px] py-[40px] '>
-				<div className='w-[50%] px-[60px] flex flex-col justify-between'>
-					<div className='flex justify-between pt-[45px]'>
-						<Diagram  />
-						<div className=''>
+			<div className='w-full h-full flex  py-[40px] '>
+				<div className='w-[50%] flex flex-col justify-between'>
+					<div className='flex justify-between '>
+						<Diagram
+							numberOfRightAnswers={numberOfRightAnswers}
+							numberOfWrongAnswers={numberOfWrongAnswers}
+							result={result}
+						/>
+						<div className='pr-[40px] flex flex-col justify-center'>
 							<h2 className='text-[32px] font-bold pb-[10px]'>
 								Итог: {numberOfRightAnswers}/{numberOfQuestions}
 							</h2>
@@ -67,18 +65,20 @@ export default function resultTest({
 					</div>
 					{isChek && (
 						<Link href={'#'}>
-							<Button size={'medium'}>Подробнее</Button>
+							<Button size={'medium'} className='ml-[70px]'>
+								Подробнее
+							</Button>
 						</Link>
 					)}
 				</div>
 
 				<div className='w-[50%] border-l-2 border-black overflow-hidden '>
-					<ScrollArea className='h-full pl-[40px]'>
+					<ScrollArea className='h-full '>
 						<div
 							className={`gap-y-[50px] justify-items-center  grid ${
-								data.length < 6
+								data.length < 7
 									? `grid-cols-${data.length}`
-									: 'grid-cols-6'
+									: 'grid-cols-7'
 							} `}
 						>
 							{data.map((item, index) => (
