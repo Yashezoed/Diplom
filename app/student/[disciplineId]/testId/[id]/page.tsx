@@ -23,7 +23,6 @@ export default async function page({
 	const testInfo = await fetchLesson(id); //информация о тесте
 	const attempt = await checkingAttempt(id);
 
-	console.log('attempt',attempt);
 
 	switch (true) {
 		case isInoAttemptStarted(attempt):
@@ -45,13 +44,22 @@ export default async function page({
 		case isIcompletedAttempt(attempt):
 			const attemptCompleted = attempt as IcompletedAttempt;
 			// ?? Возможно не самое лучшее решение с actionHref
+
 			return (
 				<Dialog
 					title={'У вас есть завершенная попытка'}
 					actionText='Посмотреть результат'
 					cancelText='Начать новую попытку'
 					cancelHref={`/student/${disciplineId}/testId/${id}/test`}
-					ActionHref={`/student/${disciplineId}/testId/${id}/test/resultTest?idUserRespones=${attemptCompleted.idUserRespones}&result=${attemptCompleted.result}&evaluationName=${attemptCompleted.evaluationName}&attempts=${attemptCompleted.attempts}`}
+					ActionHref={`/student/resultTest?id=${
+						attemptCompleted.idUserRespones
+					}&testName=${
+						attemptCompleted.nameTest
+					}&result=${attemptCompleted.result.toFixed(0)}&isChek=${
+						attemptCompleted.isChek
+					}&evaluationName=${
+						attemptCompleted.evaluationName
+					}&attempts=${attemptCompleted.attempts}`}
 					IdResult={attemptCompleted.idUserRespones}
 				/>
 			);

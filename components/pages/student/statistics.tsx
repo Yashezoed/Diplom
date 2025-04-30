@@ -108,7 +108,6 @@ export default function Statistics({
 								<p className='text-[24px] font-semibold text-center'>
 									{item.nameTest}
 								</p>
-								{/* //TODO  Я не уверен, что так норм передавать парамы */}
 								<Link
 									href={
 										'/student/resultTest?id=' +

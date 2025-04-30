@@ -8,7 +8,7 @@ export interface Iparams {
 	result: number;
 	isChek: boolean;
 	evaluationName: string;
-	attempts: number;
+	attempts: number | null;
 }
 
 export default async function Page({
@@ -19,6 +19,8 @@ export default async function Page({
 	const { id } = await searchParams;
 
 	const data = await fetchResultTests(id);
+
+
 
 	return !isError(data) && <ResultTest data={data} params={await searchParams} />;
 }

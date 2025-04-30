@@ -13,16 +13,28 @@ export default function resultTest({
 	params
 }: {
 	data: IresultTestData;
-	params: Iparams
+	params: Iparams;
 }) {
-
-	const { testName, result, isChek, evaluationName, attempts} =  params
-	console.log(data);
-	console.log(testName);
-
+	const { testName, result, isChek, evaluationName, id, attempts } = params;
 	const numberOfQuestions = data.length;
-	const numberOfRightAnswers = data.filter((item) => item.isCorrectQuest).length;
+	const numberOfRightAnswers = data.filter(
+		(item) => item.isCorrectQuest
+	).length;
 	const numberOfWrongAnswers = numberOfQuestions - numberOfRightAnswers;
+
+	const gridColsClass: Record<number, string> = {
+		1: 'grid-cols-1',
+		2: 'grid-cols-2',
+		3: 'grid-cols-3',
+		4: 'grid-cols-4',
+		5: 'grid-cols-5',
+		6: 'grid-cols-6'
+	};
+
+	const colsClass =
+		data.length > 6
+			? 'grid-cols-6'
+			: gridColsClass[data.length] || 'grid-cols-6';
 
 	return (
 		<StudentLayout title={testName}>
@@ -54,17 +66,22 @@ export default function resultTest({
 							<div className='pl-[10px] pt-[10px]'>
 								{evaluationName && (
 									<p className='text-[30px] font-semibold'>
-										Оценка: {evaluationName}{' '}
+										Оценка: {evaluationName}
 									</p>
 								)}
-								<p className='text-[30px] font-semibold'>
-									Осталось попыток: {attempts}
-								</p>
+								{!isNaN(Number(attempts)) && (
+
+									<p className='text-[30px] font-semibold'>
+										Осталось попыток: {attempts}
+									</p>
+								)}
 							</div>
 						</div>
 					</div>
 					{isChek && (
-						<Link href={'#'}>
+						<Link
+							href={`/student/resultTest/details?testName=${testName}&id=${id}`}
+						>
 							<Button size={'medium'} className='ml-[70px]'>
 								Подробнее
 							</Button>
@@ -75,11 +92,7 @@ export default function resultTest({
 				<div className='w-[50%] border-l-2 border-black overflow-hidden '>
 					<ScrollArea className='h-full '>
 						<div
-							className={`gap-y-[50px] justify-items-center  grid ${
-								data.length < 7
-									? `grid-cols-${data.length}`
-									: 'grid-cols-7'
-							} `}
+							className={`gap-y-[50px] justify-items-center grid ${colsClass}`}
 						>
 							{data.map((item, index) => (
 								<p

@@ -18,8 +18,6 @@ export function Diagram({
 	numberOfWrongAnswers: number;
 	result: number;
 }) {
-	console.log(numberOfRightAnswers, numberOfWrongAnswers);
-
 	const chartData = [
 		{ type: 'Правильно', quantity: numberOfRightAnswers, fill: '#8297E5' },
 		{ type: 'Неправильно', quantity: numberOfWrongAnswers, fill: '#CFCFCF' }
@@ -39,11 +37,10 @@ export function Diagram({
 	return (
 		<ChartContainer
 			config={chartConfig}
-			className='aspect-square  h-[450px] max-h-[450px]'
+			className='aspect-square min-h-[450px]'
 		>
 			<PieChart>
 				<ChartTooltip
-					cursor={false}
 					content={<ChartTooltipContent hideLabel />}
 				/>
 				<Pie

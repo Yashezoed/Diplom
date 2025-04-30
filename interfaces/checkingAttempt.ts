@@ -4,8 +4,11 @@ import { UserResponesTest } from './userAnswers';
 export interface IcompletedAttempt {
 	idUserRespones: number;
 	result: number;
-	evaluationName: string;
+	evaluationName?: string;
 	attempts: number;
+	isChek: boolean;
+	nameTest: string;
+	dateFinish: string;
 }
 
 export interface IattemptStarted {

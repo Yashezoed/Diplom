@@ -14,6 +14,12 @@ import { useEffect } from 'react';
 import MyAlertDialog from '@/components/ui/my-alert-dialog';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import {
+	Popover,
+	PopoverContent,
+	PopoverTrigger
+} from '@/components/ui/popover';
+import { ArrowUp } from 'lucide-react';
 
 export default function Test({
 	data,
@@ -72,7 +78,7 @@ export default function Test({
 		if (!isError(res)) {
 			const params = new URLSearchParams(searchParams);
 			params.set('id', `${res.idUserRespones}`);
-			params.set('testName', `${res.nameTest}` );
+			params.set('testName', `${res.nameTest}`);
 			params.set('result', `${res.result.toFixed(0)}`);
 			params.set('isChek', `${res.isChek}`);
 			params.set('evaluationName', `${res.evaluationName}`);
@@ -90,65 +96,80 @@ export default function Test({
 					info={data[currentQuestion].info}
 				/>
 				<div className='flex pt-[46px] overflow-hidden justify-between '>
-					<ScrollArea className='flex-1 max-w-[75%] h-full '>
+					<ScrollArea className='flex-1 h-full '>
 						{data[currentQuestion].answers.map((answer, index) => {
 							return (
-								<Answers
-									key={answer.id}
-									text={answer.answerText}
-									index={index + 1}
-									isSelected={
-										selectedAnswers[currentQuestion]
-											? Number(
-													selectedAnswers[
-														currentQuestion
-													].userRespones
-											  ) === answer.id
-											: false
-									}
-									answerId={answer.id.toString()}
-								/>
+								<div key={answer.id} className='mb-[20px]'>
+									<Answers
+										key={answer.id}
+										text={answer.answerText}
+										index={index + 1}
+										isSelected={
+											selectedAnswers[currentQuestion]
+												? Number(
+														selectedAnswers[
+															currentQuestion
+														].userRespones
+												  ) === answer.id
+												: false
+										}
+										answerId={answer.id.toString()}
+									/>
+								</div>
 							);
 						})}
 					</ScrollArea>
-					<div className=''>
-						{typeof minutes === 'number' ? (
-							<Timer
-								minutes={minutes}
-								seconds={seconds}
-								action={sendAnswers}
-							/>
-						) : (
-							''
-						)}
-						<ListQuestions
-							currentQuestion={currentQuestion}
-							selectedAnswers={selectedAnswers}
-							data={data}
-							updateAnswers={updateAnswers}
-						/>
-					</div>
 				</div>
 			</div>
-			<div className='flex justify-end gap-[12px] py-[20px]'>
-				{currentQuestion + 1 < data.length && (
-					<Button
-						size={'medium'}
-						onClick={() => {
-							setNextQuestion();
-							updateAnswers();
-						}}
-					>
-						Следующий вопрос
-					</Button>
-				)}
-				<MyAlertDialog
-					triggerText='Завершить тест'
-					action={sendAnswers}
-					actionText='Да'
-					cancelText='Нет'
-					titleText='Завершить тест?'
-				/>
+			<div className='flex justify-between py-[20px]'>
+				<div className='flex gap-[30px]'>
+					<Popover>
+						<Timer
+							minutes={minutes as number}
+							seconds={seconds}
+							action={sendAnswers}
+						/>
+						<PopoverTrigger asChild>
+							<Button
+								variant={'outline'}
+								className='p-[10px] rounded-[39px] w-[280px] flex justify-around'
+							>
+								<p className='text-[28px] '>
+									Вопрос {currentQuestion + 1}/{data.length}
+								</p>
+								<ArrowUp size={36} />
+							</Button>
+						</PopoverTrigger>
+						<PopoverContent>
+							<ListQuestions
+								currentQuestion={currentQuestion}
+								selectedAnswers={selectedAnswers}
+								data={data}
+								updateAnswers={updateAnswers}
+							/>
+						</PopoverContent>
+					</Popover>
+				</div>
+				<div className='flex justify-end gap-[12px]'>
+					{currentQuestion + 1 < data.length && (
+						<Button
+							size={'medium'}
+							onClick={() => {
+								setNextQuestion();
+								updateAnswers();
+							}}
+						>
+							Следующий вопрос
+						</Button>
+					)}
+					<MyAlertDialog
+						triggerText='Завершить тест'
+						action={sendAnswers}
+						actionText='Да'
+						cancelText='Нет'
+						titleText='Завершить тест?'
+					/>
+				</div>
 			</div>
 		</div>
 	);

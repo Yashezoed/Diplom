@@ -19,23 +19,24 @@ export default function ListQuestions({
 	);
 
 	return (
-		<div className=' mt-[16px] w-[280px]'>
-			<div className='p-[20px] flex flex-wrap'>
-				{data.map((answers, index) => {
-					// TODO решиться с моментом заполнения изначальных ответов массив налл или просто налл
-
-					return (
-						<button
-							key={answers.id}
-							onClick={() => {
-								changeCurrentQuestion(
-									index,
-									data[index].id.toString()
-								);
-								updateAnswers();
-							}}
-							className={`text-[#fff] bg-[#5D5D5D]  m-[5px] size-[30px] rounded-sm flex justify-center items-center
-									${currentQuestion === index ? 'outline outline-[3px] outline-primary outline-offset-[2px]' : ''}
+		<div className='w-[280px] gap-y-[10px] grid grid-cols-5 justify-items-center '>
+			{data.map((answers, index) => {
+				return (
+					<button
+						key={answers.id}
+						onClick={() => {
+							changeCurrentQuestion(
+								index,
+								data[index].id.toString()
+							);
+							updateAnswers();
+						}}
+						className={`text-[#fff] bg-[#5D5D5D]  m-[5px] size-[30px] rounded-sm flex justify-center items-center
+									${
+										currentQuestion === index
+											? 'outline outline-[3px] outline-primary outline-offset-[2px]'
+											: ''
+									}
 									${
 										selectedAnswers[index] &&
 										selectedAnswers[index].userRespones !==
@@ -43,21 +44,16 @@ export default function ListQuestions({
 											? '!bg-[#D4D4D4] text-black'
 											: ''
 									}`}
-						>
-							{selectedAnswers[index] &&
-							selectedAnswers[index].userRespones !== null ? (
-								<Check
-									size={20}
-									color='#000'
-									strokeWidth={3}
-								/>
-							) : (
-								index + 1
-							)}
-						</button>
-					);
-				})}
-			</div>
+					>
+						{selectedAnswers[index] &&
+						selectedAnswers[index].userRespones !== null ? (
+							<Check size={20} color='#000' strokeWidth={3} />
+						) : (
+							index + 1
+						)}
+					</button>
+				);
+			})}
 		</div>
 	);
 }
