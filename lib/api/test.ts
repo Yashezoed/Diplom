@@ -111,11 +111,13 @@ export const checkingAttempt = async (id: number): Promise<InoAttemptStarted | I
 		method: 'GET',
 		headers: {
 			'Content-Type': 'application/json',
-			Authorization: `Bearer ${session?.token}`
+			Authorization: `Bearer ${session?.token}`,
+
 		}
 	};
 	try {
 		const response = await fetch(url, options);
+		console.log(options);
 
 		if (response.ok) {
 			return await response.json();
@@ -135,7 +137,7 @@ export const createAttempt = async (id: number): Promise<{id: number} | IError> 
 	const session = await auth();
 	const url = `${process.env.NEXT_PUBLIC_BACKEND_API_URL}ResultTest/createAttempt/${id}`;
 	const options = {
-		method: 'GET',
+		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',
 			Authorization: `Bearer ${session?.token}`

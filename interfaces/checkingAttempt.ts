@@ -6,7 +6,6 @@ export interface IcompletedAttempt {
 	result: number;
 	evaluationName?: string;
 	attempts: number;
-	isChek: boolean;
 	nameTest: string;
 	dateFinish: string;
 }

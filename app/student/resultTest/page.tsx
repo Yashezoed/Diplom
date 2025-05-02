@@ -6,7 +6,6 @@ export interface Iparams {
 	id: number;
 	testName: string;
 	result: number;
-	isChek: boolean;
 	evaluationName: string;
 	attempts: number | null;
 }
@@ -19,8 +18,6 @@ export default async function Page({
 	const { id } = await searchParams;
 
 	const data = await fetchResultTests(id);
-
-
 
 	return !isError(data) && <ResultTest data={data} params={await searchParams} />;
 }

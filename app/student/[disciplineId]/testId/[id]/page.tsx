@@ -23,6 +23,9 @@ export default async function page({
 	const testInfo = await fetchLesson(id); //информация о тесте
 	const attempt = await checkingAttempt(id);
 
+	console.log(attempt);
+
+
 
 	switch (true) {
 		case isInoAttemptStarted(attempt):
@@ -55,9 +58,7 @@ export default async function page({
 						attemptCompleted.idUserRespones
 					}&testName=${
 						attemptCompleted.nameTest
-					}&result=${attemptCompleted.result.toFixed(0)}&isChek=${
-						attemptCompleted.isChek
-					}&evaluationName=${
+					}&result=${attemptCompleted.result.toFixed(0)}&evaluationName=${
 						attemptCompleted.evaluationName
 					}&attempts=${attemptCompleted.attempts}`}
 					IdResult={attemptCompleted.idUserRespones}

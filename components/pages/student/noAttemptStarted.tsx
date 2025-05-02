@@ -14,6 +14,7 @@ export default async function NoAttemptStarted({
 	testInfo: ILessonDescription;
 }) {
 	const newAttemptId = await createAttempt(id);
+
 	if (!isError(newAttemptId)) {
 
 		return (

@@ -37,7 +37,7 @@ export function Diagram({
 	return (
 		<ChartContainer
 			config={chartConfig}
-			className='aspect-square min-h-[450px]'
+			className='aspect-square min-h-[450px] max-h-[600px]'
 		>
 			<PieChart>
 				<ChartTooltip

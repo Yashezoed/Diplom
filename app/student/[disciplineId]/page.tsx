@@ -37,7 +37,7 @@ export default async function Page({
 							</div>
 						) : (
 							<>
-								<div className='flex justify-around px-[20px] h-full pb-[30px] pt-6 '>
+								<div className='flex justify-around  h-full pb-[30px] pt-6 '>
 									<ScrollArea>
 										<div className='flex flex-col gap-[22px]'>
 											<Tests data={dataTests} />

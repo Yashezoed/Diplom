@@ -80,7 +80,6 @@ export default function Test({
 			params.set('id', `${res.idUserRespones}`);
 			params.set('testName', `${res.nameTest}`);
 			params.set('result', `${res.result.toFixed(0)}`);
-			params.set('isChek', `${res.isChek}`);
 			params.set('evaluationName', `${res.evaluationName}`);
 			params.set('attempts', `${res.attempts}`);
 			clearStore();
