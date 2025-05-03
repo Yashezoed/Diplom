@@ -16,7 +16,7 @@ export const Login = async (name: string, password: string) => {
 
 	try {
 		const response = await fetch(
-			`${process.env.NEXT_PUBLIC_BACKEND_API_URL}User/login`,
+			`${process.env.NEXT_PUBLIC_BACKEND_API_URL}/User/login`,
 			options
 		);
 		if (response.ok) {
@@ -34,7 +34,6 @@ export const authenticate = async (
 	prevState: string | undefined,
 	formData: FormData
 ) => {
-	console.log('formData',formData);
 	try {
 		await signIn('credentials', formData);
 	} catch (error) {

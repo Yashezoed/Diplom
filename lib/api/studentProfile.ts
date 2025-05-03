@@ -8,7 +8,7 @@ import { ITestResults } from '@/interfaces/testResults';
 
 export async function getInfoStudent(): Promise<IInfoStudent | IError> {
 	const session = await auth();
-	const url = `${process.env.NEXT_PUBLIC_BACKEND_API_URL}Group/student`;
+	const url = `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/Group/student`;
 	const options = {
 		method: 'GET',
 		headers: {
@@ -33,7 +33,7 @@ export async function getInfoStudent(): Promise<IInfoStudent | IError> {
 
 export async function AVGScore(id: number): Promise<IAVGScore | IError> {
 	const session = await auth();
-	const url = `${process.env.NEXT_PUBLIC_BACKEND_API_URL}ResultTest/studentStatisticResultId/${id}`;
+	const url = `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/ResultTest/studentStatisticResultId/${id}`;
 	const options = {
 		method: 'GET',
 		headers: {
@@ -58,7 +58,7 @@ export async function AVGScore(id: number): Promise<IAVGScore | IError> {
 
 export async function testResults(disciplineId: number): Promise<ITestResults[] | IError> {
 	const session = await auth();
-	const url = `${process.env.NEXT_PUBLIC_BACKEND_API_URL}ResultTest/student/${disciplineId}`;
+	const url = `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/ResultTest/student/${disciplineId}`;
 	const options = {
 		method: 'GET',
 		headers: {

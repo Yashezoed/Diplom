@@ -6,7 +6,7 @@ import { ICourse } from "@/interfaces/course";
 
 export default async function fetchDisciplines(): Promise<ICourse[] | IError> {
 	const session = await auth();
-    const url = `${process.env.NEXT_PUBLIC_BACKEND_API_URL}Discipline/student`;
+    const url = `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/Discipline/student`;
 	const options = {
 		method: 'GET',
 		headers: {

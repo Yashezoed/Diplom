@@ -13,8 +13,6 @@ export default async function DashboardLayout({
 	const infoStudent = (await getInfoStudent()) as IInfoStudent;
 	const group = infoStudent.name;
 
-	console.log('infoStudent =>', infoStudent);
-
 	return (
 		<div className='bg-white rounded-[65px] w-full h-full flex-1 overflow-hidden'>
 			<header className='flex justify-between items-center max-h-[165px] pl-[65px] pr-[95px] pt-[60px]  '>

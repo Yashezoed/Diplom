@@ -20,6 +20,7 @@ import {
 	PopoverTrigger
 } from '@/components/ui/popover';
 import { ArrowUp } from 'lucide-react';
+import Image from 'next/image';
 
 export default function Test({
 	data,
@@ -87,37 +88,51 @@ export default function Test({
 		}
 	};
 
+	console.log(data);
+
+	const question = data[currentQuestion];
+	const typeQuestion = question.categoryTasks.name;
+
+	console.log(typeQuestion);
+
 	return (
 		<div className='mx-[80px] flex flex-col justify-between h-full '>
 			<div className='flex flex-col overflow-hidden  '>
-				<Questiontitle
-					name={data[currentQuestion].name}
-					info={data[currentQuestion].info}
-				/>
+				<Questiontitle name={question.name} info={question.info} />
 				<div className='flex pt-[46px] overflow-hidden justify-between '>
 					<ScrollArea className='flex-1 h-full '>
-						{data[currentQuestion].answers.map((answer, index) => {
-							return (
-								<div key={answer.id} className='mb-[20px]'>
-									<Answers
-										key={answer.id}
-										text={answer.answerText}
-										index={index + 1}
-										isSelected={
-											selectedAnswers[currentQuestion]
-												? Number(
-														selectedAnswers[
-															currentQuestion
-														].userRespones
-												  ) === answer.id
-												: false
-										}
-										answerId={answer.id.toString()}
-									/>
-								</div>
-							);
-						})}
+						{typeQuestion === 'Обычный вопрос' &&
+							question.answers.map((answer, index) => {
+								return (
+									<div key={answer.id} className='mb-[20px]'>
+										<Answers
+											key={answer.id}
+											text={answer.answerText}
+											index={index + 1}
+											isSelected={
+												selectedAnswers[currentQuestion]
+													? Number(
+															selectedAnswers[
+																currentQuestion
+															].userRespones
+													  ) === answer.id
+													: false
+											}
+											answerId={answer.id.toString()}
+										/>
+									</div>
+								);
+							})}
 					</ScrollArea>
+					{question.pathImg.length !== 0 && (
+						<Image
+							src={`${process.env.NEXT_PUBLIC_BACKEND_API_URL}${question.pathImg}`}
+							width={400}
+							height={400}
+							alt='изображение к вопросу'
+							className='ml-[20px] p-[20px] border-2 border-[#cecece] rounded-xl'
+						/>
+					)}
 				</div>
 			</div>
 			<div className='flex justify-between py-[20px]'>

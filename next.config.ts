@@ -1,8 +1,11 @@
-import type { NextConfig } from "next";
+import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
-  /* config options here */
-  reactStrictMode: false
+	/* config options here */
+	reactStrictMode: false,
+	images: {
+		domains: ['185.221.152.124']
+	}
 };
 
 export default nextConfig;

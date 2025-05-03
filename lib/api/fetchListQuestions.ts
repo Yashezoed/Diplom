@@ -5,7 +5,7 @@ import { IListQuestions } from "@/interfaces/listQuestions";
 
 export default async function fetchListQuestions(id: number): Promise<IListQuestions[] | IError> {
 	const session = await auth();
-			const url = `${process.env.NEXT_PUBLIC_BACKEND_API_URL}Quest/getListQuests/${id}`;
+			const url = `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/Quest/getListQuests/${id}`;
 			const options = {
 				method: 'GET',
 				headers: {

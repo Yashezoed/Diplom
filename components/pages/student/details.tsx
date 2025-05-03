@@ -15,45 +15,41 @@ import { useState } from 'react';
 export default function Details({ data }: { data: IresultTestData }) {
 	const [currentQuestion, setCurrentQuestion] = useState(0);
 
-	console.log(data);
+	const answers = data.verifiedUserRespones[currentQuestion];
+
 	return (
 		<div className='mx-[80px] flex flex-col justify-between h-full '>
 			<div className='flex flex-col overflow-hidden mt-[20px] '>
 				<Questiontitle
-					name={data[currentQuestion].questDto.name}
-					info={data[currentQuestion].questDto.info}
+					name={answers.questDto.name}
+					info={answers.questDto.info}
 				/>
 				<div className='flex pt-[46px] overflow-hidden justify-between '>
 					<ScrollArea className='flex-1 h-full '>
-						{data[currentQuestion].userRespones.map(
-							(answer, index) => {
-								return (
-									<div
-										key={answer.id}
-										className='flex items-center mb-[20px] gap-[20px]'
-									>
-										{answer.isCorrectAnswer ? (
-											<CircleCheck
-												size={50}
-												strokeWidth={1.5}
-											/>
-										) : (
-											<CircleX
-												size={50}
-												strokeWidth={1.5}
-											/>
-										)}
-										<Answers
-											key={answer.id}
-											text={answer.answerText}
-											index={index + 1}
-											isSelected={answer.isResponeUser}
-											answerId={answer.id.toString()}
+						{answers.userRespones && answers.userRespones.map((answer, index) => {
+							return (
+								<div
+									key={answer.id}
+									className='flex items-center mb-[20px] gap-[20px]'
+								>
+									{answer.isCorrectAnswer ? (
+										<CircleCheck
+											size={50}
+											strokeWidth={1.5}
 										/>
-									</div>
-								);
-							}
-						)}
+									) : (
+										<CircleX size={50} strokeWidth={1.5} />
+									)}
+									<Answers
+										key={answer.id}
+										text={answer.answerText}
+										index={index + 1}
+										isSelected={answer.isResponeUser}
+										answerId={answer.id.toString()}
+									/>
+								</div>
+							);
+						})}
 					</ScrollArea>
 				</div>
 			</div>
@@ -66,38 +62,41 @@ export default function Details({ data }: { data: IresultTestData }) {
 								className='p-[10px] rounded-[39px] w-[280px] flex justify-around'
 							>
 								<p className='text-[28px] '>
-									Вопрос {currentQuestion + 1}/{data.length}
+									Вопрос {currentQuestion + 1}/
+									{data.verifiedUserRespones.length}
 								</p>
 								<ArrowUp size={36} />
 							</Button>
 						</PopoverTrigger>
 						<PopoverContent>
 							<div className='w-[280px] gap-y-[10px] grid grid-cols-5 justify-items-center '>
-								{data.map((answer, index) => {
-									return (
-										<button
-											key={answer.questDto.id}
-											onClick={() => {
-												setCurrentQuestion(index);
-											}}
-											className={` m-[5px] text-[#fff] bg-[#5D5D5D] size-[30px] rounded-sm flex justify-center items-center !bg-[#D4D4D4] text-black
+								{data.verifiedUserRespones.map(
+									(answer, index) => {
+										return (
+											<button
+												key={answer.questDto.id}
+												onClick={() => {
+													setCurrentQuestion(index);
+												}}
+												className={` m-[5px] text-[#fff] bg-[#5D5D5D] size-[30px] rounded-sm flex justify-center items-center !bg-[#D4D4D4] text-black
 									${
 										currentQuestion === index
 											? 'outline outline-[3px] outline-primary outline-offset-[2px]'
 											: ''
 									}
 									`}
-										>
-											{index + 1}
-										</button>
-									);
-								})}
+											>
+												{index + 1}
+											</button>
+										);
+									}
+								)}
 							</div>
 						</PopoverContent>
 					</Popover>
 				</div>
 				<div className='flex justify-end gap-[12px]'>
-					{currentQuestion + 1 < data.length && (
+					{currentQuestion + 1 < data.verifiedUserRespones.length && (
 						<Button
 							size={'medium'}
 							onClick={() => {

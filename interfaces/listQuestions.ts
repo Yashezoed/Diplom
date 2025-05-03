@@ -1,15 +1,23 @@
 export interface IListQuestions {
-	categoryTasks: { id: number; name: string };
+	categoryTasks: CategoryTasks;
 	tests: string;
-	answers: [{
-		id: number,
-		answerText: string,
-		questsId: number,
-		quest: string,
-		isCorrectAnswer: boolean
-	}];
+	answers: Answer[];
 	id: number;
 	name: string;
 	info: string;
-	pathImg: string;
+	pathImg: string[];
+}
+
+export interface CategoryTasks {
+	id: number;
+	name:
+		| 'Обычный вопрос'
+		| 'Вопрос с ответом пользователя'
+		| 'Вопрос с множеством ответов';
+}
+
+export interface Answer {
+	id: number;
+	answerText: string;
+	pathPhoto: string[];
 }

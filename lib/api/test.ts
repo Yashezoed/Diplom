@@ -14,7 +14,7 @@ export const sendResultTest = async (
 ): Promise<ITestResults | IError> => {
 	const session = await auth();
 
-	const url = `${process.env.NEXT_PUBLIC_BACKEND_API_URL}ResultTest/studentPassedTest`;
+	const url = `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/ResultTest/studentPassedTest`;
 	const options = {
 		method: 'POST',
 		headers: {
@@ -47,7 +47,7 @@ export const updateTestAnswers = async (
 	const session = await auth();
 	body.studentId = session?.user.user.id;
 
-	const url = `${process.env.NEXT_PUBLIC_BACKEND_API_URL}ResultTest/Attempt/update`;
+	const url = `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/ResultTest/Attempt/update`;
 	const options = {
 		method: 'PATCH',
 		headers: {
@@ -79,7 +79,7 @@ export async function fetchResultTests(
 	id: number
 ): Promise<IresultTestData | IError> {
 	const session = await auth();
-	const url = `${process.env.NEXT_PUBLIC_BACKEND_API_URL}ResultTest/resultDetails/${id}`;
+	const url = `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/ResultTest/resultDetails/${id}`;
 	const options = {
 		method: 'GET',
 		headers: {
@@ -106,7 +106,7 @@ export async function fetchResultTests(
 // Проверить наличие начатой попытки
 export const checkingAttempt = async (id: number): Promise<InoAttemptStarted | IattemptStarted | IcompletedAttempt | IError> => {
 	const session = await auth();
-	const url = `${process.env.NEXT_PUBLIC_BACKEND_API_URL}ResultTest/checkingAttempt/${id}`;
+	const url = `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/ResultTest/checkingAttempt/${id}`;
 	const options = {
 		method: 'GET',
 		headers: {
@@ -117,8 +117,6 @@ export const checkingAttempt = async (id: number): Promise<InoAttemptStarted | I
 	};
 	try {
 		const response = await fetch(url, options);
-		console.log(options);
-
 		if (response.ok) {
 			return await response.json();
 		} else {
@@ -135,7 +133,7 @@ export const checkingAttempt = async (id: number): Promise<InoAttemptStarted | I
 
 export const createAttempt = async (id: number): Promise<{id: number} | IError> => {
 	const session = await auth();
-	const url = `${process.env.NEXT_PUBLIC_BACKEND_API_URL}ResultTest/createAttempt/${id}`;
+	const url = `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/ResultTest/createAttempt/${id}`;
 	const options = {
 		method: 'POST',
 		headers: {
