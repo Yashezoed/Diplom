@@ -74,7 +74,8 @@ export default function Test({
 			idResult: attemptId
 		};
 		const res = await sendResultTest(dataForRequest);
-		clearStore();
+		console.log(JSON.stringify(dataForRequest));
+		console.log(res);
 
 		if (!isError(res)) {
 			const params = new URLSearchParams(searchParams);
@@ -88,12 +89,10 @@ export default function Test({
 		}
 	};
 
-	console.log(data);
-
 	const question = data[currentQuestion];
 	const typeQuestion = question.categoryTasks.name;
 
-	console.log(typeQuestion);
+	console.log(selectedAnswers[currentQuestion]);
 
 	return (
 		<div className='mx-[80px] flex flex-col justify-between h-full '>
@@ -101,28 +100,28 @@ export default function Test({
 				<Questiontitle name={question.name} info={question.info} />
 				<div className='flex pt-[46px] overflow-hidden justify-between '>
 					<ScrollArea className='flex-1 h-full '>
-						{typeQuestion === 'Обычный вопрос' &&
-							question.answers.map((answer, index) => {
-								return (
-									<div key={answer.id} className='mb-[20px]'>
-										<Answers
-											key={answer.id}
-											text={answer.answerText}
-											index={index + 1}
-											isSelected={
-												selectedAnswers[currentQuestion]
-													? Number(
-															selectedAnswers[
-																currentQuestion
-															].userRespones
-													  ) === answer.id
-													: false
-											}
-											answerId={answer.id.toString()}
-										/>
-									</div>
-								);
-							})}
+						{question.answers.map((answer, index) => {
+							return (
+								<div key={answer.id} className='mb-[20px]'>
+									<Answers
+										key={answer.id}
+										text={answer.answerText}
+										index={index + 1}
+										isSelected={
+											selectedAnswers[currentQuestion]
+												? !!selectedAnswers[
+														currentQuestion
+												  ].userRespones?.includes(
+														answer.id.toString()
+												  )
+												: false
+										}
+										answerId={answer.id.toString()}
+										typeQuestion={typeQuestion}
+									/>
+								</div>
+							);
+						})}
 					</ScrollArea>
 					{question.pathImg.length !== 0 && (
 						<Image

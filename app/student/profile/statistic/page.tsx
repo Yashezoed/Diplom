@@ -17,6 +17,8 @@ export default async function page({
 	const avgScrore = (await AVGScore(params.disciplineId || 1)) as IAVGScore;
 	const results = (await testResults(params.disciplineId || 1));
 
+
+
 	return (
 		<div className=''>
 			<div className='flex gap-[35px]'>

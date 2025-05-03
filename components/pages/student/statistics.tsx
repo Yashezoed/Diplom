@@ -60,6 +60,8 @@ export default function Statistics({
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
+
+
 	return (
 		<div className=' mt-[30px] flex flex-col h-[calc(100%-125px)]'>
 			<div className='flex items-end justify-between pb-[20px]'>
