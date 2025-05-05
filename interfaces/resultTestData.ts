@@ -28,5 +28,7 @@ export interface QuestDto {
 
 export interface CategoryTasksDto {
 	id: number;
-	name: string;
+	name: 'Обычный вопрос'
+		| 'Вопрос с ответом пользователя'
+		| 'Вопрос с множеством ответов';
 }

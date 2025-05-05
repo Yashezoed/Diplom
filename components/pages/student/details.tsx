@@ -10,12 +10,16 @@ import Questiontitle from '@/components/ui/questionTitle';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { IresultTestData } from '@/interfaces/resultTestData';
 import { ArrowUp, CircleCheck, CircleX } from 'lucide-react';
+import Image from 'next/image';
 import { useState } from 'react';
 
 export default function Details({ data }: { data: IresultTestData }) {
 	const [currentQuestion, setCurrentQuestion] = useState(0);
 
 	const answers = data.verifiedUserRespones[currentQuestion];
+
+	console.log(answers.questDto);
+
 
 	return (
 		<div className='mx-[80px] flex flex-col justify-between h-full '>
@@ -26,31 +30,51 @@ export default function Details({ data }: { data: IresultTestData }) {
 				/>
 				<div className='flex pt-[46px] overflow-hidden justify-between '>
 					<ScrollArea className='flex-1 h-full '>
-						{answers.userRespones && answers.userRespones.map((answer, index) => {
-							return (
-								<div
-									key={answer.id}
-									className='flex items-center mb-[20px] gap-[20px]'
-								>
-									{answer.isCorrectAnswer ? (
-										<CircleCheck
-											size={50}
-											strokeWidth={1.5}
-										/>
-									) : (
-										<CircleX size={50} strokeWidth={1.5} />
-									)}
-									<Answers
+						{answers.userRespones &&
+							answers.userRespones.map((answer, index) => {
+								console.log(answer);
+
+								return (
+									<div
 										key={answer.id}
-										text={answer.answerText}
-										index={index + 1}
-										isSelected={answer.isResponeUser}
-										answerId={answer.id.toString()}
-									/>
-								</div>
-							);
-						})}
+										className='flex items-center mb-[20px] gap-[20px]'
+									>
+										{answer.isCorrectAnswer ? (
+											<CircleCheck
+												size={50}
+												strokeWidth={1.5}
+											/>
+										) : (
+											<CircleX
+												size={50}
+												strokeWidth={1.5}
+											/>
+										)}
+										<Answers
+											key={answer.id}
+											text={answer.answerText}
+											index={index + 1}
+											isSelected={answer.isResponeUser}
+											answerId={answer.id.toString()}
+											typeQuestion={
+												data.verifiedUserRespones[
+													currentQuestion
+												].categoryTasksDto.name
+											}
+										/>
+									</div>
+								);
+							})}
 					</ScrollArea>
+					{answers.questDto.pathImg !== null &&  answers.questDto.pathImg.length > 0 && (
+						<Image
+							src={`${process.env.NEXT_PUBLIC_BACKEND_API_URL}${answers.questDto.pathImg}`}
+							width={400}
+							height={400}
+							alt='изображение к вопросу'
+							className='ml-[20px] p-[20px] border-2 border-[#cecece] rounded-xl'
+						/>
+					)}
 				</div>
 			</div>
 			<div className='flex justify-between py-[20px]'>

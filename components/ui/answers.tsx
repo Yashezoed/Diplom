@@ -13,7 +13,7 @@ export default function Answers({
 }: IAnswersProps) {
 	const selectAnswer = useQuestionStore((state) => state.selectAnswer);
 
-	const selectAnswers = useQuestionStore((state) => state.selectAnswers)
+	const selectAnswers = useQuestionStore((state) => state.selectAnswers);
 
 	const selectedAnswers = useQuestionStore((state) => state.selectedAnswers);
 
@@ -21,8 +21,7 @@ export default function Answers({
 		if (selectedAnswers.length === 0) return '';
 
 		const answer = selectedAnswers[index];
-		if (!answer || !answer.userRespones)
-			return '';
+		if (!answer || !answer.userRespones) return '';
 
 		return answer.userRespones[0];
 	});
@@ -44,6 +43,13 @@ export default function Answers({
 				</Button>
 			);
 		case 'Вопрос с ответом пользователя':
+			if (text) {
+				return (
+					<span className='text-[22px] text-black text-left text-wrap'>
+						Правильный ответ {text.split(';').join(', ')}
+					</span>
+				);
+			}
 			return (
 				<input
 					type='text'
@@ -56,6 +62,7 @@ export default function Answers({
 					className='border border-gray-300 rounded px-3 py-2 w-full text-[22px]'
 				/>
 			);
+
 		case 'Вопрос с множеством ответов':
 			return (
 				<Button
