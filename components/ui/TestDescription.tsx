@@ -1,7 +1,6 @@
 import { ILessonDescription } from '@/interfaces/lessonDescription';
 import isError from '@/lib/api/isError';
 import Link from 'next/link';
-import { Suspense } from 'react';
 import { Button } from './button';
 import { ScrollArea } from './scroll-area';
 
@@ -11,7 +10,7 @@ export default async function TestDescription(props: {
 	const { infoTest, name, id, discipline, userAttempt } = props.data;
 
 	return (
-		<Suspense fallback={<div>Загрузка...</div>}>
+		<>
 			{isError(props.data) ? (
 				<div>
 					Status {props.data.status} error messgae{' '}
@@ -43,6 +42,6 @@ export default async function TestDescription(props: {
 					</div>
 				</div>
 			)}
-		</Suspense>
+		</>
 	);
 }

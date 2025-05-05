@@ -1,7 +1,6 @@
 'use server';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { Suspense } from 'react';
 import fetchDisciplines from '@/lib/api/fetchDisciplines';
 import FixAuth from '@/lib/api/fixAuth';
 import isError from '@/lib/api/isError';
@@ -13,7 +12,6 @@ export default async function Discipline() {
 
 	return (
 		<StudentLayout>
-			<Suspense fallback={<div>Загрузка...</div>}>
 				{isError(data) ? (
 					<div>
 						Status {data.status} error messgae {data.message}
@@ -45,7 +43,6 @@ export default async function Discipline() {
 						</ScrollArea>
 					</>
 				)}
-			</Suspense>
 		</StudentLayout>
 	);
 }

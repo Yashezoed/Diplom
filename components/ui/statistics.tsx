@@ -18,6 +18,7 @@ import Link from 'next/link';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
+
 export default function Statistics({
 	data,
 	AVGScore,
@@ -60,13 +61,11 @@ export default function Statistics({
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
-
-
 	return (
 		<div className=' mt-[30px] flex flex-col h-[calc(100%-125px)]'>
 			<div className='flex items-end justify-between pb-[20px]'>
-				<div>
-					<p className='text-[28px] mb-[10px] font-medium'>
+				<div className='w-[363px]'>
+					<p className=' text-[28px] mb-[10px] font-medium'>
 						Статистика по предмету
 					</p>
 					<Select
@@ -74,7 +73,10 @@ export default function Statistics({
 						onValueChange={handleSelectChange}
 					>
 						<SelectTrigger>
-							<SelectValue placeholder={selectedDiscipline} />
+							<SelectValue
+								placeholder={selectedDiscipline}
+								className='min-w-[268px]'
+							/>
 						</SelectTrigger>
 						<SelectContent>
 							<SelectGroup>

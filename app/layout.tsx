@@ -1,7 +1,6 @@
 import { Metadata } from 'next';
 import '@/app/global.css';
 import { montserrat } from '@/components/ui/fonts';
-// import { SessionProvider } from 'next-auth/react';
 export const metadata: Metadata = {
 	title: 'Приложение тестирования'
 };
@@ -14,7 +13,7 @@ export default function RootLayout({
 	return (
 
 		<html lang='ru'>
-			<body className={`${montserrat.className} antialized overflow-y-hidden overflow-x-hidden sticky overflow-hidden`}>{/* <SessionProvider> */}{children}{/* </SessionProvider> */}</body>
+			<body className={`${montserrat.className} antialized overflow-y-hidden overflow-x-hidden sticky overflow-hidden`}>{children}</body>
 		</html>
 	);
 }

@@ -84,8 +84,8 @@ export default function Test({
 			params.set('result', `${res.result.toFixed(0)}`);
 			params.set('evaluationName', `${res.evaluationName}`);
 			params.set('attempts', `${res.attempts}`);
-			clearStore();
 			replace(`/student/resultTest?${params.toString()}`);
+			clearStore();
 		}
 	};
 

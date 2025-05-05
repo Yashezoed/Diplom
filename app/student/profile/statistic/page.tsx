@@ -1,11 +1,23 @@
-import Statistics from '@/components/pages/student/statistics';
 import { Button } from '@/components/ui/button';
+import Statistics from '@/components/ui/statistics';
+import StatisticsSkeleton from '@/components/ui/statisticsSkeleton';
 import { IAVGScore } from '@/interfaces/AVGScore';
 import { ICourse } from '@/interfaces/course';
 import fetchDisciplines from '@/lib/api/fetchDisciplines';
 import { AVGScore, testResults } from '@/lib/api/studentProfile';
 import { ChevronRight } from 'lucide-react';
 import Link from 'next/link';
+import { Suspense } from 'react';
+
+async function TestResultsWrapper({disciplineId}: {disciplineId: number}) {
+	const disciplines = (await fetchDisciplines()) as ICourse[];
+	const avgScrore = (await AVGScore(disciplineId || 1)) as IAVGScore;
+	const results = await testResults(disciplineId || 1);
+
+	return (
+		<Statistics data={disciplines} AVGScore={avgScrore} results={results} />
+	);
+}
 
 export default async function page({
 	searchParams
@@ -13,11 +25,6 @@ export default async function page({
 	searchParams: { disciplineId?: number };
 }) {
 	const params = await searchParams;
-	const disciplines = (await fetchDisciplines()) as ICourse[];
-	const avgScrore = (await AVGScore(params.disciplineId || 1)) as IAVGScore;
-	const results = (await testResults(params.disciplineId || 1));
-
-
 
 	return (
 		<div className=''>
@@ -43,11 +50,9 @@ export default async function page({
 					</Button>
 				</Link>
 			</div>
-			<Statistics
-				data={disciplines}
-				AVGScore={avgScrore}
-				results={results}
-			/>
+			<Suspense fallback={<StatisticsSkeleton/>}>
+				<TestResultsWrapper disciplineId={params.disciplineId as number} />
+			</Suspense>
 		</div>
 	);
 }

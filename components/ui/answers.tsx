@@ -59,7 +59,7 @@ export default function Answers({
 						debouncedSelectAnswer(e.target.value);
 					}}
 					placeholder='Введите ваш ответ'
-					className='border border-gray-300 rounded px-3 py-2 w-full text-[22px]'
+					className='border border-gray-300 rounded px-3 py-2 w-full text-[22px] font-medium'
 				/>
 			);
 

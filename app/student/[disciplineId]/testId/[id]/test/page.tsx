@@ -13,7 +13,6 @@ import fetchListQuestions from '@/lib/api/fetchListQuestions';
 import fetchTests from '@/lib/api/fetchTests';
 import isError from '@/lib/api/isError';
 import { checkingAttempt } from '@/lib/api/test';
-import { Suspense } from 'react';
 
 export default async function page({
 	params
@@ -36,7 +35,6 @@ export default async function page({
 				title={`${testInfo.discipline.name} | ${currentTest.name}`}
 				profileBtn={true}
 			>
-				<Suspense fallback={<div>Загрузка...</div>}>
 					{isInoAttemptStarted(attempt) && (
 						<NoAttemptStarted
 							id={id}
@@ -50,7 +48,6 @@ export default async function page({
 							questions={questions}
 						/>
 					)}
-				</Suspense>
 			</StudentLayout>
 		);
 	}

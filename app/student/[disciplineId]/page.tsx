@@ -1,7 +1,6 @@
 import { ITest } from '@/interfaces/test';
 import fetchLesson from '@/lib/api/fetchLesson';
 import fetchTests from '@/lib/api/fetchTests';
-import { Suspense } from 'react';
 import isError from '@/lib/api/isError';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import TestDescription from '@/components/ui/TestDescription';
@@ -29,7 +28,6 @@ export default async function Page({
 		<>
 			{!isError(testInfo) ? (
 				<StudentLayout title={testInfo.discipline.name}>
-					<Suspense fallback={<div>Загрузка...</div>}>
 						{isError(dataTests) ? (
 							<div>
 								Status {dataTests.status} error message{' '}
@@ -47,7 +45,6 @@ export default async function Page({
 								</div>
 							</>
 						)}
-					</Suspense>
 				</StudentLayout>
 			) : (
 				<div>
