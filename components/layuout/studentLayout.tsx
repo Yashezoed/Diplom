@@ -12,8 +12,8 @@ export default function StudentLayout({
 	profileBtn?: boolean;
 }) {
 	return (
-		<div className='bg-white rounded-[65px] w-full h-full flex flex-col'>
-			<header className='flex justify-between items-center h-[150px] pl-[65px] pr-[95px] pt-[60px] '>
+		<div className='bg-white rounded-[30px] p-[30px] w-full h-full flex flex-col'>
+			<header className='flex justify-between items-center h-[150px] '>
 				<div className='flex items-center'>
 					<LeftSideHeader title={title} />
 				</div>

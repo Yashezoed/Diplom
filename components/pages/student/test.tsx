@@ -90,9 +90,9 @@ export default function Test({
 	};
 
 	const question = data[currentQuestion];
-	const typeQuestion = question.categoryTasks.name;
 
-	console.log(selectedAnswers[currentQuestion]);
+	console.log(question.categoryTasks);
+	//TODO Иногда тест отправляется с ошибкой понять и решить
 
 	return (
 		<div className='mx-[80px] flex flex-col justify-between h-full '>
@@ -117,7 +117,7 @@ export default function Test({
 												: false
 										}
 										answerId={answer.id.toString()}
-										typeQuestion={typeQuestion}
+										typeQuestion={question.categoryTasks.id}
 									/>
 								</div>
 							);

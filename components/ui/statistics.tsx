@@ -16,8 +16,6 @@ import { ITestResults } from '@/interfaces/testResults';
 import isError from '@/lib/api/isError';
 import Link from 'next/link';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
-
 
 export default function Statistics({
 	data,
@@ -28,38 +26,21 @@ export default function Statistics({
 	AVGScore: IAVGScore;
 	results: ITestResults[] | IError;
 }) {
-	const [selectedDiscipline, setSelectedDiscipline] = useState<string>(
-		data[0]?.name || ''
-	);
+	// const [selectedDiscipline, setSelectedDiscipline] = useState<string>(
+	// 	data[0]?.name || ''
+	// );
 
 	const searchParams = useSearchParams();
 	const pathname = usePathname();
 	const router = useRouter();
-
-	const updateDisciplineInURL = (disciplineId: number) => {
-		const params = new URLSearchParams(searchParams.toString());
-		params.set('disciplineId', disciplineId.toString());
-		router.replace(`${pathname}?${params.toString()}`);
-	};
+	const disciplineId = Number(searchParams.get('disciplineId')) || data[0].id;
 
 	const handleSelectChange = (value: string) => {
-		setSelectedDiscipline(value);
-		const selectedCourse = data.find((course) => course.name === value);
-		if (selectedCourse) {
-			updateDisciplineInURL(selectedCourse.id);
-		}
-	};
+		const params = new URLSearchParams(searchParams.toString());
+		params.set('disciplineId', value);
+		router.replace(`${pathname}?${params.toString()}`);
 
-	useEffect(() => {
-		if (data.length === 0) return;
-		const selectedCourse = data.find(
-			(course) => course.name === selectedDiscipline
-		);
-		if (selectedCourse) {
-			updateDisciplineInURL(selectedCourse.id);
-		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
+	};
 
 	return (
 		<div className=' mt-[30px] flex flex-col h-[calc(100%-125px)]'>
@@ -69,19 +50,18 @@ export default function Statistics({
 						Статистика по предмету
 					</p>
 					<Select
-						value={selectedDiscipline}
+						defaultValue={disciplineId.toString()}
 						onValueChange={handleSelectChange}
 					>
 						<SelectTrigger>
 							<SelectValue
-								placeholder={selectedDiscipline}
 								className='min-w-[268px]'
 							/>
 						</SelectTrigger>
 						<SelectContent>
 							<SelectGroup>
 								{data.map((item) => (
-									<SelectItem key={item.id} value={item.name}>
+									<SelectItem key={item.id} value={item.id.toString()}>
 										{item.name}
 									</SelectItem>
 								))}

@@ -15,9 +15,9 @@ export default async function DashboardLayout({
 
 	return (
 
-			<div className='bg-white rounded-[65px] w-full h-full flex-1 overflow-hidden'>
-				<header className='flex justify-between items-center max-h-[165px] pl-[65px] pr-[95px] pt-[60px]  '>
-					<h1 className='text-[60px] font-semibold text-black'>
+			<div className='bg-white rounded-[30px] p-[30px] w-full h-full flex-1 overflow-hidden'>
+				<header className='flex justify-between items-center max-h-[165px]  '>
+					<h1 className='text-[48px] font-semibold text-black'>
 						Ваш профиль
 					</h1>
 					<ExitButton />

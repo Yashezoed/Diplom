@@ -12,8 +12,8 @@ export const ExitButton = async () => {
 				action={signOutFn}
 			>
 				<Button variant={'linkBtn'} size={'linkBtn'} type='submit' className='flex justify-between'>
-					<p className="text-[36px] ">Выйти</p>
-					<ChevronRight size={48} strokeWidth={1.5} color='#000000' />
+					<span>Выйти</span>
+					<ChevronRight size={36} strokeWidth={1.25} color='#000000' />
 				</Button>
 			</form>
 		</>

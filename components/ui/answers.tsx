@@ -29,8 +29,11 @@ export default function Answers({
 		selectAnswer(value);
 	}, 500);
 
+	console.log(typeQuestion);
+
+
 	switch (typeQuestion) {
-		case 'Обычный вопрос':
+		case 1:
 			return (
 				<Button
 					variant={'answer'}
@@ -42,7 +45,7 @@ export default function Answers({
 					<span className='text-[22px] text-black text-left text-wrap'>{`${index}. ${text}`}</span>
 				</Button>
 			);
-		case 'Вопрос с ответом пользователя':
+		case 3:
 			if (text) {
 				return (
 					<span className='text-[22px] text-black text-left text-wrap'>
@@ -63,7 +66,7 @@ export default function Answers({
 				/>
 			);
 
-		case 'Вопрос с множеством ответов':
+		case 2:
 			return (
 				<Button
 					variant={'answer'}

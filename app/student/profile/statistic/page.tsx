@@ -50,7 +50,7 @@ export default async function page({
 					</Button>
 				</Link>
 			</div>
-			<Suspense fallback={<StatisticsSkeleton/>}>
+			<Suspense fallback={<StatisticsSkeleton/>} key={params.disciplineId?.toString()}>
 				<TestResultsWrapper disciplineId={params.disciplineId as number} />
 			</Suspense>
 		</div>

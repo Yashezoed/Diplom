@@ -59,7 +59,7 @@ export default function Details({ data }: { data: IresultTestData }) {
 											typeQuestion={
 												data.verifiedUserRespones[
 													currentQuestion
-												].categoryTasksDto.name
+												].categoryTasksDto.id
 											}
 										/>
 									</div>
