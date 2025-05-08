@@ -5,7 +5,7 @@ export default function ProfileButton() {
 	return (
 		<Button variant={'linkBtn'} size={'linkBtn'}>
 			Профиль
-			<ChevronRight size={48} strokeWidth={1.5} color='#000000' />
+			<ChevronRight size={36} strokeWidth={1.25} color='#000000' />
 		</Button>
 	);
 }

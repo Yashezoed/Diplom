@@ -19,7 +19,7 @@ const buttonVariants = cva(
 					'bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80',
 				ghost: 'hover:bg-accent hover:text-accent-foreground',
 				linkBtn:
-					'border-2 border-black bg-white hover:bg-accent rounded-[24px] flex items-center justify-between pl-[20px]',
+					'border-2 border-black bg-white hover:bg-accent rounded-[15px] flex items-center justify-between pl-[20px]',
 				answer: 'bg-white text-black border-2 border-black p-[20px]',
 				nonActive:
 					'bg-primary text-primary-foreground border-2 border-primary border-[3px]'

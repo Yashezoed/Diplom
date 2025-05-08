@@ -19,7 +19,7 @@ export default function LeftSideHeader({ title }: { title?: string }) {
 							strokeWidth={1.25}
 						/>
 					</button>
-					<h1 className='text-[64px] font-semibold text-black ml-5'>
+					<h1 className='text-[48px] font-semibold text-black ml-5'>
 						Ваши дисциплины
 					</h1>
 				</>

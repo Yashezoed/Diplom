@@ -29,9 +29,6 @@ export default function Answers({
 		selectAnswer(value);
 	}, 500);
 
-	console.log(typeQuestion);
-
-
 	switch (typeQuestion) {
 		case 1:
 			return (
@@ -45,6 +42,18 @@ export default function Answers({
 					<span className='text-[22px] text-black text-left text-wrap'>{`${index}. ${text}`}</span>
 				</Button>
 			);
+			case 2:
+				return (
+					<Button
+						variant={'answer'}
+						size={'default'}
+						className={`flex justify-start w-full
+					${isSelected ? 'bg-accent' : 'bg-transparent'}`}
+						onClick={() => selectAnswers(answerId)}
+					>
+						<span className='text-[22px] text-black text-left text-wrap'>{`${index}. ${text}`}</span>
+					</Button>
+				);
 		case 3:
 			if (text) {
 				return (
@@ -66,18 +75,6 @@ export default function Answers({
 				/>
 			);
 
-		case 2:
-			return (
-				<Button
-					variant={'answer'}
-					size={'default'}
-					className={`flex justify-start w-full
-                ${isSelected ? 'bg-accent' : 'bg-transparent'}`}
-					onClick={() => selectAnswers(answerId)}
-				>
-					<span className='text-[22px] text-black text-left text-wrap'>{`${index}. ${text}`}</span>
-				</Button>
-			);
 		default:
 			return null;
 	}

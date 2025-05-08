@@ -14,7 +14,6 @@ export default async function DashboardLayout({
 	const group = infoStudent.name;
 
 	return (
-
 			<div className='bg-white rounded-[30px] p-[30px] w-full h-full flex-1 overflow-hidden'>
 				<header className='flex justify-between items-center max-h-[165px]  '>
 					<h1 className='text-[48px] font-semibold text-black'>
@@ -23,7 +22,7 @@ export default async function DashboardLayout({
 					<ExitButton />
 				</header>
 				<main className='flex justify-around pt-[60px] h-[calc(100%-150px)]'>
-					<div className='flex flex-col'>
+					<div className='flex flex-col justify-between'>
 						<div className='w-[400px] h-[400px] rounded-full bg-primary flex justify-center items-center'>
 							<p className='text-[230px] text-white font-semibold'>
 								{name &&

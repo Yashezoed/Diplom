@@ -26,10 +26,6 @@ export default function Statistics({
 	AVGScore: IAVGScore;
 	results: ITestResults[] | IError;
 }) {
-	// const [selectedDiscipline, setSelectedDiscipline] = useState<string>(
-	// 	data[0]?.name || ''
-	// );
-
 	const searchParams = useSearchParams();
 	const pathname = usePathname();
 	const router = useRouter();
@@ -43,7 +39,7 @@ export default function Statistics({
 	};
 
 	return (
-		<div className=' mt-[30px] flex flex-col h-[calc(100%-125px)]'>
+		<div className=' mt-[30px] flex flex-col h-[calc(100%-10px)]'>
 			<div className='flex items-end justify-between pb-[20px]'>
 				<div className='w-[363px]'>
 					<p className=' text-[28px] mb-[10px] font-medium'>
