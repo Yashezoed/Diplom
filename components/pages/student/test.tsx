@@ -91,7 +91,7 @@ export default function Test({
 
 	const question = data[currentQuestion];
 
-	console.log(question.categoryTasks);
+	console.log(question);
 	//TODO Иногда тест отправляется с ошибкой понять и решить
 
 	return (

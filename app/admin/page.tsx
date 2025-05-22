@@ -1,19 +1,13 @@
-import AdminHeader from '@/components/ui/adminHeader';
-import AdmProfileCard from '@/components/ui/admProfileCard';
+import Header from '@/components/ui/Header';
+import ProfileCard from '@/components/ui/ProfileCard';
 
 export default async function Page() {
 	return (
 		<div className='w-full h-full'>
-			<AdminHeader title={'Ваш профиль'} />
+			<Header title={'Ваш профиль'} exit={true} />
 			<div className='h-[calc(100%-60px)] flex items-center  justify-evenly '>
-				<AdmProfileCard
-					text='Пользователи'
-					img='user'
-				/>
-				<AdmProfileCard
-					text='Тесты'
-					img='test'
-				/>
+				<ProfileCard text='Пользователи' img='user' link='#' />
+				<ProfileCard text='Тесты' img='test' link='#' />
 			</div>
 		</div>
 	);
