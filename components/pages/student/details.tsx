@@ -18,9 +18,6 @@ export default function Details({ data }: { data: IresultTestData }) {
 
 	const answers = data.verifiedUserRespones[currentQuestion];
 
-	console.log(answers.questDto);
-
-
 	return (
 		<div className='mx-[80px] flex flex-col justify-between h-full '>
 			<div className='flex flex-col overflow-hidden mt-[20px] '>
@@ -32,8 +29,6 @@ export default function Details({ data }: { data: IresultTestData }) {
 					<ScrollArea className='flex-1 h-full '>
 						{answers.userRespones &&
 							answers.userRespones.map((answer, index) => {
-								console.log(answer);
-
 								return (
 									<div
 										key={answer.id}

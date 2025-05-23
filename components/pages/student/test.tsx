@@ -74,9 +74,6 @@ export default function Test({
 			idResult: attemptId
 		};
 		const res = await sendResultTest(dataForRequest);
-		console.log(JSON.stringify(dataForRequest));
-		console.log(res);
-
 		if (!isError(res)) {
 			const params = new URLSearchParams(searchParams);
 			params.set('id', `${res.idUserRespones}`);
@@ -91,7 +88,6 @@ export default function Test({
 
 	const question = data[currentQuestion];
 
-	console.log(question);
 	//TODO Иногда тест отправляется с ошибкой понять и решить
 
 	return (

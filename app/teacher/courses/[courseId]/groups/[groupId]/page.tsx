@@ -14,8 +14,7 @@ export default async function GroupPage({
 	}
 }) {
 	const { nameGroup } = await searchParams;
-	const { courseId, groupId} = params
-	console.log(searchParams.nameGroup);
+	const { courseId, groupId} = await params
 
 	return (
 		<>
@@ -29,7 +28,7 @@ export default async function GroupPage({
 				<ProfileCard
 					img='user'
 					text='Студенты'
-					link='#'
+					link={`/teacher/courses/${courseId}/groups/${groupId}/students`}
 				/>
 			</div>
 		</>
