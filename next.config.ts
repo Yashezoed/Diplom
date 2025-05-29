@@ -4,7 +4,8 @@ const nextConfig: NextConfig = {
 	/* config options here */
 	reactStrictMode: false,
 	images: {
-		domains: ['185.221.152.124']
+		domains: ['185.221.152.124'],
+		unoptimized: true
 	}
 };
 

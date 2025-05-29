@@ -7,6 +7,7 @@ import FixAuth from '@/lib/api/fixAuth';
 import Image from 'next/image';
 import React from 'react';
 import { useActionState } from 'react';
+import plane from '@/public/plane.jpg'
 
 export default function Login() {
 	const [errorMessage, formAction, isPending] = useActionState(
@@ -23,7 +24,7 @@ export default function Login() {
 			<div className='bg-white rounded-[65px] mx-[70px] w-full flex justify-around'>
 				<div className='flex items-center pl-[20px]'>
 					<Image
-						src={'/plane.jpg'}
+						src={plane}
 						alt='Самолет'
 						width={740}
 						height={740}
