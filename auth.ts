@@ -26,6 +26,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 				if (!parseCredentials.success) {
 					return null;
 				}
+
 				const response: IauthResponse = await Login(
 					parseCredentials.data.login,
 					parseCredentials.data.password
