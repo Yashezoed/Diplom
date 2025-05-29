@@ -48,8 +48,6 @@ export default async function StatStudentPage({
 
 	const studentInfo = await fetchStudentInfo(studentId);
 
-	console.log(studentInfo);
-
 	return (
 		<>
 			<Header title={studentName} />
@@ -57,9 +55,9 @@ export default async function StatStudentPage({
 				{!isError(studentInfo) && (
 					<div className='flex flex-col justify-between'>
 						<div className='w-[400px] h-[400px] rounded-full bg-primary flex justify-center items-center'>
-							<p className='text-[230px] text-white font-semibold'>
+							<p className='text-[200px] text-white font-semibold'>
 								{studentInfo.fullName
-									.split(' ')
+									.split(' ').slice(0,2)
 									.map((word) => word[0].toLocaleUpperCase())}
 							</p>
 						</div>

@@ -1,7 +1,6 @@
 export interface IuserAnswers {
 	testId: number;
 	userResponesTest: UserResponesTest[];
-	studentId?: number;
 	idResult: number;
 }
 

@@ -2,14 +2,14 @@
 import { AuthError } from 'next-auth';
 import { signIn } from '@/auth';
 
-export const Login = async (name: string, password: string) => {
+export const Login = async (login: string, password: string) => {
 	const options = {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json'
 		},
 		body: JSON.stringify({
-			name,
+			login,
 			password
 		})
 	};

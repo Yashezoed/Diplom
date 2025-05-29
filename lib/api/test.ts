@@ -44,8 +44,6 @@ export const updateTestAnswers = async (
 	body: IuserAnswers
 ): Promise<{message: string} | IError> => {
 	const session = await auth();
-	body.studentId = session?.user.user.id;
-
 	const url = `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/ResultTest/Attempt/update`;
 	const options = {
 		method: 'PATCH',
@@ -58,7 +56,6 @@ export const updateTestAnswers = async (
 	try {
 		const response = await fetch(url, options);
 		if (response.ok) {
-
 			return await response.json();
 		} else {
 			throw new Error(`${response.status} ${response.statusText}`);

@@ -96,13 +96,13 @@ export default function Test({
 				<Questiontitle name={question.name} info={question.info} />
 				<div className='flex pt-[46px] overflow-hidden justify-between '>
 					<ScrollArea className='flex-1 h-full '>
-						{question.answers.map((answer, index) => {
+						{question.answers.map((answer) => {
 							return (
 								<div key={answer.id} className='mb-[20px]'>
 									<Answers
 										key={answer.id}
 										text={answer.answerText}
-										index={index + 1}
+										index={currentQuestion + 1}
 										isSelected={
 											selectedAnswers[currentQuestion]
 												? !!selectedAnswers[
@@ -119,15 +119,17 @@ export default function Test({
 							);
 						})}
 					</ScrollArea>
-					{question.pathImg.length !== 0 && (
-						<Image
-							src={`${process.env.NEXT_PUBLIC_BACKEND_API_URL}${question.pathImg}`}
-							width={400}
-							height={400}
-							alt='изображение к вопросу'
-							className='ml-[20px] p-[20px] border-2 border-[#cecece] rounded-xl'
-						/>
-					)}
+					{question.pathImg.length !== 0 &&
+						question.pathImg.map((img, index) => (
+							<Image
+								src={`${process.env.NEXT_PUBLIC_BACKEND_API_URL}${img}`}
+								width={400}
+								height={400}
+								alt='изображение к вопросу'
+								className='ml-[20px] p-[20px] border-2 border-[#cecece] rounded-xl'
+								key={index}
+							/>
+						))}
 				</div>
 			</div>
 			<div className='flex justify-between py-[20px]'>

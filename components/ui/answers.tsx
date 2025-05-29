@@ -1,3 +1,4 @@
+'use client'
 import IAnswersProps from '@/interfaces/answersProps';
 import useQuestionStore from '@/stores/useQuestionStore';
 import React, { useState } from 'react';

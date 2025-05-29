@@ -25,8 +25,9 @@ export default function Tests(props: { data: ITest[] }) {
 			variant={'outline'}
 			size={'xl'}
 			key={lesson.id}
+
 		>
-			{`${lesson.name}`}
+			<span className='text-wrap'>{lesson.name}</span>
 		</Button>
 	));
 }
