@@ -11,9 +11,9 @@ export default async function Page({
 	params,
 	searchParams
 }: {
-	params: Promise<{
+	params: {
 		disciplineId: number;
-	}>;
+	};
 	searchParams: {
 		testId?: number;
 	};
