@@ -23,6 +23,11 @@ export default async function page({
 	const testInfo = await fetchLesson(id); //информация о тесте
 	const attempt = await checkingAttempt(id);
 
+	console.log(testInfo);
+	console.log(attempt);
+
+
+
 	switch (true) {
 		case isInoAttemptStarted(attempt):
 			if (!isError(testInfo)) {

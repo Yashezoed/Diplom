@@ -40,8 +40,6 @@ export function isIattemptStarted(attempt: any): attempt is IattemptStarted {
 	return (
 		typeof attempt === 'object' &&
 		attempt !== null &&
-		typeof attempt.second === 'number' &&
-		typeof attempt.minutes === 'number' &&
 		typeof attempt.idResult === 'number' &&
 		typeof attempt.testId === 'number' &&
 		Array.isArray(attempt.userResponesTest)

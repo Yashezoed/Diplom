@@ -23,6 +23,9 @@ export default function Timer({minutes, seconds, action }: TimerProps) {
 		}
 	}, [initialTime]);
 
+	console.log(remainingTime);
+
+
 	useEffect(() => {
 		if (remainingTime === null) return;
 

@@ -135,11 +135,14 @@ export default function Test({
 			<div className='flex justify-between py-[20px]'>
 				<div className='flex gap-[30px]'>
 					<Popover>
-						<Timer
-							minutes={minutes as number}
-							seconds={seconds}
-							action={sendAnswers}
-						/>
+						{minutes && seconds && (
+							<Timer
+								minutes={minutes}
+								seconds={seconds}
+								action={sendAnswers}
+							/>
+						)}
+
 						<PopoverTrigger asChild>
 							<Button
 								variant={'outline'}

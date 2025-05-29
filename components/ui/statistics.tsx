@@ -92,7 +92,20 @@ export default function Statistics({
 										{item.nameTest}
 									</p>
 									<Link
-										href={'#'}
+										href={
+											'/student/resultTest?id=' +
+											item.idUserRespones +
+											'&testName=' +
+											item.nameTest +
+											'&result=' +
+											item.result.toFixed(0) +
+											'&isChek=' +
+											item.isChek +
+											'&evaluationName=' +
+											item.evaluationName +
+											'&attempts=' +
+											item.attempts
+										}
 									>
 										<Button
 											size={'sm'}
