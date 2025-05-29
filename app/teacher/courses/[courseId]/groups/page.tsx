@@ -8,9 +8,9 @@ import Link from 'next/link';
 export default async function GroupsPage({
 	params
 }: {
-	params: {
+	params: Promise<{
 		courseId: number;
-	};
+	}>;
 
 }) {
 	const { courseId } = await params;

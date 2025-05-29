@@ -8,10 +8,10 @@ import Link from 'next/link';
 export default async function StudentsPage({
 	params
 }: {
-	params: {
+	params: Promise<{
 		courseId: number;
 		groupId: number;
-	};
+	}>;
 }) {
 	const { courseId, groupId } = await params;
 	const data = await fetchStudents(groupId);

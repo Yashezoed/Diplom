@@ -6,10 +6,10 @@ import { fetchResultTests } from '@/lib/api/test';
 export default async function page({
 	searchParams
 }: {
-	searchParams: {
+	searchParams: Promise<{
 		testName: string;
 		id: number;
-	};
+	}>;
 }) {
 	const { testName, id } = await searchParams;
 	const data = await fetchResultTests(id);

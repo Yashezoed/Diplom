@@ -9,11 +9,11 @@ import Link from 'next/link';
 export default async function TestPage({
 	params
 }: {
-	params: {
+	params: Promise<{
 		courseId: number;
 		groupId: number;
 		testId: number;
-	};
+	}>;
 }) {
 	const { groupId, testId } = await params;
 	const data = await fetchResults(groupId, testId);

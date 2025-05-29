@@ -9,7 +9,7 @@ import { ChevronRight } from 'lucide-react';
 import Link from 'next/link';
 import { Suspense } from 'react';
 
-async function TestResultsWrapper({disciplineId}: {disciplineId: number}) {
+async function TestResultsWrapper({ disciplineId }: { disciplineId: number }) {
 	const disciplines = (await fetchDisciplines()) as ICourse[];
 	const avgScrore = (await AVGScore(disciplineId || 1)) as IAVGScore;
 	const results = await testResults(disciplineId || 1);
@@ -22,9 +22,9 @@ async function TestResultsWrapper({disciplineId}: {disciplineId: number}) {
 export default async function page({
 	searchParams
 }: {
-	searchParams: { disciplineId?: number };
+	searchParams: Promise<{ disciplineId?: number }>;
 }) {
-	const params = await searchParams;
+	const { disciplineId } = await searchParams;
 
 	return (
 		<div className=''>
@@ -50,8 +50,11 @@ export default async function page({
 					</Button>
 				</Link>
 			</div>
-			<Suspense fallback={<StatisticsSkeleton/>} key={params.disciplineId?.toString()}>
-				<TestResultsWrapper disciplineId={params.disciplineId as number} />
+			<Suspense
+				fallback={<StatisticsSkeleton />}
+				key={disciplineId?.toString()}
+			>
+				<TestResultsWrapper disciplineId={disciplineId as number} />
 			</Suspense>
 		</div>
 	);

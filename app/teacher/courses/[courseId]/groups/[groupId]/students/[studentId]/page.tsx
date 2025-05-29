@@ -33,15 +33,15 @@ export default async function StatStudentPage({
 	params,
 	searchParams
 }: {
-	params: {
+	params: Promise<{
 		courseId: number;
 		groupId: number;
 		studentId: number;
-	};
-	searchParams: {
+	}>;
+	searchParams: Promise<{
 		studentName: string;
 		disciplineId: number;
-	};
+	}>;
 }) {
 	const { /* courseId, groupId, */ studentId } = await params;
 	const { studentName, disciplineId } = await searchParams;

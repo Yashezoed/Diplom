@@ -17,10 +17,10 @@ import { checkingAttempt } from '@/lib/api/test';
 export default async function page({
 	params
 }: {
-	params: {
+	params: Promise<{
 		disciplineId: number;
 		id: number;
-	};
+	}>;
 }) {
 	const { disciplineId, id } = await params;
 	const testInfo = await fetchLesson(id); //информация о тесте
@@ -35,19 +35,16 @@ export default async function page({
 				title={`${testInfo.discipline.name} | ${currentTest.name}`}
 				profileBtn={true}
 			>
-					{isInoAttemptStarted(attempt) && (
-						<NoAttemptStarted
-							id={id}
-							questions={questions}
-							testInfo={testInfo}
-						/>
-					)}
-					{isIattemptStarted(attempt) && (
-						<AttemptStarted
-							attempt={attempt}
-							questions={questions}
-						/>
-					)}
+				{isInoAttemptStarted(attempt) && (
+					<NoAttemptStarted
+						id={id}
+						questions={questions}
+						testInfo={testInfo}
+					/>
+				)}
+				{isIattemptStarted(attempt) && (
+					<AttemptStarted attempt={attempt} questions={questions} />
+				)}
 			</StudentLayout>
 		);
 	}

@@ -5,13 +5,13 @@ export default async function GroupPage({
 	searchParams,
 	params
 }: {
-	searchParams: {
+	searchParams: Promise<{
 		nameGroup: string;
-	};
-	params: {
+	}>;
+	params: Promise<{
 		courseId: number;
 		groupId: number;
-	}
+	}>
 }) {
 	const { nameGroup } = await searchParams;
 	const { courseId, groupId} = await params

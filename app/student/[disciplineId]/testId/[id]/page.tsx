@@ -13,10 +13,10 @@ import Dialog from '@/components/ui/dialog';
 export default async function page({
 	params
 }: {
-	params: {
-		disciplineId: number;
-		id: number;
-	};
+	params: Promise<{
+		disciplineId: string;
+		id: number
+	}>;
 }) {
 	const { disciplineId, id } = await params;
 
@@ -25,8 +25,6 @@ export default async function page({
 
 	console.log(testInfo);
 	console.log(attempt);
-
-
 
 	switch (true) {
 		case isInoAttemptStarted(attempt):
@@ -59,7 +57,9 @@ export default async function page({
 						attemptCompleted.idUserRespones
 					}&testName=${
 						attemptCompleted.nameTest
-					}&result=${attemptCompleted.result.toFixed(0)}&evaluationName=${
+					}&result=${attemptCompleted.result.toFixed(
+						0
+					)}&evaluationName=${
 						attemptCompleted.evaluationName
 					}&attempts=${attemptCompleted.attempts}`}
 					IdResult={attemptCompleted.idUserRespones}

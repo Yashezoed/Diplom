@@ -13,7 +13,7 @@ export interface Iparams {
 export default async function Page({
 	searchParams
 }: {
-	searchParams: Iparams
+	searchParams: Promise<Iparams>
 }) {
 	const { id } = await searchParams;
 

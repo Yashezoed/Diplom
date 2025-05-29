@@ -9,10 +9,10 @@ import { PencilLine } from 'lucide-react';
 export default async function TestsPage({
 	params
 }: {
-	params: {
+	params: Promise<{
 		courseId: number;
 		groupId: number;
-	};
+	}>;
 }) {
 	const { courseId, groupId } = await params;
 	const data = await fetchTests(courseId);
