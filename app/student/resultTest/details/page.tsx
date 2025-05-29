@@ -1,4 +1,4 @@
-import StudentLayout from '@/components/layuout/studentLayout';
+import StudentLayout from '@/components/layout/studentLayout';
 import Details from '@/components/pages/student/details';
 import isError from '@/lib/api/isError';
 import { fetchResultTests } from '@/lib/api/test';

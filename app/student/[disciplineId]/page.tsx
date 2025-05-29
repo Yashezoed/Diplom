@@ -4,7 +4,7 @@ import fetchTests from '@/lib/api/fetchTests';
 import isError from '@/lib/api/isError';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import TestDescription from '@/components/ui/TestDescription';
-import StudentLayout from '@/components/layuout/studentLayout';
+import StudentLayout from '@/components/layout/studentLayout'; // исправлено
 import Tests from '@/components/pages/student/tests';
 
 export default async function Page({
@@ -12,39 +12,39 @@ export default async function Page({
 	searchParams
 }: {
 	params: {
-		disciplineId: number;
+		disciplineId: string; // обычно строка
 	};
 	searchParams: {
-		testId?: number;
+		testId?: string;
 	};
 }) {
-	const { testId } = await searchParams; // id выбранного теста в url
-	const disciplineId = (await params).disciplineId; // id дисциплины
-	const dataTests = await fetchTests(disciplineId); //список тестов
-	const testInfo = await fetchLesson(testId || (dataTests as ITest[])[0].id); //информация о тесте'
+	const disciplineId = Number(params.disciplineId);
+	const testId = searchParams.testId
+		? Number(searchParams.testId)
+		: undefined;
 
+	const dataTests = await fetchTests(disciplineId);
+	const testInfo = await fetchLesson(testId || (dataTests as ITest[])[0].id);
 
 	return (
 		<>
 			{!isError(testInfo) ? (
 				<StudentLayout title={testInfo.discipline.name}>
-						{isError(dataTests) ? (
-							<div>
-								Status {dataTests.status} error message{' '}
-								{dataTests.message}
-							</div>
-						) : (
-							<>
-								<div className='flex justify-around  h-full pb-[30px] pt-6 '>
-									<ScrollArea>
-										<div className='flex flex-col gap-[22px]'>
-											<Tests data={dataTests} />
-										</div>
-									</ScrollArea>
-									<TestDescription data={testInfo} />
+					{isError(dataTests) ? (
+						<div>
+							Status {dataTests.status} error message{' '}
+							{dataTests.message}
+						</div>
+					) : (
+						<div className='flex justify-around h-full pb-[30px] pt-6'>
+							<ScrollArea>
+								<div className='flex flex-col gap-[22px]'>
+									<Tests data={dataTests} />
 								</div>
-							</>
-						)}
+							</ScrollArea>
+							<TestDescription data={testInfo} />
+						</div>
+					)}
 				</StudentLayout>
 			) : (
 				<div>

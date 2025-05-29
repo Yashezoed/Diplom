@@ -1,7 +1,7 @@
 'use client';
 
 import { Iparams } from '@/app/student/resultTest/page';
-import StudentLayout from '@/components/layuout/studentLayout';
+import StudentLayout from '@/components/layout/studentLayout';
 import { Button } from '@/components/ui/button';
 import { Diagram } from '@/components/ui/pieСhart';
 import { ScrollArea } from '@/components/ui/scroll-area';

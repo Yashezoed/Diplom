@@ -4,7 +4,7 @@ import Link from 'next/link';
 import fetchDisciplines from '@/lib/api/fetchDisciplines';
 import FixAuth from '@/lib/api/fixAuth';
 import isError from '@/lib/api/isError';
-import StudentLayout from '@/components/layuout/studentLayout';
+import StudentLayout from '@/components/layout/studentLayout';
 import { ScrollArea } from '@/components/ui/scroll-area';
 
 export default async function Discipline() {

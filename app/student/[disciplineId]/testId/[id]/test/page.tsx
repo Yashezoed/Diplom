@@ -1,6 +1,6 @@
 'use server';
 
-import StudentLayout from '@/components/layuout/studentLayout';
+import StudentLayout from '@/components/layout/studentLayout';
 import AttemptStarted from '@/components/pages/student/attemptStarted';
 import NoAttemptStarted from '@/components/pages/student/noAttemptStarted';
 import {
