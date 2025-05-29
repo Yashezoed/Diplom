@@ -58,19 +58,22 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 			return session;
 		},
 		authorized({ auth, request: { nextUrl } }) {
-			const pathname = nextUrl.pathname;
-			const isOnDashboard =
-				pathname.startsWith('/admin') ||
-				pathname.startsWith('/student') ||
-				pathname.startsWith('/teacher');
-			const isLoggedIn = !!auth?.user;
 
-			if (isOnDashboard || pathname === '/') {
+			const pathname = nextUrl.pathname;
+			const isLoggedIn = !!auth?.user;
+			const role = auth?.user.user.role;
+			const isOnDashboard =
+			(pathname.startsWith('/admin') && role === 'admin') ||
+			(pathname.startsWith('/student') && role === 'student') ||
+			(pathname.startsWith('/teacher') && role === 'teacher');
+
+			if (isOnDashboard) {
 				return isLoggedIn;
 			} else if (isLoggedIn) {
 				const credentials = auth?.user.user.role;
 				return Response.redirect(new URL(`/${credentials}`, nextUrl));
 			}
+			else if (!isLoggedIn) return false;
 
 			return true;
 		}
