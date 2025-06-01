@@ -23,7 +23,7 @@ export interface QuestDto {
 	id: number;
 	name: string;
 	info: string;
-	pathImg: string;
+	pathImg: string[];
 }
 
 export interface CategoryTasksDto {

@@ -61,15 +61,17 @@ export default function Details({ data }: { data: IresultTestData }) {
 								);
 							})}
 					</ScrollArea>
-					{answers.questDto.pathImg !== null &&  answers.questDto.pathImg.length > 0 && (
-						<Image
-							src={`${process.env.NEXT_PUBLIC_BACKEND_API_URL}${answers.questDto.pathImg}`}
-							width={400}
-							height={400}
-							alt='изображение к вопросу'
-							className='ml-[20px] p-[20px] border-2 border-[#cecece] rounded-xl'
-						/>
-					)}
+					{answers.questDto.pathImg.length !== 0 &&
+						answers.questDto.pathImg.map( (img, index) =>
+							<Image
+								src={`${process.env.NEXT_PUBLIC_BACKEND_API_URL}${img}`}
+								width={400}
+								height={400}
+								alt='изображение к вопросу'
+								className='ml-[20px] p-[20px] border-2 border-[#cecece] rounded-xl'
+								key={index}
+							/>
+						)}
 				</div>
 			</div>
 			<div className='flex justify-between py-[20px]'>
