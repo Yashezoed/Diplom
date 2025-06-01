@@ -75,6 +75,7 @@ export default function Statistics({
 				<ScrollArea className='max-w-[1069px]'>
 					<div className='flex flex-col gap-[25px]'>
 						{!isError(results) &&
+							!('isTrue' in results) &&
 							results.map((item) => (
 								<div
 									key={item.idUserRespones}

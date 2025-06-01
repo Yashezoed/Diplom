@@ -96,13 +96,13 @@ export default function Test({
 				<Questiontitle name={question.name} info={question.info} />
 				<div className='flex pt-[46px] overflow-hidden justify-between '>
 					<ScrollArea className='flex-1 h-full '>
-						{question.answers.map((answer) => {
+						{question.answers.map((answer, index) => {
 							return (
 								<div key={answer.id} className='mb-[20px]'>
 									<Answers
 										key={answer.id}
 										text={answer.answerText}
-										index={currentQuestion + 1}
+										index={index + 1}
 										isSelected={
 											selectedAnswers[currentQuestion]
 												? !!selectedAnswers[

@@ -13,6 +13,7 @@ export default function Answers({
 	typeQuestion
 }: IAnswersProps) {
 	const selectAnswer = useQuestionStore((state) => state.selectAnswer);
+	const currentQuestion = useQuestionStore((state) => state.currentQuestion);
 
 	const selectAnswers = useQuestionStore((state) => state.selectAnswers);
 
@@ -21,7 +22,7 @@ export default function Answers({
 	const [userInput, setUserInput] = useState(() => {
 		if (selectedAnswers.length === 0) return '';
 
-		const answer = selectedAnswers[index];
+		const answer = selectedAnswers[currentQuestion];
 		if (!answer || !answer.userRespones) return '';
 
 		return answer.userRespones[0];

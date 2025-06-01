@@ -18,6 +18,8 @@ export default function Details({ data }: { data: IresultTestData }) {
 
 	const answers = data.verifiedUserRespones[currentQuestion];
 
+	console.log(answers);
+
 	return (
 		<div className='mx-[80px] flex flex-col justify-between h-full '>
 			<div className='flex flex-col overflow-hidden mt-[20px] '>
@@ -34,7 +36,19 @@ export default function Details({ data }: { data: IresultTestData }) {
 										key={answer.id}
 										className='flex items-center mb-[20px] gap-[20px]'
 									>
-										{answer.isCorrectAnswer ? (
+										{answers.categoryTasksDto.id !== 3 ? (
+											answer.isCorrectAnswer ? (
+												<CircleCheck
+													size={50}
+													strokeWidth={1.5}
+												/>
+											) : (
+												<CircleX
+													size={50}
+													strokeWidth={1.5}
+												/>
+											)
+										) : answers.isCorrectQuest ? (
 											<CircleCheck
 												size={50}
 												strokeWidth={1.5}
@@ -62,7 +76,7 @@ export default function Details({ data }: { data: IresultTestData }) {
 							})}
 					</ScrollArea>
 					{answers.questDto.pathImg.length !== 0 &&
-						answers.questDto.pathImg.map( (img, index) =>
+						answers.questDto.pathImg.map((img, index) => (
 							<Image
 								src={`${process.env.NEXT_PUBLIC_BACKEND_API_URL}${img}`}
 								width={400}
@@ -71,7 +85,7 @@ export default function Details({ data }: { data: IresultTestData }) {
 								className='ml-[20px] p-[20px] border-2 border-[#cecece] rounded-xl'
 								key={index}
 							/>
-						)}
+						))}
 				</div>
 			</div>
 			<div className='flex justify-between py-[20px]'>
