@@ -18,8 +18,6 @@ export default function Details({ data }: { data: IresultTestData }) {
 
 	const answers = data.verifiedUserRespones[currentQuestion];
 
-	console.log(answers);
-
 	return (
 		<div className='mx-[80px] flex flex-col justify-between h-full '>
 			<div className='flex flex-col overflow-hidden mt-[20px] '>
@@ -41,22 +39,26 @@ export default function Details({ data }: { data: IresultTestData }) {
 												<CircleCheck
 													size={50}
 													strokeWidth={1.5}
+													color=' #00FF7F'
 												/>
 											) : (
 												<CircleX
 													size={50}
 													strokeWidth={1.5}
+													color='#C41E3A'
 												/>
 											)
 										) : answers.isCorrectQuest ? (
 											<CircleCheck
 												size={50}
 												strokeWidth={1.5}
+												color='#00FF7F'
 											/>
 										) : (
 											<CircleX
 												size={50}
 												strokeWidth={1.5}
+												color='#C41E3A'
 											/>
 										)}
 										<Answers

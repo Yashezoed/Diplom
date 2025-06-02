@@ -27,7 +27,7 @@ export default function Dialog({
 		<AlertDialog defaultOpen={true}>
 			<AlertDialogContent className='max-w-[1200px] !rounded-[20px] bg-white'>
 				<AlertDialogHeader>
-					<AlertDialogTitle className='text-[58px] font-semibold text-center'>
+					<AlertDialogTitle className='text-[46px] font-semibold text-center'>
 						{title}
 					</AlertDialogTitle>
 				</AlertDialogHeader>

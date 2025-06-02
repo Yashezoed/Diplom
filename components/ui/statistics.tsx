@@ -45,7 +45,7 @@ export default function Statistics({
 				<div className='flex items-end justify-between pb-[20px]'>
 					<div className='w-[363px]'>
 						<p className=' text-[28px] mb-[10px] font-medium'>
-							Статистика по предмету
+							Статистика по дисциплине
 						</p>
 						<Select
 							defaultValue={disciplineId.toString()}

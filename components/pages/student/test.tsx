@@ -1,4 +1,6 @@
 'use client';
+import { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 import Answers from '@/components/ui/answers';
 import ListQuestions from '@/components/ui/listQuestions';
 import Questiontitle from '@/components/ui/questionTitle';
@@ -10,7 +12,6 @@ import useQuestionStore from '@/stores/useQuestionStore';
 import isError from '@/lib/api/isError';
 import { sendResultTest, updateTestAnswers } from '@/lib/api/test';
 import { IattemptStarted } from '@/interfaces/checkingAttempt';
-import { useEffect } from 'react';
 import MyAlertDialog from '@/components/ui/my-alert-dialog';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -30,7 +31,7 @@ export default function Test({
 	attempt
 }: {
 	data: IListQuestions[];
-	minutes?: number;
+	minutes: number;
 	seconds?: number;
 	attemptId: number;
 	attempt?: IattemptStarted;
@@ -43,12 +44,13 @@ export default function Test({
 	const selectedAnswers = useQuestionStore((state) => state.selectedAnswers);
 
 	const initializeStore = useQuestionStore((state) => state.initializeStore);
-
 	const setServerData = useQuestionStore((state) => state.setServerData);
-
 	const setNextQuestion = useQuestionStore((state) => state.nextQuestion);
-
 	const clearStore = useQuestionStore((state) => state.clearStore);
+
+	const [enlargedImageIndex, setEnlargedImageIndex] = useState<number | null>(
+		null
+	);
 
 	useEffect(() => {
 		if (attempt && attempt?.userResponesTest.length > 0) {
@@ -88,57 +90,83 @@ export default function Test({
 
 	const question = data[currentQuestion];
 
-	//TODO Иногда тест отправляется с ошибкой понять и решить
+	const toggleImageSize = (index: number) => {
+		setEnlargedImageIndex(enlargedImageIndex === index ? null : index);
+	};
+
 
 	return (
-		<div className='mx-[80px] flex flex-col justify-between h-full '>
-			<div className='flex flex-col overflow-hidden  '>
+		<div className='mx-[80px] flex flex-col justify-between h-full'>
+			<div className='flex flex-col overflow-hidden'>
 				<Questiontitle name={question.name} info={question.info} />
-				<div className='flex pt-[46px] overflow-hidden justify-between '>
-					<ScrollArea className='flex-1 h-full '>
-						{question.answers.map((answer, index) => {
-							return (
-								<div key={answer.id} className='mb-[20px]'>
-									<Answers
-										key={answer.id}
-										text={answer.answerText}
-										index={index + 1}
-										isSelected={
-											selectedAnswers[currentQuestion]
-												? !!selectedAnswers[
-														currentQuestion
-												  ].userRespones?.includes(
-														answer.id.toString()
-												  )
-												: false
-										}
-										answerId={answer.id.toString()}
-										typeQuestion={question.categoryTasks.id}
-									/>
-								</div>
-							);
-						})}
+				<div className='flex pt-[46px] overflow-hidden justify-between'>
+					<ScrollArea className='flex-1 h-full'>
+						{question.answers.map((answer, index) => (
+							<div key={answer.id} className='mb-[20px]'>
+								<Answers
+									key={answer.id}
+									text={answer.answerText}
+									index={index + 1}
+									isSelected={
+										selectedAnswers[currentQuestion]
+											? !!selectedAnswers[
+													currentQuestion
+											  ].userRespones?.includes(
+													answer.id.toString()
+											  )
+											: false
+									}
+									answerId={answer.id.toString()}
+									typeQuestion={question.categoryTasks.id}
+								/>
+							</div>
+						))}
 					</ScrollArea>
 					{question.pathImg.length !== 0 &&
-						question.pathImg.map((img, index) => (
-							<Image
-								src={`${process.env.NEXT_PUBLIC_BACKEND_API_URL}${img}`}
-								width={400}
-								height={400}
-								alt='изображение к вопросу'
-								className='ml-[20px] p-[20px] border-2 border-[#cecece] rounded-xl'
-								key={index}
-							/>
-						))}
+						question.pathImg.map((img, index) => {
+							const isEnlarged = enlargedImageIndex === index;
+							return (
+								<motion.div
+									key={index}
+									className='ml-[20px] p-[20px] border-2 border-[#cecece] rounded-xl cursor-pointer'
+									onClick={() => toggleImageSize(index)}
+									initial={false}
+									animate={{
+										width: isEnlarged ? 640 : 400,
+										height: isEnlarged ? 440 : 300
+
+									}}
+									transition={{
+										type: 'spring',
+										stiffness: 200,
+										damping: 20
+									}}
+									style={{ position: 'relative' }}
+								>
+									<Image
+										src={`${process.env.NEXT_PUBLIC_BACKEND_API_URL}${img}`}
+										width={isEnlarged ? 600 : 400}
+										height={isEnlarged ? 400 : 300}
+										alt='изображение к вопросу'
+										draggable={false}
+									/>
+								</motion.div>
+							);
+						})}
 				</div>
 			</div>
 			<div className='flex justify-between py-[20px]'>
 				<div className='flex gap-[30px]'>
 					<Popover>
-						{minutes && seconds && (
+						{seconds !== undefined ? (
 							<Timer
 								minutes={minutes}
 								seconds={seconds}
+								action={sendAnswers}
+							/>
+						) : (
+							<Timer
+								minutes={minutes}
 								action={sendAnswers}
 							/>
 						)}
@@ -148,7 +176,7 @@ export default function Test({
 								variant={'outline'}
 								className='p-[10px] rounded-[39px] w-[280px] flex justify-around'
 							>
-								<p className='text-[28px] '>
+								<p className='text-[28px]'>
 									Вопрос {currentQuestion + 1}/{data.length}
 								</p>
 								<ArrowUp size={36} />
