@@ -44,7 +44,7 @@ export default function Statistics({
 			<div className=' mt-[30px] flex flex-col h-[calc(100%-10px)]'>
 				<div className='flex items-end justify-between pb-[20px]'>
 					<div className='w-[363px]'>
-						<p className=' text-[28px] mb-[10px] font-medium'>
+						<p className=' text-[24px] mb-[10px] font-medium'>
 							Статистика по дисциплине
 						</p>
 						<Select
@@ -68,9 +68,11 @@ export default function Statistics({
 							</SelectContent>
 						</Select>
 					</div>
-					<p className='text-[36px] font-medium text-wrap'>
-						Средний результат {AVGScore.result.toFixed(0)}%
-					</p>
+					{AVGScore.result && (
+						<p className='text-[36px] font-medium text-wrap'>
+							Средний результат {AVGScore.result.toFixed(0)}%
+						</p>
+					)}
 				</div>
 				<ScrollArea className='max-w-[1069px]'>
 					<div className='flex flex-col gap-[25px]'>

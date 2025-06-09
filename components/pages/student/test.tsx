@@ -94,7 +94,6 @@ export default function Test({
 		setEnlargedImageIndex(enlargedImageIndex === index ? null : index);
 	};
 
-
 	return (
 		<div className='mx-[80px] flex flex-col justify-between h-full'>
 			<div className='flex flex-col overflow-hidden'>
@@ -134,7 +133,6 @@ export default function Test({
 									animate={{
 										width: isEnlarged ? 640 : 400,
 										height: isEnlarged ? 440 : 300
-
 									}}
 									transition={{
 										type: 'spring',
@@ -158,15 +156,10 @@ export default function Test({
 			<div className='flex justify-between py-[20px]'>
 				<div className='flex gap-[30px]'>
 					<Popover>
-						{seconds !== undefined ? (
+						{minutes && (
 							<Timer
 								minutes={minutes}
 								seconds={seconds}
-								action={sendAnswers}
-							/>
-						) : (
-							<Timer
-								minutes={minutes}
 								action={sendAnswers}
 							/>
 						)}

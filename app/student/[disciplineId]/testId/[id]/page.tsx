@@ -31,8 +31,8 @@ export default async function page({
 						title={
 							<>
 								{testInfo.name}.<br />
-								Время на прохождение теста {testInfo.time}
-								мин.
+								{testInfo.time && `Время на прохождение теста ${testInfo.time}
+								мин.`}
 							</>
 						}
 						actionText='Начать тест'
