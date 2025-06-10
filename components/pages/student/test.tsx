@@ -127,7 +127,7 @@ export default function Test({
 							return (
 								<motion.div
 									key={index}
-									className='ml-[20px] p-[20px] border-2 border-[#cecece] rounded-xl cursor-pointer'
+									className='ml-[20px] cursor-pointer'
 									onClick={() => toggleImageSize(index)}
 									initial={false}
 									animate={{
@@ -147,6 +147,7 @@ export default function Test({
 										height={isEnlarged ? 400 : 300}
 										alt='изображение к вопросу'
 										draggable={false}
+										className='p-[20px] border-2 border-[#cecece] rounded-xl'
 									/>
 								</motion.div>
 							);

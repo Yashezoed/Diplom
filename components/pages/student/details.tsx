@@ -9,6 +9,7 @@ import {
 import Questiontitle from '@/components/ui/questionTitle';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { IresultTestData } from '@/interfaces/resultTestData';
+import { motion } from 'framer-motion';
 import { ArrowUp, CircleCheck, CircleX } from 'lucide-react';
 import Image from 'next/image';
 import { useState } from 'react';
@@ -17,6 +18,14 @@ export default function Details({ data }: { data: IresultTestData }) {
 	const [currentQuestion, setCurrentQuestion] = useState(0);
 
 	const answers = data.verifiedUserRespones[currentQuestion];
+
+	const [enlargedImageIndex, setEnlargedImageIndex] = useState<number | null>(
+		null
+	);
+
+	const toggleImageSize = (index: number) => {
+		setEnlargedImageIndex(enlargedImageIndex === index ? null : index);
+	};
 
 	return (
 		<div className='mx-[80px] flex flex-col justify-between h-full '>
@@ -78,16 +87,36 @@ export default function Details({ data }: { data: IresultTestData }) {
 							})}
 					</ScrollArea>
 					{answers.questDto.pathImg.length !== 0 &&
-						answers.questDto.pathImg.map((img, index) => (
-							<Image
-								src={`${process.env.NEXT_PUBLIC_BACKEND_API_URL}${img}`}
-								width={400}
-								height={400}
-								alt='изображение к вопросу'
-								className='ml-[20px] p-[20px] border-2 border-[#cecece] rounded-xl'
-								key={index}
-							/>
-						))}
+						answers.questDto.pathImg.map((img, index) => {
+							const isEnlarged = enlargedImageIndex === index;
+							return (
+								<motion.div
+									key={index}
+									className='ml-[20px]  cursor-pointer'
+									onClick={() => toggleImageSize(index)}
+									initial={false}
+									animate={{
+										width: isEnlarged ? 640 : 400,
+										height: isEnlarged ? 440 : 300
+									}}
+									transition={{
+										type: 'spring',
+										stiffness: 200,
+										damping: 20
+									}}
+									style={{ position: 'relative' }}
+								>
+									<Image
+										src={`${process.env.NEXT_PUBLIC_BACKEND_API_URL}${img}`}
+										width={isEnlarged ? 600 : 400}
+										height={isEnlarged ? 400 : 300}
+										alt='изображение к вопросу'
+										draggable={false}
+										className='p-[20px] border-2 border-[#cecece] rounded-xl'
+									/>
+								</motion.div>
+							);
+						})}
 				</div>
 			</div>
 			<div className='flex justify-between py-[20px]'>
